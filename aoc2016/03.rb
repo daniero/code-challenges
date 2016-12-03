@@ -8,5 +8,5 @@ p input.count(&check_triangle)
 # Part 2
 p input
   .each_slice(3)
-  .map { |group| group.transpose.count(&check_triangle) }
-  .reduce(:+)
+  .flat_map(&:transpose)
+  .count(&check_triangle)
