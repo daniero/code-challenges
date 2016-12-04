@@ -11,3 +11,12 @@ real_rooms = input.select { |name, _, checksum|
 
 # Part 1
 p real_rooms.reduce(0) { |sum, (_, id, _)| sum + id }
+
+# Part 2
+decrypted = real_rooms.map { |name, id, _|
+  decrypted = name.dup
+  id.times { decrypted.tr!('a-z-', 'b-za ') }
+  "#{decrypted}: #{id}"
+}
+
+p decrypted.grep /pole/i
