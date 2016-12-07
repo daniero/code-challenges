@@ -4,7 +4,7 @@ class String
   end
 
   def bracket_split
-    split = self.split(/\[|\]|\n/)
+    split = self.split(/\[|\]/)
     split.partition.with_index { |_, i| i.even? }
   end
 
