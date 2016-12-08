@@ -28,3 +28,5 @@ File.open('08_input.txt').each_line do |line|
 end
 
 puts screen.flatten.count(1)
+
+puts screen.map { |row| row.join.tr('01', ' #') }
