@@ -4,7 +4,7 @@ def decompressed_size(string)
 
   chars, repeat = [$1, $2].map(&:to_i)
 
-  $`.size + (chars * repeat) + decompressed_size($'[chars..-1])
+  match + (chars * repeat) + decompressed_size($'[chars..-1])
 end
 
 def decompressed_size_v2(string, mem={})
