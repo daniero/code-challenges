@@ -3,15 +3,12 @@ def decompressed_size(string)
   return string.size unless match
 
   chars, repeat = [$1, $2].map(&:to_i)
-  sub = $'[0, chars]
 
   $`.size + (chars * repeat) + decompressed_size($'[chars..-1])
 end
 
-$mem = {}
-
-def decompressed_size_v2(string)
-  return $mem[string] if $mem.has_key? string
+def decompressed_size_v2(string, mem={})
+  return mem[string] if mem.has_key? string
 
   match = (string =~ /\((\d+)x(\d+)\)/)
   return string.size unless match
@@ -19,10 +16,10 @@ def decompressed_size_v2(string)
   chars, repeat = [$1, $2].map(&:to_i)
   sub = $'[0, chars]
 
-  $mem[string] =
+  mem[string] =
     match +
-    decompressed_size_v2(sub * repeat) +
-    decompressed_size_v2($'[chars..-1])
+    decompressed_size_v2(sub * repeat, mem) +
+    decompressed_size_v2($'[chars..-1], mem)
 end
 
 p decompressed_size(File.read('09_input.txt').strip)
