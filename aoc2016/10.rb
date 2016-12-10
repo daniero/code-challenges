@@ -53,7 +53,7 @@ input.each_line do |line|
 end
 
 # Part 1
-puts bots.values.find { |bot| bot.input&.sort == VALUES }.name
+puts bots.values.find { |bot| bot.input.sort == VALUES }.name
 
 # Part 2
 outputs = bots.values.select { |bot| bot.name =~ /output [012]$/ }
