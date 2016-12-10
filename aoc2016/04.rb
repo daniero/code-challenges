@@ -1,4 +1,4 @@
-input = File.open('04_input.txt').each_line.map { |line|
+input = File.open('input/04_input.txt').each_line.map { |line|
   line =~ /([a-z-]+)-(\d+)\[([a-z]+)\]/
   name, id, checksum = $1, $2, $3
   [name, id.to_i, checksum]

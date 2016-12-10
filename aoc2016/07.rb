@@ -26,7 +26,7 @@ class String
 end
 
 # Part 1
-puts File.open('07_input.txt').each_line.count(&:tls?)
+puts File.open('input/07_input.txt').each_line.count(&:tls?)
 
 # Part 2
-puts File.open('07_input.txt').each_line.count(&:ssl?)
+puts File.open('input/07_input.txt').each_line.count(&:ssl?)

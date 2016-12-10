@@ -30,7 +30,7 @@ keypad2 = {
   D => {U => B}
 }
 
-lines = File.read('02_input.txt').lines.map(&:strip)
+lines = File.read('input/02_input.txt').lines.map(&:strip)
 
 keypad = keypad2	# solve part 1 or part 2
 key = 5

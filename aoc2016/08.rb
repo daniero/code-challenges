@@ -16,7 +16,7 @@ end
 
 screen = Array.new(HEIGHT) { [0] * WIDTH }
 
-File.open('08_input.txt').each_line do |line|
+File.open('input/08_input.txt').each_line do |line|
   case line
   when /rect (\d+)x(\d+)/
     draw_rectangle!(screen, $1.to_i, $2.to_i)

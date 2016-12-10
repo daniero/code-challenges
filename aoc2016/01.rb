@@ -12,7 +12,7 @@ DIRECTIONS = [
   ->(distance) { make_path[x.downto(x-distance), y] }  # right
 ]
 
-steps = File.read("01_input.txt").scan(/(\w)(\d+)/).map { |turn, distance| ["LxR".index(turn)-1, distance.to_i] }
+steps = File.read("input/01_input.txt").scan(/(\w)(\d+)/).map { |turn, distance| ["LxR".index(turn)-1, distance.to_i] }
 
 steps.each do |turn, distance|
   direction += turn

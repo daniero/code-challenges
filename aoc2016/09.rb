@@ -22,5 +22,5 @@ def decompressed_size_v2(string, mem={})
     decompressed_size_v2($'[chars..-1], mem)
 end
 
-p decompressed_size(File.read('09_input.txt').strip)
-p decompressed_size_v2(File.read('09_input.txt').strip)
+p decompressed_size(File.read('input/09_input.txt').strip)
+p decompressed_size_v2(File.read('input/09_input.txt').strip)

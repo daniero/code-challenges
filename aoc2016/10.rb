@@ -34,7 +34,7 @@ end
 VALUES = [17, 61]
 
 bots = Hash.new { |hash, key| hash[key] = Bot.new(key) }
-input = File.open('10_input.txt')
+input = File.open('input/10_input.txt')
 
 input.each_line do |line|
   case line
