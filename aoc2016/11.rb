@@ -12,11 +12,11 @@ Configuration = Struct.new(:moves, :elevator, :floors, :prev) do
 end
 
 Generator = Struct.new(:isotope)
-Microchip = Struct.new(:isotope) do
+Microchip = Struct.new(:isotope, :powered) do
   def safe?(generators, microchips)
+    powered ||
     generators.empty? ||
-      generators.any? { |g| g.isotope == isotope } ||
-      generators.all? { |g| microchips.any? { |c| c.isotope == g.isotope } }
+      generators.none? { |g| g.isotope != isotope }
   end
 end
 
@@ -30,6 +30,16 @@ def ok?(configuration)
 
     microchips.all? { |chip| chip.safe?(generators, microchips) }
   end
+end
+
+def check_power(components)
+    generators, microchips = components.partition { |component| component.is_a? Generator }
+    updated_microchips = microchips.map do |c|
+      powered = generators.any? { |g| g.isotope == c.isotope }
+      Microchip.new(c.isotope, powered)
+    end
+
+    generators + updated_microchips
 end
 
 def transistions(configuration)
@@ -50,11 +60,13 @@ def transistions(configuration)
       next if amount > from_floor.size
       [*0...from_floor.size].combination(amount) do |take_indexes|
         take_components = from_floor.values_at(*take_indexes)
-        take_components
+
+        in_elevator = check_power(take_components)
+        leave = check_power(from_floor - take_components)
 
         new_configuration = Configuration.new(moves + 1, to_index, floors.dup)
-        new_configuration.floors[elevator] = from_floor - take_components
-        new_configuration.floors[to_index] = to_floor + take_components
+        new_configuration.floors[elevator] = leave
+        new_configuration.floors[to_index] = to_floor + in_elevator
 
         if ok?(new_configuration)
           new_configurations << new_configuration
@@ -69,9 +81,11 @@ end
 
 def read_start_configuration(filename)
   floors = File.open(filename).map do |line|
-    line
+    components = line
       .scan(/(\w+) generator|(\w+)-compatible microchip/)
       .map { |gen, chip| (gen ? Generator.new(gen.to_sym) : Microchip.new(chip.to_sym)) }
+
+    check_power(components)
   end
   Configuration.new(0, 0, floors)
 end
@@ -87,8 +101,8 @@ def search(*configurations)
   loop do
     configuration = configurations.shift
 
-    puts
-    pp configuration
+    # puts
+    # pp configuration
 
     return configuration, trail if done?(configuration)
 
@@ -98,8 +112,8 @@ def search(*configurations)
     reachable.each do |new|
       next if visited.include? new
 
-      p :NEW
-      pp new
+      # p :NEW
+      # pp new
       new.prev = id
       visited << new
       configurations << new
@@ -109,7 +123,7 @@ def search(*configurations)
   end
 end
 
-conf, trail = search(read_start_configuration('input/11_testcase.txt'))
+conf, trail = search(read_start_configuration('input/11.txt'))
 
 puts
 puts
