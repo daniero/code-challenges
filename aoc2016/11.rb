@@ -117,9 +117,9 @@ def search(*queue)
   end
 end
 
-final_state, trail = search(read_start_configuration('input/11_testcase.txt'))
+# final_state, trail = search(read_start_configuration('input/11_testcase.txt'))
 # final_state, trail = search(read_start_configuration('input/11.txt'))
-# final_state, trail = search(read_start_configuration('input/11b.txt'))
+final_state, trail = search(read_start_configuration('input/11b.txt'))
 
 
 # Print path:
