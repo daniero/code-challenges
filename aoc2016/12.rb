@@ -31,7 +31,7 @@ while ip < cmds.size
   cmds[ip%cmds.size].call()
 end
 
-p reg
+puts reg["a"]
 
 # Part 2
 
@@ -42,5 +42,4 @@ while ip < cmds.size
   cmds[ip%cmds.size].call()
 end
 
-
-p reg
+puts reg["a"]
