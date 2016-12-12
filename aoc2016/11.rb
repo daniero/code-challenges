@@ -1,13 +1,14 @@
+require "set"
+
 Configuration = Struct.new(:moves, :elevator, :floors, :prev) do
-  def eql?(other)
-    sort_floor = ->(floor) { floor.sort_by { |c| [c.isotope, c.class.name] } }
+  def state
+    names_idx = Hash.new { |h,k| h[k] = h.size }
 
-    elevator == other.elevator &&
-      floors.zip(other.floors).all? { |a,b| sort_floor[a] == sort_floor[b] }
-  end
+    layout = floors.map do |floor|
+      Set[*floor.map { |component| [names_idx[component.isotope], component.class] }]
+    end
 
-  def hash
-    elevator.hash ^ floors.hash
+    [elevator, layout]
   end
 end
 
@@ -114,17 +115,17 @@ def search(*configurations)
 
     reachable = transistions(configuration)
     reachable.each do |new|
-      next if visited.include? new
+      next if visited.include? new.state
 
       # p :NEW
       # pp new
       new.prev = id
-      visited << new
+      visited << new.state
       queue.push(new)
     end
 
     id += 1
-    puts "#{id} states checked, #{queue.size} in queue" if id % 10_000 == 0
+    puts "#{id} states checked, #{queue.size} in queue" #if id % 10_000 == 0
   end
 end
 
