@@ -90,57 +90,49 @@ def read_start_configuration(filename)
   Configuration.new(0, 0, floors)
 end
 
-require 'pp'
-
-require 'set'
-require 'pqueue'
-
-def search(*configurations)
+def search(*queue)
   visited = Set.new
-  weight = ->(c) { c.floors.map.with_index { |f,i| f.size * i } }
-  queue = PQueue.new(configurations) { |a,b| weight[b] <=> weight[a] }
   trail = {}
   id = 0
 
-
   loop do
-    configuration = queue.pop
-
-    # puts
-    # pp configuration
+    configuration = queue.shift
 
     return configuration, trail if done?(configuration)
 
     trail[id] = configuration
 
     reachable = transistions(configuration)
-    reachable.each do |new|
-      next if visited.include? new.state
+    reachable.each do |new_configuration|
+      state = new_configuration.state
+      next if visited.include? state
 
-      # p :NEW
-      # pp new
-      new.prev = id
-      visited << new.state
-      queue.push(new)
+      new_configuration.prev = id
+      visited << state
+      queue.push(new_configuration)
     end
 
     id += 1
-    puts "#{id} states checked, #{queue.size} in queue" #if id % 10_000 == 0
+    puts "#{id} states checked, #{queue.size} in queue" if id % 10_000 == 0
   end
 end
 
-conf, trail = search(read_start_configuration('input/11_testcase.txt'))
-# conf, trail = search(read_start_configuration('input/11.txt'))
+final_state, trail = search(read_start_configuration('input/11_testcase.txt'))
+# final_state, trail = search(read_start_configuration('input/11.txt'))
+# final_state, trail = search(read_start_configuration('input/11b.txt'))
+
+
+# Print path:
 
 path = []
-n = conf
+n = final_state
 while n
   path.unshift n
   n = trail[n.prev]
 end
 
 name = ->(c) { c.isotope.to_s[0].upcase + c.class.name[0] }
-names = conf.floors.flat_map { |f| f.map(&name) }.sort
+names = final_state.floors.flat_map { |f| f.map(&name) }.sort
 
 path.each do |n|
   puts "----" * names.size
@@ -152,4 +144,4 @@ path.each do |n|
   end
 end
 
-pp conf
+p final_state.moves
