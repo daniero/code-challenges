@@ -13,10 +13,10 @@ end
 
 Generator = Struct.new(:isotope)
 Microchip = Struct.new(:isotope, :powered) do
-  def safe?(generators, microchips)
+  def safe?(generators)
     powered ||
     generators.empty? ||
-      generators.none? { |g| g.isotope != isotope }
+      generators.any? { |g| g.isotope == isotope }
   end
 end
 
@@ -28,7 +28,7 @@ def ok?(configuration)
   configuration.floors.all? do |floor|
     generators, microchips = floor.partition { |component| component.is_a? Generator }
 
-    microchips.all? { |chip| chip.safe?(generators, microchips) }
+    microchips.all? { |chip| chip.safe?(generators) }
   end
 end
 
@@ -43,35 +43,30 @@ def check_power(components)
 end
 
 def transistions(configuration)
+  moves, elevator, floors = *configuration
+
+  possible_elevators = []
+  possible_elevators << elevator + 1 if elevator < 3
+  possible_elevators << elevator - 1 if elevator > 0
+
+  possible_amounts = [1, 2].select { |n| n <= floors[elevator].size }
+
   new_configurations = []
 
-  moves, elevator, floors = *configuration
-  from_floor = floors[elevator]
-
-  # Floors to try
-  [+1, -1].each do |direction|
-    to_index = elevator + direction
-    next if to_index < 0 || to_index >= 4
-
+  possible_elevators.product(possible_amounts).each do |to_index, amount|
+    from_floor = floors[elevator]
     to_floor = floors[to_index]
 
-    # Things to move
-    (1..2).each do |amount|
-      next if amount > from_floor.size
-      [*0...from_floor.size].combination(amount) do |take_indexes|
-        take_components = from_floor.values_at(*take_indexes)
+    from_floor.combination(amount) do |take_components|
+      in_elevator = check_power(take_components)
+      leave = check_power(from_floor - take_components)
 
-        in_elevator = check_power(take_components)
-        leave = check_power(from_floor - take_components)
+      new_configuration = Configuration.new(moves + 1, to_index, floors.dup)
+      new_configuration.floors[elevator] = leave
+      new_configuration.floors[to_index] = check_power(to_floor) + in_elevator
 
-        new_configuration = Configuration.new(moves + 1, to_index, floors.dup)
-        new_configuration.floors[elevator] = leave
-        new_configuration.floors[to_index] = to_floor + in_elevator
-
-        if ok?(new_configuration)
-          new_configurations << new_configuration
-        end
-
+      if ok?(new_configuration)
+        new_configurations << new_configuration
       end
     end
   end
@@ -91,15 +86,20 @@ def read_start_configuration(filename)
 end
 
 require 'pp'
+
 require 'set'
+require 'pqueue'
 
 def search(*configurations)
   visited = Set.new
+  weight = ->(c) { c.floors.map.with_index { |f,i| f.size * i } }
+  queue = PQueue.new(configurations) { |a,b| weight[b] <=> weight[a] }
   trail = {}
   id = 0
 
+
   loop do
-    configuration = configurations.shift
+    configuration = queue.pop
 
     # puts
     # pp configuration
@@ -116,31 +116,35 @@ def search(*configurations)
       # pp new
       new.prev = id
       visited << new
-      configurations << new
+      queue.push(new)
     end
 
     id += 1
+    puts "#{id} states checked, #{queue.size} in queue" if id % 10_000 == 0
   end
 end
 
+# conf, trail = search(read_start_configuration('input/11_testcase.txt'))
 conf, trail = search(read_start_configuration('input/11.txt'))
 
-puts
-puts
-
-pp conf
-
-puts
-puts
-
-n = conf
 path = []
-loop do
+n = conf
+while n
   path.unshift n
   n = trail[n.prev]
-
-  break unless n
 end
 
-pp path
+name = ->(c) { c.isotope.to_s[0].upcase + c.class.name[0] }
+names = conf.floors.flat_map { |f| f.map(&name) }.sort
 
+path.each do |n|
+  puts "----" * names.size
+  n.floors.reverse.each.with_index do |f,i|
+    fn = f.map(&name)
+    print names.map { |name| fn.include?(name) ? name : "  " } * " "
+    print "  [E]" if i == 3 - n.elevator
+    puts
+  end
+end
+
+pp conf
