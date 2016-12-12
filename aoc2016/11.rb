@@ -54,6 +54,10 @@ def transistions(configuration)
   new_configurations = []
 
   possible_elevators.product(possible_amounts).each do |to_index, amount|
+    if to_index < elevator
+      next if floors[0..to_index].all?(&:empty?)
+    end
+
     from_floor = floors[elevator]
     to_floor = floors[to_index]
 
@@ -124,8 +128,8 @@ def search(*configurations)
   end
 end
 
-# conf, trail = search(read_start_configuration('input/11_testcase.txt'))
-conf, trail = search(read_start_configuration('input/11.txt'))
+conf, trail = search(read_start_configuration('input/11_testcase.txt'))
+# conf, trail = search(read_start_configuration('input/11.txt'))
 
 path = []
 n = conf
