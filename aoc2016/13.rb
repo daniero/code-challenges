@@ -17,17 +17,15 @@ walls = Hash.new do |h, (x, y)|
   h[[x,y]] = bits.count(1).odd?
 end
 
-# moves, [x,y]
-start = [0, [1,1]]
+start = [0, [1,1]] # moves, [x,y]
 queue = PQueue.new([start]) { |a, b| distance(*a[1]) < distance(*b[1]) }
 
-
-def search(walls, queue)
+def search(target, walls, queue)
   visited = Set.new
 
   loop do
     moves, (x,y) = queue.pop
-    return moves if [x,y] == TARGET
+    return moves if [x,y] == target
 
     visited << [x,y]
 
@@ -37,11 +35,11 @@ def search(walls, queue)
       next if walls[[new_x, new_y]]
       next if new_x < 0 && new_y < 0
 
-      try = [moves + 1, [new_x, new_y]]
-      queue.push(try)
+      go = [moves + 1, [new_x, new_y]]
+      queue.push(go)
     end
 
   end
 end
 
-puts search(walls, queue)
+puts search(TARGET, walls, queue)
