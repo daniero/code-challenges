@@ -24,7 +24,7 @@ def search(walls, queue, visited={})
       new_x, new_y = x + i, y + j
       next if visited.include?([new_x, new_y])
       next if walls[[new_x, new_y]]
-      next if new_x < 0 && new_y < 0
+      next if new_x < 0 || new_y < 0
 
       go = [moves + 1, [new_x, new_y]]
       queue.push(go)
