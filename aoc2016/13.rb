@@ -11,14 +11,14 @@ def distance(x,y)
   Math.sqrt((x-i)**2 + (y-j)**2)
 end
 
-def search(walls, queue, visited=Set.new)
+def search(walls, queue, visited={})
   loop do
     state = queue.pop
     return state if yield state
 
     moves, (x, y) = state
 
-    visited << [x,y]
+    visited[[x,y]] = moves
 
     DIRECTIONS.each do |i, j|
       new_x, new_y = x + i, y + j
@@ -43,5 +43,5 @@ start = [0, [1,1]] # moves, [x,y]
 
 # Part 1:
 queue = PQueue.new([start]) { |a, b| distance(*a[1]) < distance(*b[1]) }
-part1, = search(walls, queue) { |_, room| room == TARGET }
+part1,_ = search(walls, queue) { |_, room| room == TARGET }
 puts part1
