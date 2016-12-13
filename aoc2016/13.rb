@@ -17,7 +17,6 @@ def search(walls, queue, visited={})
     return state if yield state
 
     moves, (x, y) = state
-
     visited[[x,y]] = moves
 
     DIRECTIONS.each do |i, j|
