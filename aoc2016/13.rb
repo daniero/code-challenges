@@ -45,3 +45,10 @@ start = [0, [1,1]] # moves, [x,y]
 queue = PQueue.new([start]) { |a, b| distance(*a[1]) < distance(*b[1]) }
 part1,_ = search(walls, queue) { |_, room| room == TARGET }
 puts part1
+
+# Part 2
+visited_rooms = {}
+queue = PQueue.new([start]) { |a, b| a[0] < b[0] }
+search(walls, queue, visited_rooms) { |moves, _| moves > 50 }
+
+puts visited_rooms.size
