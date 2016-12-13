@@ -11,21 +11,12 @@ def distance(x,y)
   Math.sqrt((x-i)**2 + (y-j)**2)
 end
 
-walls = Hash.new do |h, (x, y)|
-  n = x*x + 3*x + 2*x*y + y + y*y + INPUT
-  bits = (0...n.bit_length).map { |i| n[i] }
-  h[[x,y]] = bits.count(1).odd?
-end
-
-start = [0, [1,1]] # moves, [x,y]
-queue = PQueue.new([start]) { |a, b| distance(*a[1]) < distance(*b[1]) }
-
-def search(target, walls, queue)
-  visited = Set.new
-
+def search(walls, queue, visited=Set.new)
   loop do
-    moves, (x,y) = queue.pop
-    return moves if [x,y] == target
+    state = queue.pop
+    return state if yield state
+
+    moves, (x, y) = state
 
     visited << [x,y]
 
@@ -42,4 +33,15 @@ def search(target, walls, queue)
   end
 end
 
-puts search(TARGET, walls, queue)
+walls = Hash.new do |h, (x, y)|
+  n = x*x + 3*x + 2*x*y + y + y*y + INPUT
+  bits = (0...n.bit_length).map { |i| n[i] }
+  h[[x,y]] = bits.count(1).odd?
+end
+
+start = [0, [1,1]] # moves, [x,y]
+
+# Part 1:
+queue = PQueue.new([start]) { |a, b| distance(*a[1]) < distance(*b[1]) }
+part1, = search(walls, queue) { |_, room| room == TARGET }
+puts part1
