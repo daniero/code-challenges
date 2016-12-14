@@ -17,7 +17,7 @@ def keys(salt)
 
   Enumerator.new do |yielder|
     0.step do |i|
-      hash = Digest::MD5.hexdigest("#{salt}#{i}")
+      hash = yield("#{salt}#{i}")
       next unless triplet = hash.triplet
 
       hash.quintuplets
@@ -31,6 +31,4 @@ def keys(salt)
 end
 
 # Part 1:
-puts keys(SALT).take(64).last
-
-
+puts keys(SALT) { |s| Digest::MD5.hexdigest(s) }.take(64).last
