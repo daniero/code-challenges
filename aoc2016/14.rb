@@ -32,3 +32,6 @@ end
 
 # Part 1:
 puts keys(SALT) { |s| Digest::MD5.hexdigest(s) }.take(64).last
+
+# Part 2:
+puts keys(SALT) { |s| (0..2016).reduce(s) { |h,_| Digest::MD5.hexdigest(h) } }.take(64).last
