@@ -1,17 +1,20 @@
 INPUT = '10011111011011001'.chars.map(&:to_i)
 FILL_LENGTH = 272
 
-def fill_data(initial, length)
-  fill = initial + [0] + initial.reverse.map { |i| i^1 }
-  fill.length < length ? fill_data(fill, length) : fill
+def pad_data(initial, length)
+  padded = initial + [0] + initial.reverse.map { |i| i^1 }
+  padded.length < length ? pad_data(padded, length) : padded
 end
 
-def checksum(data)
-  data = data.take(FILL_LENGTH)
+def checksum(data, length)
+  data = data.take(length)
   check = data.each_slice(2).map { |a,b| a == b ? 1 : 0 }
-  check.length.even? ? checksum(check) : check
+  check.length.even? ? checksum(check, length) : check
 end
 
-checksum = checksum(fill_data(INPUT, FILL_LENGTH))
+def solve(input, length)
+  padded_data = pad_data(input, length)
+  checksum(padded_data, length)
+end
 
-puts checksum.join
+puts solve(INPUT, FILL_LENGTH).join
