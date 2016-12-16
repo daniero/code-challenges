@@ -8,8 +8,7 @@ def pad_data(initial, length)
 end
 
 def checksum(data, length)
-  data = data.take(length)
-  check = data.each_slice(2).map { |a,b| a == b ? 1 : 0 }
+  check = data.take(length).each_slice(2).map { |a,b| a == b ? 1 : 0 }
   check.length.even? ? checksum(check, length) : check
 end
 
