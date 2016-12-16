@@ -7,8 +7,8 @@ class String
     self =~ /(.)\1\1/ && $1
   end
 
-  def quintuplets
-    self.scan(/(.)\1{4}/).flat_map(&:first).uniq
+  def quintuplet
+    self =~ /(.)\1\1\1\1/ && $1
   end
 end
 
@@ -22,9 +22,8 @@ def keys(salt)
       triplet = hash.triplet
       next unless triplet
 
-      hash.quintuplets
-        .flat_map { |char| triplets[char].select { |found_at| found_at > i - 1000 } }
-        .sort
+      triplets[hash.quintuplet]
+        .select { |found_at| found_at > i - 1000 }
         .each { |key| yielder << key }
 
       triplets[triplet] << i
