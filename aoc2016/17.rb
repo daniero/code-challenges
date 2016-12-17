@@ -7,13 +7,13 @@ TARGET = [3,3]
 DIRECTIONS = {"U" => [0, -1], "D" => [0, 1], "L" => [-1, 0], "R" => [1, 0]}
 
 def search(start)
-  queue = [['', START]]
+  queue = [[0, '', START]] # moves, path, coordinates
 
   loop do
     state = queue.shift
     return nil unless state
 
-    path, (x,y) = state
+    moves, path, (x,y) = state
     return state if [x,y] == TARGET
 
     doors_open =
@@ -27,9 +27,7 @@ def search(start)
       new_x, new_y = x + i, y + j
       next if new_x < 0 || new_x > 3 || new_y < 0 || new_y > 3
 
-      new_path = path + direction
-
-      queue << [new_path, [new_x, new_y]]
+      queue << [moves + 1, path + direction, [new_x, new_y]]
     end
   end
 end
