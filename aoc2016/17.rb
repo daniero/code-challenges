@@ -6,7 +6,7 @@ START = [0,0]
 TARGET = [3,3]
 DIRECTIONS = {"U" => [0, -1], "D" => [0, 1], "L" => [-1, 0], "R" => [1, 0]}
 
-def search(start)
+def search()
   queue = [[0, '', START]] # moves, path, coordinates
 
   Enumerator.new do |yielder|
@@ -38,5 +38,7 @@ def search(start)
   end
 end
 
-p search(START).peek
-p search(START).max
+paths = search()
+
+p paths.first
+p paths.max
