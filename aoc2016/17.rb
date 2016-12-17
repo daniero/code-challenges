@@ -39,3 +39,4 @@ def search(start)
 end
 
 p search(START).peek
+p search(START).max
