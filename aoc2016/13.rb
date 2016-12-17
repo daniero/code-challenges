@@ -14,6 +14,7 @@ end
 def search(walls, queue, visited={})
   loop do
     state = queue.pop
+    return nil unless state
     return state if yield state
 
     moves, (x, y) = state
@@ -49,5 +50,11 @@ puts part1
 visited_rooms = {}
 queue = PQueue.new([start]) { |a, b| a[0] < b[0] }
 search(walls, queue, visited_rooms) { |moves, _| moves > 50 }
-
 puts visited_rooms.size
+
+
+50.times do |y|
+  204.times { |x| print visited_rooms[[x,y]] ? "·" : walls[[x,y]] ? "0" : " " }
+  puts
+end
+
