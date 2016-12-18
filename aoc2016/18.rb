@@ -19,3 +19,6 @@ end
 
 # Part 1
 puts generate_floor(input, 40).flatten.count(false)
+
+# Part 1
+puts generate_floor(input, 400_000).flatten.count(false)
