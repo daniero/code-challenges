@@ -1,10 +1,8 @@
 input = File.read('input/18.txt').chomp.chars.map { |c| c == '^' }
 
 def trap?(left, center, right)
-  left && center && !right ||
-    !left && center && right ||
-    left && !center && !right ||
-    !left && !center && right
+  left == center && center != right ||
+    left != center && center == right
 end
 
 def next_row(row)
