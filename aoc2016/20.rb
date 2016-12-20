@@ -20,4 +20,9 @@ filename = ARGV[0] || 'input/20.txt'
 input = File.open(filename).each_line.map { |line| line.split('-').map(&:to_i) }
 
 blacklist = merge_ranges(input)
+
+# Part 1
 p blacklist.min.last + 1
+
+# Part 2
+p 2**32 - blacklist.reduce(0) { |count, (start, stop)| count + (start..stop).size }
