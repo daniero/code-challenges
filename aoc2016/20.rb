@@ -1,6 +1,6 @@
 def overlap?(range1, range2)
   min, max = [range1, range2].minmax_by(&:first)
-  min.cover?(max.min) || min.last + 1 == max.first
+  min.cover?(max.first) || min.last + 1 == max.first
 end
 
 def merge_overlapping_ranges(*ranges)
