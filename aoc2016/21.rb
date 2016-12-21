@@ -42,3 +42,9 @@ end
 
 # Part 1
 puts scramble(PASSWORD)
+
+# Part 2
+scrambled = 'fbgdceah'
+unscramled = scrambled.chars.permutation.find { |chars| scramble(chars.join) == scrambled }
+puts unscramled.join
+
