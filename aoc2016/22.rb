@@ -1,6 +1,6 @@
 Node = Struct.new(:x, :y, :size, :used, :avail, :use)
 
-input = File.open('input\22.txt').each_line.drop(2)
+input = File.open('input/22.txt').each_line.drop(2)
 
 nodes = input.map { |line|
   line =~ /x(\d+)-y(\d+).*?(\d+)T.*?(\d+)T.*?(\d+)T.*?(\d+)%/
