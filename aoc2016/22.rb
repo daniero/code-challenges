@@ -1,11 +1,11 @@
-Node = Struct.new(:size, :used, :avail, :use)
+Node = Struct.new(:size, :used, :avail)
 
 input = File.open('input/22.txt').each_line.drop(2)
 
 nodes = input.reduce({}) { |hash, line|
-  line =~ /x(\d+)-y(\d+).*?(\d+)T.*?(\d+)T.*?(\d+)T.*?(\d+)%/
-  _, x, y, size, used, avail, use = [*$~].map(&:to_i)
-  hash.merge({ [x,y] => Node.new(size, used, avail, use) })
+  line =~ /x(\d+)-y(\d+).*?(\d+)T.*?(\d+)T.*?(\d+)T/
+  _, x, y, size, used, avail = [*$~].map(&:to_i)
+  hash.merge({ [x,y] => Node.new(size, used, avail) })
 }
 
 p nodes.values
