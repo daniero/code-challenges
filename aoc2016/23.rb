@@ -24,6 +24,10 @@ def run(cmds, ip, reg)
     val, dst = $1.to_i, $2.to_i
     return ip + (val == 0 ? 1 : dst)
 
+  when /jnz (\d+) ([a-z])/
+    val, dst = $1.to_i, reg[$2]
+    return ip + (val == 0 ? 1 : dst)
+
   when /tgl ([a-z])/
     dst = reg[$1] + ip
     toggle(cmds, dst)
