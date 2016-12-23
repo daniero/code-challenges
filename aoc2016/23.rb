@@ -4,7 +4,7 @@ def run(cmds, ip, reg)
     val, dst = $1, $2
     reg[dst] = reg[val]
 
-  when /cpy ([0-9]+) (\w)/
+  when /cpy (-?[0-9]+) (\w)/
     val, dst = $1.to_i, $2
     reg[dst] = val
 
