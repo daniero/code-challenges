@@ -64,3 +64,15 @@ while ip < cmds.size
 end
 
 puts reg["a"]
+
+# Part 2
+
+cmds = File.read('input/23.txt').lines
+reg = {"a"=>12, "b"=>0, "c"=>0, "d"=>0}
+ip = 0
+
+while ip < cmds.size
+  ip = run(cmds, ip, reg)
+end
+
+puts reg["a"]
