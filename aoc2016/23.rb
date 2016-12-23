@@ -1,5 +1,7 @@
 def run(cmds, ip, reg)
-  case p cmds[ip%cmds.size]
+  cmd = cmds[ip % cmds.size]
+
+  case cmd
   when /cpy ([a-z]) (\w)/
     val, dst = $1, $2
     reg[dst] = reg[val]
@@ -51,18 +53,14 @@ def toggle(cmds, dst)
   end
 end
 
-cmds = File.read('input/23-test.txt').lines
-reg = {"a"=>0, "b"=>0, "c"=>0, "d"=>0}
+# Part 1
+
+cmds = File.read('input/23.txt').lines
+reg = {"a"=>7, "b"=>0, "c"=>0, "d"=>0}
 ip = 0
 
-require "pp"
-
 while ip < cmds.size
-  p ip
   ip = run(cmds, ip, reg)
-  pp reg
-  pp cmds
-  puts
 end
 
 puts reg["a"]
