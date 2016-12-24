@@ -75,14 +75,14 @@ def search(start, possible_moves)
   end
 end
 
-def adjecent_squares(x,y)
+def adjacent_squares(x,y)
   [[x-1, y], [x+1, y], [x, y-1], [x, y+1]].select { |i,j|
     (0...WIDTH).cover?(i) && (0...HEIGHT).cover?(j)
   }
 end
 
 possible_moves = nodes.map { |(x,y), node|
-  directions = adjecent_squares(x,y).select { |pos| other = nodes[pos]; node.size >= other.used }
+  directions = adjacent_squares(x,y).select { |pos| other = nodes[pos]; node.size >= other.used }
   [[x,y], directions]
 }.to_h
 
