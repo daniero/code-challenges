@@ -50,7 +50,7 @@ end
 
 State = Struct.new(:current, :visited, :distance, :path) do
   def priority
-    [visited.size, -distance]
+    [-distance, visited.size]
   end
 
   def possible_moves(graph)
@@ -70,13 +70,18 @@ def traveling_salesman(graph)
   loop do
     state = queue.pop
     next if visited.include?([state.current, state.visited])
-    return state if state.visited.size == graph.size
+    return state if yield state
 
     visited.add([state.current, state.visited])
     state.possible_moves(graph).each { |new_state| queue.push(new_state) }
   end
 end
 
+# Part 1
+
 map, points, coords = read_map('input/24.txt')
 graph = find_distances(map, points, coords)
-puts traveling_salesman(graph)
+puts traveling_salesman(graph) { |state| state.visited.size == graph.size }
+
+# Part 2
+puts traveling_salesman(graph) { |state| state.visited.size == graph.size && state.current == 0 }
