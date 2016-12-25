@@ -29,18 +29,34 @@ def run(cmds, ip, reg)
   when /jnz (\d+) ([a-z])/
     val, dst = $1.to_i, reg[$2]
     return ip + (val == 0 ? 1 : dst)
+
+  when /out ([a-z])/
+    val = reg[$1]
+    yield val
   end
   ip + 1
 end
 
-# Part 1
+def brute(cmds)
+  infinite = 8  # Sufficiently infinite ?
 
-cmds = File.read('input/25.txt').lines
-reg = {"a"=>0, "b"=>0, "c"=>0, "d"=>0}
-ip = 0
+  0.step do |a|
+    catch :nope do
+      reg = {"a"=>a, "b"=>0, "c"=>0, "d"=>0}
+      ip = 0
 
-while ip < cmds.size
-  ip = run(cmds, ip, reg)
+      i = 0
+      loop do
+        ip = run(cmds, ip, reg) { |x|
+          throw :nope if x != i%2
+          i+=1
+          return a if i == infinite
+        }
+      end
+    end
+  end
 end
 
-puts reg["a"]
+cmds = File.read('input/25.txt').lines
+
+p brute(cmds)
