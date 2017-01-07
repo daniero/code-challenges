@@ -104,12 +104,12 @@ class VirtualMachine
         set(a, (b + c) % 32768)
 
       when 10 # mult: a b c
-        # TODO store into <a> the product of <b> and <c> (modulo 32768)
-        debug :mult
+        a,b,c = read, get(read), get(read)
+        set(a, (b * c) % 32768)
 
       when 11 # mod: a b c
-        # TODO store into <a> the remainder of <b> divided by <c>
-        debug :mod
+        a,b,c = read, get(read), get(read)
+        set(a, (b % c) % 32768)
 
       when 12 # and: a b c
         a,b,c = read, get(read), get(read)
