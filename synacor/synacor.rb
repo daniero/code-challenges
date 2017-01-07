@@ -118,8 +118,8 @@ class VirtualMachine
         set(a, b | c)
 
       when 14 # not: a b
-        # TODO stores 15-bit bitwise inverse of <b> in <a>
-        debug :not
+        a,b = read, get(read)
+        set(a, ~b & (2**15 - 1))
 
       when 15 # rmem: a b
         # TODO read memory at address <b> and write it to <a>
