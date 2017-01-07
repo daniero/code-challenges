@@ -50,6 +50,15 @@ class VirtualMachine
     end
   end
 
+  def set(target, value)
+    case target
+    when Register
+      @registers[target.address] = value
+    else
+      @memory[target] = value
+    end
+  end
+
   def run
     while @ip < @program.length
       code = read
@@ -57,8 +66,8 @@ class VirtualMachine
       when 0  # halt
         break
       when  1 # set: a b
-        # TODO set register <a> to the value of <b>
-        debug :set
+        a, b = read, get(read)
+        set(a, b)
       when  2 # push: a
         # TODO push <a> onto the stack
         debug :push
