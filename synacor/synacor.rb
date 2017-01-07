@@ -75,8 +75,8 @@ class VirtualMachine
         # TODO remove the top element from the stack and write it into <a>; empty stack = error
         debug :pop
       when  4 # eq: a b c
-        # TODO set <a> to 1 if <b> is equal to <c>; set it to 0 otherwise
-        debug :eq
+        a,b,c = read, get(read), get(read)
+        set(a, b == c ? 1 : 0)
       when  5 # gt: a b c
         # TODO set <a> to 1 if <b> is greater than <c>; set it to 0 otherwise
       when  6 # jmp: a
@@ -88,8 +88,8 @@ class VirtualMachine
         a, b = get(read), (read - 1)
         @ip = b if a == 0
       when  9 # add: a b c
-        # TODO assign into <a> the sum of <b> and <c> (modulo 32768)
-        debug :add
+        a,b,c = read, get(read), get(read)
+        set(a, (b + c) % 32768)
       when 10 # mult: a b c
         # TODO store into <a> the product of <b> and <c> (modulo 32768)
         debug :mult
