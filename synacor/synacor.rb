@@ -23,6 +23,10 @@ def tokenize(input)
   }
 end
 
+def debug(string)
+  puts "\e[#{32}m#{string}\e[0m"
+end
+
 class VirtualMachine
   def initialize(program)
     @registers = Array.new(8) { 0 }
@@ -54,16 +58,16 @@ class VirtualMachine
         break
       when  1 # set: a b
         # TODO set register <a> to the value of <b>
-        p :set
+        debug :set
       when  2 # push: a
         # TODO push <a> onto the stack
-        p :push
+        debug :push
       when  3 # pop: a
         # TODO remove the top element from the stack and write it into <a>; empty stack = error
-        p :pop
+        debug :pop
       when  4 # eq: a b c
         # TODO set <a> to 1 if <b> is equal to <c>; set it to 0 otherwise
-        p :eq
+        debug :eq
       when  5 # gt: a b c
         # TODO set <a> to 1 if <b> is greater than <c>; set it to 0 otherwise
       when  6 # jmp: a
@@ -76,42 +80,42 @@ class VirtualMachine
         @ip = b if a == 0
       when  9 # add: a b c
         # TODO assign into <a> the sum of <b> and <c> (modulo 32768)
-        p :add
+        debug :add
       when 10 # mult: a b c
         # TODO store into <a> the product of <b> and <c> (modulo 32768)
-        p :mult
+        debug :mult
       when 11 # mod: a b c
         # TODO store into <a> the remainder of <b> divided by <c>
-        p :mod
+        debug :mod
       when 12 # and: a b c
         # TODO stores into <a> the bitwise and of <b> and <c>
-        p :and
+        debug :and
       when 13 # or: a b c
         # TODO stores into <a> the bitwise or of <b> and <c>
-        p :or
+        debug :or
       when 14 # not: a b
         # TODO stores 15-bit bitwise inverse of <b> in <a>
-        p :not
+        debug :not
       when 15 # rmem: a b
         # TODO read memory at address <b> and write it to <a>
-        p :rmem
+        debug :rmem
       when 16 # wmem: a b
         # TODO write the value from <b> into memory at address <a>
-        p :wmem
+        debug :wmem
       when 17 # call: a
         # TODO write the address of the next instruction to the stack and jump to <a>
-        p :call
+        debug :call
       when 18 # ret:
         # TODO remove the top element from the stack and jump to it; empty stack = halt
       when 19 # out: a
         print get(read).chr
       when 20 # in: a
         # TODO read a character from the terminal and write its ascii code to <a>; it can be assumed that once input starts, it will continue until a newline is encountered; this means that you can safely read whole lines from the keyboard and trust that they will be fully read
-        p :in
+        debug :in
       when 21 # noop
         # Do nothing
       else
-        puts "Unknown op code: #{code}"
+        debug "Unknown op code: #{code}"
       end
     end
   end
