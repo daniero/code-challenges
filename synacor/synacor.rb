@@ -69,8 +69,8 @@ class VirtualMachine
       when  6 # jmp: a
         @ip = get(read) - 1
       when  7 # jt: a b
-        # TODO if <a> is nonzero, jump to <b>
-        p :jt
+        a, b = get(read), (read - 1)
+        @ip = b if a != 0
       when  8 # jf: a b
         # TODO if <a> is zero, jump to <b>
         p :jf
