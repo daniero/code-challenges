@@ -37,6 +37,15 @@ class VirtualMachine
     @program[@ip += 1]
   end
 
+  def get(value)
+    case value
+    when Register
+      @registers[value.address]
+    else
+      value
+    end
+  end
+
   def run
     while @ip < @program.length
       case read
@@ -79,7 +88,7 @@ class VirtualMachine
       when 18 # ret:
         # TODO remove the top element from the stack and jump to it; empty stack = halt
       when 19 # out: a
-        # TODO write the character represented by ascii code <a> to the terminal
+        print get(read).chr
       when 20 # in: a
         # TODO read a character from the terminal and write its ascii code to <a>; it can be assumed that once input starts, it will continue until a newline is encountered; this means that you can safely read whole lines from the keyboard and trust that they will be fully read
       when 21 # noop
