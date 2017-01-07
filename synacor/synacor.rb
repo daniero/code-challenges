@@ -72,8 +72,8 @@ class VirtualMachine
         a, b = get(read), (read - 1)
         @ip = b if a != 0
       when  8 # jf: a b
-        # TODO if <a> is zero, jump to <b>
-        p :jf
+        a, b = get(read), (read - 1)
+        @ip = b if a == 0
       when  9 # add: a b c
         # TODO assign into <a> the sum of <b> and <c> (modulo 32768)
         p :add
