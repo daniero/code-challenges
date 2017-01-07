@@ -138,6 +138,7 @@ class VirtualMachine
 
       when 18 # ret:
         # TODO remove the top element from the stack and jump to it; empty stack = halt
+        debug :ret
 
       when 19 # out: a
         print get(read).chr
