@@ -62,7 +62,7 @@ class VirtualMachine
       when  5 # gt: a b c
         # TODO set <a> to 1 if <b> is greater than <c>; set it to 0 otherwise
       when  6 # jmp: a
-        # TODO jump to <a>
+        @ip = get(read) - 1
       when  7 # jt: a b
         # TODO if <a> is nonzero, jump to <b>
       when  8 # jf: a b
