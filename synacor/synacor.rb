@@ -110,12 +110,12 @@ class VirtualMachine
         debug :mod
 
       when 12 # and: a b c
-        # TODO stores into <a> the bitwise and of <b> and <c>
-        debug :and
+        a,b,c = read, get(read), get(read)
+        set(a, b & c)
 
       when 13 # or: a b c
-        # TODO stores into <a> the bitwise or of <b> and <c>
-        debug :or
+        a,b,c = read, get(read), get(read)
+        set(a, b | c)
 
       when 14 # not: a b
         # TODO stores 15-bit bitwise inverse of <b> in <a>
