@@ -8,4 +8,19 @@ def read(filename)
   end
 end
 
-p *read('challenge.bin')
+Register = Struct.new(:address)
+
+def tokenize(input)
+  input.map { |x|
+    case x
+    when 0..32767
+      x
+    when 32768..32775
+      Register.new(x - 32768)
+    else
+      raise "Invalid input"
+    end
+  }
+end
+
+p *tokenize(read('challenge.bin').take(1000))
