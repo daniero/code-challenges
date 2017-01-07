@@ -38,7 +38,9 @@ class VirtualMachine
   end
 
   def read
-    @program[@ip += 1]
+    old_ip = @ip
+    @ip += 1
+    @program[old_ip]
   end
 
   def get(value)
@@ -87,14 +89,14 @@ class VirtualMachine
         set(a, b > c ? 1 : 0)
 
       when  6 # jmp: a
-        @ip = get(read) - 1
+        @ip = get(read)
 
       when  7 # jt: a b
-        a, b = get(read), (read - 1)
+        a, b = get(read), read
         @ip = b if a != 0
 
       when  8 # jf: a b
-        a, b = get(read), (read - 1)
+        a, b = get(read), read
         @ip = b if a == 0
 
       when  9 # add: a b c
