@@ -132,8 +132,9 @@ class VirtualMachine
         debug :wmem
 
       when 17 # call: a
-        # TODO write the address of the next instruction to the stack and jump to <a>
-        debug :call
+        a = get(read)
+        @stack.push(@ip)
+        @ip = a
 
       when 18 # ret:
         # TODO remove the top element from the stack and jump to it; empty stack = halt
