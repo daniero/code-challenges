@@ -69,11 +69,10 @@ class VirtualMachine
         a, b = read, get(read)
         set(a, b)
       when  2 # push: a
-        # TODO push <a> onto the stack
-        debug :push
+        @stack.push get(read)
       when  3 # pop: a
-        # TODO remove the top element from the stack and write it into <a>; empty stack = error
-        debug :pop
+        raise "pop: Stack empty" if @stack.empty?
+        set(read, @stack.pop)
       when  4 # eq: a b c
         a,b,c = read, get(read), get(read)
         set(a, b == c ? 1 : 0)
