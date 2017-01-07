@@ -23,4 +23,30 @@ def tokenize(input)
   }
 end
 
-p *tokenize(read('challenge.bin').take(1000))
+class VirtualMachine
+  def initialize(program)
+    @registers = Array.new(8) { 0 }
+    @memory = {}
+    @stack = []
+
+    @program = program
+    @ip = 0
+  end
+
+  def read
+    @program[@ip += 1]
+  end
+
+  def run
+    while @ip < @program.length
+      case read
+      when 21
+        # Noop
+      end
+    end
+  end
+end
+
+program = tokenize(read('challenge.bin'))
+vm = VirtualMachine.new(program)
+vm.run
