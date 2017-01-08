@@ -8,61 +8,53 @@ def read(filename)
   end
 end
 
-Register = Struct.new(:address)
-
-def tokenize(input)
-  input.map { |x|
-    case x
-    when 0..32767
-      x
-    when 32768..32775
-      Register.new(x - 32768)
-    else
-      raise "Invalid input"
-    end
-  }
-end
-
 def debug(string)
   puts "\e[#{32}m#{string}\e[0m"
 end
 
 class VirtualMachine
+  VALUE_LIMIT = 32768
+  VALUE_RANGE = (0...VALUE_LIMIT)
+  REGISTERS = 8
+  REGISTER_RANGE = (VALUE_LIMIT...VALUE_LIMIT+REGISTERS)
+
   def initialize(program)
     @registers = Array.new(8) { 0 }
-    @memory = {}
+    @memory = program
     @stack = []
-
-    @program = program
     @ip = 0
   end
 
   def read
     old_ip = @ip
     @ip += 1
-    @program[old_ip]
+    @memory[old_ip]
   end
 
   def get(value)
     case value
-    when Register
-      @registers[value.address]
-    else
+    when VALUE_RANGE
       value
+    when REGISTER_RANGE
+      r = value - VALUE_LIMIT
+      @registers[r] || 0
+    else
+      raise "Invalid value: #{value}"
     end
   end
 
   def set(target, value)
     case target
-    when Register
-      @registers[target.address] = value
+    when REGISTER_RANGE
+      reg = target - VALUE_LIMIT
+      @registers[reg] = value
     else
       @memory[target] = value
     end
   end
 
   def run
-    while @ip < @program.length
+    while @ip < @memory.length
       code = read
 
       case code
@@ -101,15 +93,15 @@ class VirtualMachine
 
       when  9 # add: a b c
         a,b,c = read, get(read), get(read)
-        set(a, (b + c) % 32768)
+        set(a, (b + c) % VALUE_LIMIT)
 
       when 10 # mult: a b c
         a,b,c = read, get(read), get(read)
-        set(a, (b * c) % 32768)
+        set(a, (b * c) % VALUE_LIMIT)
 
       when 11 # mod: a b c
         a,b,c = read, get(read), get(read)
-        set(a, (b % c) % 32768)
+        set(a, (b % c) % VALUE_LIMIT)
 
       when 12 # and: a b c
         a,b,c = read, get(read), get(read)
@@ -121,15 +113,18 @@ class VirtualMachine
 
       when 14 # not: a b
         a,b = read, get(read)
-        set(a, ~b & (2**15 - 1))
+        not_b = ~b & (VALUE_LIMIT - 1)
+        set(a, not_b)
 
       when 15 # rmem: a b
-        # TODO read memory at address <b> and write it to <a>
-        debug :rmem
+        a = read
+        r = get(read)
+        b = @memory[r]
+        set(a, b)
 
       when 16 # wmem: a b
-        # TODO write the value from <b> into memory at address <a>
-        debug :wmem
+        a,b = get(read), get(read)
+        @memory[a] = b
 
       when 17 # call: a
         a = get(read)
@@ -156,6 +151,6 @@ class VirtualMachine
   end
 end
 
-program = tokenize(read('challenge.bin'))
-vm = VirtualMachine.new(program)
+program = read('challenge.bin')
+vm = VirtualMachine.new(program.to_a)
 vm.run
