@@ -139,8 +139,10 @@ class VirtualMachine
         print get(read).chr
 
       when 20 # in: a
-        # TODO read a character from the terminal and write its ascii code to <a>; it can be assumed that once input starts, it will continue until a newline is encountered; this means that you can safely read whole lines from the keyboard and trust that they will be fully read
-        debug :in
+        a = read
+        input = $<.getc
+        break unless input
+        set(a, input.ord)
 
       when 21 # noop
         # Do nothing
