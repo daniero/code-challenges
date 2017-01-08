@@ -54,7 +54,7 @@ class VirtualMachine
   end
 
   def run
-    while @ip < @memory.length
+    loop do
       code = read
 
       case code
