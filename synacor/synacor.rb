@@ -132,8 +132,8 @@ class VirtualMachine
         @ip = a
 
       when 18 # ret:
-        # TODO remove the top element from the stack and jump to it; empty stack = halt
-        debug :ret
+        break if @stack.empty?
+        @ip = @stack.pop
 
       when 19 # out: a
         print get(read).chr
@@ -145,7 +145,7 @@ class VirtualMachine
       when 21 # noop
         # Do nothing
       else
-        debug "Unknown op code: #{code}"
+        break
       end
     end
   end
