@@ -1,3 +1,8 @@
+VALUE_LIMIT = 32768
+VALUE_RANGE = (0...VALUE_LIMIT)
+NUM_REGISTERS = 8
+REGISTER_RANGE = (VALUE_LIMIT...VALUE_LIMIT+NUM_REGISTERS)
+
 def read(filename)
   Enumerator.new do |yielder|
     File.open(filename) do |file|
@@ -13,11 +18,6 @@ def debug(string)
 end
 
 class VirtualMachine
-  VALUE_LIMIT = 32768
-  VALUE_RANGE = (0...VALUE_LIMIT)
-  REGISTERS = 8
-  REGISTER_RANGE = (VALUE_LIMIT...VALUE_LIMIT+REGISTERS)
-
   def initialize(program)
     @registers = Array.new(8) { 0 }
     @memory = program
