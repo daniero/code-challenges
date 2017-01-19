@@ -1,5 +1,4 @@
 foo = File.read('input/01.txt')
-  .chomp
   .each_char
   .map { |char| char == '(' ? 1 : -1 }
 
