@@ -16,7 +16,17 @@ visited directions = do
         ((x, y), visited) = foldl go start directions
     visited
 
+split [] = ([], [])
+split [x] = ([x], [])
+split (x:y:rest) = (x:restX, y:restY) where (restX, restY) = split rest
+
 main = do
     input <- readFile "input/03.txt"
     let directions = map direction input
+
+    -- Part 1:
     print $ length $ nub $ visited directions
+
+    -- Part 2:
+    let (santa, robot) = split directions
+    print $ length $ nub $ visited santa ++ visited robot
