@@ -6,8 +6,13 @@ input = "ckczppom"
 
 hashString = show . md5 . Char8.pack
 
-brute s n = let hash = hashString $ s ++ show n
-            in if isPrefixOf "00000" hash then n else brute s (n + 1)
+brute s n prefix = let hash = hashString $ s ++ show n
+                   in if isPrefixOf prefix hash
+                   then n
+                   else brute s (n + 1) prefix
 
 main = do
-  print $ brute input 1
+  let part1 = brute input 1 "00000" 
+  print part1
+  let part2 = brute input part1 "000000" 
+  print part2
