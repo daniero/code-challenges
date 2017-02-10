@@ -1,7 +1,12 @@
 strings = File.open('input/08.txt').each_line.map { |line| line.chomp }
 
-p strings.map { |line|
-  raw = line.size
-  evaluated = eval(line).size
-  raw - evaluated
-}.reduce(:+)
+def solve(strings)
+  strings.map { |string|
+    raw = string.size
+    evaluated = yield(string).size
+    raw - evaluated
+  }.reduce(:+)
+end
+
+p solve(strings) { |s| eval(s) }
+p -solve(strings) { |s| s.inspect }
