@@ -12,9 +12,19 @@ reindeer speed boost rest = let period = boost + rest
                                           lastPeriod = minimum [mod n period, boost]
                                       in boostPrPeriod * periods + lastPeriod * speed)
 
-time = 2503
+bestByTime reindeers time = maximum $ map ($ time) reindeers
+
+timelimit = 2503
 
 main = do
   input <- readFile "input/14.txt"
   let reindeers = map (\line -> let [x,y,z] = readNumbers line in reindeer x y z) $ lines input
-  print $ maximum $ map ($ time) reindeers
+  -- Part 1:
+  print $ bestByTime reindeers timelimit 
+
+  -- Part 2:
+  let times  = [1..timelimit]
+      leaders = map (bestByTime reindeers) times
+      points = map (\reindeer -> sum $ map (\(time, leader) -> if (reindeer time) == leader then 1 else 0) $ zip times leaders ) reindeers
+
+  print $ maximum points
