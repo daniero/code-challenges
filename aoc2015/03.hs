@@ -6,10 +6,9 @@ direction 'v' = (0, -1)
 direction '<' = (-1, 0)
 direction _ = (0, 0)
 
-go ((startX, startY), path) (moveX, moveY) = do
-    let (lastX, lastY) = last path
-        next = (startX + moveX, startY + moveY)
-    (next, path ++ [next])
+go ((startX, startY), path) (moveX, moveY) =
+    let next = (startX + moveX, startY + moveY)
+    in (next, path ++ [next])
 
 visited directions = do
     let start = ((0, 0), [(0, 0)])
