@@ -25,6 +25,6 @@ main = do
   -- Part 2:
   let times  = [1..timelimit]
       leaders = map (bestByTime reindeers) times
-      points = map (\reindeer -> sum $ map (\(time, leader) -> if (reindeer time) == leader then 1 else 0) $ zip times leaders ) reindeers
-
+      reindeerPoints reindeer = (\(time, leader) -> if (reindeer time) == leader then 1 else 0)
+      points = map (\reindeer -> sum $ map (reindeerPoints reindeer) $ zip times leaders) reindeers
   print $ maximum points
