@@ -6,3 +6,6 @@ end
 
 part1 = 40.times.reduce(input) { |s,_| look_and_say(s) }
 puts part1.size
+
+part2 = 10.times.reduce(part1) { |s,_| look_and_say(s) }
+puts part2.size
