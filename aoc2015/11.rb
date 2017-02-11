@@ -9,7 +9,7 @@ class String
   end
 
   def next_password
-    s = dup
+    s = dup.next
     s.next! until s.password_ok?
     s
   end
@@ -22,4 +22,7 @@ end
 # p "abcdefgh".next_password # abcdffaa
 # p "ghijklmn".next_password # ghjaabcc
 
-puts password.next_password
+part1 = password.next_password
+part2 = part1.next_password
+
+puts part1, part2
