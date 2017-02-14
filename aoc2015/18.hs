@@ -19,10 +19,17 @@ light m x y = let n = length $ filter (\(i,j) -> m !! j !! i) $ neighbours x y
 
 tick m = [ [ light m x y | x <- [0..limit-1] ] | y <- [0..limit-1] ]
 
+countLights = length . concatMap (filter (== True))
+
 main = do
   input <- readFile "input/18.txt"
   let l = lines input
   let m = map (map (== '#')) l
 
   let part1 = (times 100 tick) m
-  print $ length $ concatMap (filter (== True)) part1
+  print $ countLights part1
+
+  let isCorner x y = (x == 0 || x == limit-1) && (y == 0 || y == limit-1)
+  let keepCornersOn m = [ [ isCorner x y || m !! y !! x | x <- [0..limit-1] ] |  y <- [0..limit-1] ]
+  let part2 = (times 100 (keepCornersOn . tick . keepCornersOn)) m
+  print $ countLights part2
