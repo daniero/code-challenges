@@ -1,11 +1,12 @@
 import Data.List
 
-subsetsum sums [] = sums
-subsetsum sums (n : ns) = subsetsum (sums ++ map (+ n) sums) ns
+subsetsum' sums [] = sums
+subsetsum' sums (n : ns) = subsetsum' (sums ++ map (+ n) sums) ns
+subsetsum = subsetsum' [0]
 
-subsetsum2  sums [] = sums
-subsetsum2  sums (x : xs) = let newSums = map (\(a,b) -> (a+x, b+1)) sums
-                             in subsetsum2 (sums ++ newSums) xs
+subsetsum2 sums [] = sums
+subsetsum2 sums (x : xs) = let newSums = map (\(a,b) -> (a+x, b+1)) sums
+                            in subsetsum2 (sums ++ newSums) xs
 
 count e = length . filter (== e)
 
@@ -16,7 +17,7 @@ main = do
   let containers = map (\line -> read line :: Int) (lines input)
 
   -- Part 1
-  let sums = subsetsum [0] containers
+  let sums = subsetsum containers
   print $ count amount sums
 
   -- Part 2
