@@ -4,9 +4,6 @@ import Data.List
 trim :: String -> String
 trim = dropWhileEnd isSpace
 
-intValue :: Char -> Int
-intValue x = read (x : []) :: Int
-
 rotate :: Int -> [a] -> [a]
 rotate n xs = take (length xs) $ drop n $ cycle xs
 
@@ -18,7 +15,7 @@ foo (x, y) | x == y    = x
 
 main = do
   input <- readFile "../input01.txt";
-  let ns = map intValue $ trim input
+  let ns = map digitToInt $ trim input
   -- Part 1:
   print $ sum $ map foo $ pairs 1 ns
   -- Part 2:
