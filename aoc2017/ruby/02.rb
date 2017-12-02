@@ -5,3 +5,10 @@ input = File.open('../input02.txt')
 # Part 1
 p input.sum { |ns| ns.max - ns.min }
 
+# Part 2
+p input.sum { |ns|
+  ns.permutation(2)
+    .map { |a,b| a.divmod b }
+    .sum { |div,mod| mod == 0 ? div : 0 }
+}
+
