@@ -9,11 +9,4 @@ d =. > d
 file =. < '../input02.txt'
 input =: readtable file
 
-rows =: |: input
-
-minByRow =: <./ rows
-maxByRow =: >./ rows
-
-answer =: +/ maxByRow - minByRow
-
-echo answer
+echo +/ (>./ - <./) |: input
