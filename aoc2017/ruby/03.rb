@@ -56,8 +56,6 @@ def neighbours(x,y)
    [x-1, y+1], [x, y+1], [x+1, y+1]]
 end
 
-# Part 2
-
 grid = Hash.new { 0 }
 grid[ [0,0] ] = 1
 
