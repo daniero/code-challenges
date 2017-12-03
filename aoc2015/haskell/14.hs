@@ -12,7 +12,7 @@ bestByTime reindeers time = maximum $ map ($ time) reindeers
 timelimit = 2503
 
 main = do
-  input <- readFile "input/14.txt"
+  input <- readFile "../input/14.txt"
   let reindeers = map (\line -> let [x,y,z] = readNumbers line in reindeer x y z) $ lines input
   -- Part 1:
   print $ bestByTime reindeers timelimit 

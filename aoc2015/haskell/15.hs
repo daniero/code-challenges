@@ -15,7 +15,7 @@ score = product . take 4 . sumProperties
 teaspoons = 100
 
 main = do
-  input <- readFile "input/15.txt"
+  input <- readFile "../input/15.txt"
   let ingredients = map readNumbers $ lines input
       base = replicate (length ingredients) 0
       amounts = distribute teaspoons base

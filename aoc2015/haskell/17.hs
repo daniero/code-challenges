@@ -13,7 +13,7 @@ count e = length . filter (== e)
 amount = 150
 
 main = do
-  input <- readFile "input/17.txt"
+  input <- readFile "../input/17.txt"
   let containers = map (\line -> read line :: Int) (lines input)
 
   -- Part 1

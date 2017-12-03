@@ -6,7 +6,7 @@ f _ = 0
 
 main = do
 -- Part 1:
-    input <- readFile "input/01.txt"
+    input <- readFile "../input/01.txt"
     let x = map f input
     print(sum x)
 

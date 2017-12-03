@@ -20,7 +20,7 @@ split [x] = ([x], [])
 split (x:y:rest) = (x:restX, y:restY) where (restX, restY) = split rest
 
 main = do
-    input <- readFile "input/03.txt"
+    input <- readFile "../input/03.txt"
     let directions = map direction input
 
     -- Part 1:

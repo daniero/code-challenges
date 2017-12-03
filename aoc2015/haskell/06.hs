@@ -20,7 +20,7 @@ parseLine line = let [x1, y1, x2, y2] = readNumbers line
 n = 1000
 
 main = do
-  input <- readFile "input/06.txt"
+  input <- readFile "../input/06.txt"
   let commands = lines input
       init = start ()
       lights = foldl (\fn line -> parseLine line fn) init commands
