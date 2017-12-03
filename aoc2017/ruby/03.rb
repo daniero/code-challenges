@@ -45,3 +45,27 @@ end
 
 (x, y), _ = to_enum(:spiral).with_index.find { |(_,_),i| i == INPUT - 2 }
 puts (x.abs + y.abs)
+
+#
+# Solution Part 2
+#
+
+def neighbours(x,y)
+  [[x-1, y-1], [x, y-1], [x+1, y-1],
+   [x-1, y], [x+1, y],
+   [x-1, y+1], [x, y+1], [x+1, y+1]]
+end
+
+# Part 2
+
+grid = Hash.new { 0 }
+grid[ [0,0] ] = 1
+
+spiral do |pos|
+  sum = grid[pos] = grid.values_at(*neighbours(*pos)).sum
+
+  if sum > INPUT
+    puts sum
+    break
+  end
+end
