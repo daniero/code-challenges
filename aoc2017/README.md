@@ -4,7 +4,7 @@ http://adventofcode.com/2017
 
 ### Day 01
 
-[Ruby](ruby/01.rb)\**
+[Ruby](ruby/01.rb)\*\*
 [Haskell](haskell/01.hs)\*\*
 [J](j/01.ijs)\*
 
@@ -12,3 +12,6 @@ http://adventofcode.com/2017
 
 [Ruby](ruby/02.rb)\*\*
 [J](j/02.ijs)\*
+
+### Day 03
+[Ruby](ruby/03.rb)\*
