@@ -6,7 +6,7 @@ http://adventofcode.com/2017
 
 [Ruby](ruby/01.rb)\*\*
 [Haskell](haskell/01.hs)\*\*
-[J](j/01.ijs)\*
+[J](j/01.ijs)\*\*
 
 ### Day 02
 
