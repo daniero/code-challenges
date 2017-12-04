@@ -15,3 +15,6 @@ http://adventofcode.com/2017
 
 ### Day 03
 [Ruby](ruby/03.rb)\*\*
+
+### Day 04
+[Ruby](ruby/04.rb)\*\*
