@@ -28,7 +28,6 @@ while i >= 0 && i < jumps.size
   jump = jumps[i]
 
   jumps[i] += (jump >= 3) ? -1 : 1
-
   i += jump
   n += 1
 end
