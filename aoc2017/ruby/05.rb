@@ -1,35 +1,20 @@
+def jumps(input)
+  jumps = input.dup
+  i = 0
+  n = 0
+
+  while i >= 0 && i < jumps.size
+    offset = jumps[i]
+
+    jumps[i] = yield offset
+    i += offset
+    n += 1
+  end
+
+  n
+end
+
 input = $<.map(&:to_i)
 
-
-# Part 1
-
-i = 0
-n = 0
-jumps = input.dup
-
-while i >= 0 && i < jumps.size
-  jump = jumps[i]
-
-  jumps[i] += 1
-  i += jump
-  n += 1
-end
-
-puts n
-
-
-# Part 2
-
-i = 0
-n = 0
-jumps = input.dup
-
-while i >= 0 && i < jumps.size
-  jump = jumps[i]
-
-  jumps[i] += (jump >= 3) ? -1 : 1
-  i += jump
-  n += 1
-end
-
-puts n
+puts jumps(input) { |x| x + 1 }
+puts jumps(input) { |x| (x >= 3) ? x - 1 : x + 1 }
