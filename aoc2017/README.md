@@ -11,7 +11,7 @@ http://adventofcode.com/2017
 ### Day 02
 
 [Ruby](ruby/02.rb)\*\*
-[J](j/02.ijs)\*
+[J](j/02.ijs)\*\_
 
 ### Day 03
 [Ruby](ruby/03.rb)\*\*
@@ -21,3 +21,6 @@ http://adventofcode.com/2017
 
 ### Day 05
 [Ruby](ruby/05.rb)\*\*
+
+### Day 06
+[Ruby](ruby/06.rb)\*\_
