@@ -1,6 +1,4 @@
-require 'set'
-
-def distribute(input)
+def redistribute_max(input)
   blocks = input.dup
 
   max = blocks.max
@@ -8,27 +6,29 @@ def distribute(input)
   n = blocks.size
 
   blocks[i] = 0
-  max.times { 
+  max.times {
     i+=1
     blocks[i%n]+=1
   }
+
   blocks
 end
 
 input = File.open('../input06.txt').read.split.map(&:to_i)
 
-visited = Set.new
+visited = {}
 next_block = input
 n = 0
 
-loop do
-  break if visited.include? next_block
+until visited.include? next_block
+  visited[next_block] = n
+  next_block = redistribute_max(next_block)
   n += 1
-  visited << next_block
-
-  next_block = distribute(next_block)
 end
 
-p distribute(input)
-p visited
+# Part 1
 p n
+
+# Part 2
+first_seen = visited[next_block]
+p n - first_seen
