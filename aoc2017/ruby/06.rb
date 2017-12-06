@@ -2,14 +2,11 @@ def redistribute_max(input)
   blocks = input.dup
 
   max = blocks.max
-  i = blocks.index max
+  max_index = blocks.index max
   n = blocks.size
 
-  blocks[i] = 0
-  max.times {
-    i+=1
-    blocks[i%n]+=1
-  }
+  blocks[max_index] = 0
+  max.times { |i| blocks[(max_index+i+1)%n] += 1 }
 
   blocks
 end
