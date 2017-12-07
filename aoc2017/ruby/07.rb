@@ -5,6 +5,8 @@ input = File.read('../input07.txt')
             }
 
 
-parents = input.flat_map { |parent, _, children| children.map { |child| [child, parent] } }.to_h
+# Part 1
+children, parents = (input.flat_map { |parent, _, children| children.map { |child| [child, parent] } }).transpose
 
-p input.map(&:first) - parents.keys
+puts (parents - children).uniq
+
