@@ -1,7 +1,7 @@
-registers = Hash.new { |h,k| h[k] = 0 }
+registers = Hash.new { 0 }
 
 class << registers
-  attr_accessor :highest_ever
+  attr_reader :highest_ever
 
   def []=(key, value)
     @highest_ever = value if !@highest_ever || value > @highest_ever
@@ -10,7 +10,7 @@ class << registers
 end
 
 File.read('../input08.txt')
-    .gsub(/^\w+|(?<=if )\w+/) { "registers['#{$&}']" }
+    .gsub(/^\w+|(?<=if )\w+/) { "registers['#$&']" }
     .gsub(/inc/, '+=')
     .gsub(/dec/, '-=')
     .each_line { |line| eval(line) }
