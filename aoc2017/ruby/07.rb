@@ -8,6 +8,7 @@ input = File.read('../input07.txt')
 parents = input.flat_map { |parent, _, children| children.map { |child| [child, parent] } }.to_h
 
 # Part 1
+
 root = (input.map(&:first) - parents.keys).first
 puts root
 
