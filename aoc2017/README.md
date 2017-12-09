@@ -32,4 +32,4 @@ http://adventofcode.com/2017
 [Ruby](ruby/08.rb)\*\*
 
 ### Day 09
-[Haskell](haskell/09.hs)\*\_
+[Haskell](haskell/09.hs)\*\*
