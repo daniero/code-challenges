@@ -19,6 +19,7 @@ http://adventofcode.com/2017
 
 **Day 05:**
 [Ruby](ruby/05.rb)\*\*
+[Haskell](haskell/05.hs)\*.
 
 **Day 06:**
 [Ruby](ruby/06.rb)\*\*
