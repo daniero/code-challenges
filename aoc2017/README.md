@@ -30,3 +30,6 @@ http://adventofcode.com/2017
 
 ### Day 08
 [Ruby](ruby/08.rb)\*\*
+
+### Day 09
+[Haskell](haskell/09.hs)\*\_
