@@ -19,7 +19,7 @@ end
 
 class VirtualMachine
   def initialize(program)
-    @registers = Array.new(8) { 0 }
+    @registers = Array.new(NUM_REGISTERS) { 0 }
     @memory = program
     @stack = []
     @ip = 0
