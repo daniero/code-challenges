@@ -1,5 +1,3 @@
-import Data.Char
-
 -- n: Current number of groups already processed and counted
 -- d: Depth of current group being processed
 
