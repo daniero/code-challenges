@@ -32,3 +32,15 @@ begin :part1
   a,b,*_ = knot.hash!
   puts a * b
 end
+
+begin :part2
+  input = File.read('../input10.txt').chomp.bytes
+  knot = Knot.new(input + [17, 31, 73, 47, 23])
+
+  64.times { knot.hash! }
+
+  list = knot.list
+  blocks = list.each_slice(16).map { |block| block.reduce(:^) }
+
+  puts blocks.map { |block| "%02x" % block }.join
+end
