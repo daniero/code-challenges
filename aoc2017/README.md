@@ -32,6 +32,7 @@ http://adventofcode.com/2017
 
 **Day 09:**
 [Haskell](haskell/09.hs)\*\*
+[Ruby](ruby/09.rb).\*
 
 **Day 10:**
 [Ruby](ruby/10.rb)\*\*
