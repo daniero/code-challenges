@@ -1,25 +1,25 @@
 def distance(n, ne, se)
-  [n, ne, se].map(&:abs).sort.reverse.take(2).reduce(:+)
-end
-
-def path_length(path)
-  dirs = Hash.new { 0 }
-  path.each { |dir| dirs[dir] += 1 }
-
-  n = dirs['n'] - dirs['s']
-  ne = dirs['ne'] - dirs['sw']
-  se = dirs['se'] - dirs['nw']
-  
-  distance(n, ne, se)
+  [n, ne, se].map(&:abs).sort.drop(1).sum
 end
 
 input = File.read('../input11.txt')
 path = input.scan(/\w+/)
 
-# Part 1
-p path_length(path)
+n, ne, se = 0, 0, 0
+max_distance = 0
 
-# Part 2
-p (1...path.size).map { |i| path_length(path.take(i)) }.max
+path.each { |dir|
+  case dir
+  when 'n'; n+=1
+  when 's'; n-=1
+  when 'ne'; ne+=1
+  when 'sw'; ne-=1
+  when 'se'; se+=1
+  when 'nw'; se-=1
+  end
 
+  max_distance = [max_distance, distance(n, ne, se)].max
+}
 
+p distance(n, ne, se)
+p max_distance
