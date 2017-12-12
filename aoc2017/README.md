@@ -39,3 +39,6 @@ http://adventofcode.com/2017
 
 **Day 11:**
 [Ruby](ruby/11.rb)\*\*
+
+**Day 12:**
+[Ruby](ruby/12.rb)\*\*
