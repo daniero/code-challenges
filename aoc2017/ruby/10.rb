@@ -26,21 +26,29 @@ class Knot
   end
 end
 
-begin :part1
-  input = File.read('../input10.txt').split(',').map(&:to_i)
-  knot = Knot.new(input)
-  a,b,*_ = knot.hash!
-  puts a * b
-end
-
-begin :part2
-  input = File.read('../input10.txt').chomp.bytes
-  knot = Knot.new(input + [17, 31, 73, 47, 23])
+def knot_hash(input)
+  bytes = input.bytes
+  knot = Knot.new(bytes + [17, 31, 73, 47, 23])
 
   64.times { knot.hash! }
 
   list = knot.list
   blocks = list.each_slice(16).map { |block| block.reduce(:^) }
 
-  puts blocks.map { |block| "%02x" % block }.join
+  blocks.map { |block| "%02x" % block }.join
+end
+
+
+if __FILE__ == $0
+  begin :part1
+    input = File.read('../input10.txt').split(',').map(&:to_i)
+    knot = Knot.new(input)
+    a,b,*_ = knot.hash!
+    puts a * b
+  end
+
+  begin :part2
+    input = File.read('../input10.txt').chomp
+    puts knot_hash(input)
+  end
 end
