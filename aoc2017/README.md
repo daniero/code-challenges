@@ -47,4 +47,4 @@ http://adventofcode.com/2017
 [Ruby](ruby/13.rb)\*\*
 
 **Day 14:**
-[Ruby](ruby/14.rb)\*.
+[Ruby](ruby/14.rb)\*\*
