@@ -14,8 +14,29 @@ def dance(programs, moves)
   end
 end
 
-input = File.read('../input16.txt').split(',')
+# Part 1
 
-programs = [*'a'..'p']
+input = File.read('../input16.txt').split(',')
+original_order = [*'a'..'p']
+
+programs = original_order.dup
 dance(programs, input)
 puts programs.join
+
+# Part 2
+
+programs = original_order.dup
+visited = {}
+cycle = nil
+
+0.step do |i|
+  if visited[programs]
+    cycle = i - visited[programs]
+    break
+  end
+
+  visited[programs.dup] = i
+  dance(programs, input)
+end
+
+puts visited.key(1_000_000_000 % cycle).join

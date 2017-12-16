@@ -53,4 +53,4 @@ http://adventofcode.com/2017
 [Ruby](ruby/15.rb)\*\*
 
 **Day 16:**
-[Ruby](ruby/16.rb)\*.
+[Ruby](ruby/16.rb)\*\*
