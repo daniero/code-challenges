@@ -1,17 +1,21 @@
-def dance(programs, moves)
-  moves.each do |move|
+def dance(moves)
+  moves.map { |move|
     case move
     when /s(\d+)/
-      programs.rotate! -$1.to_i
+      x = -$1.to_i
+      ->(a) { a.rotate x }
     when /x(\d+)\/(\d+)/
-      a,b = $1.to_i, $2.to_i
-      programs[a], programs[b] = programs[b], programs[a]
+      x,y = $1.to_i, $2.to_i
+      ->(a) { a[x], a[y] = a[y], a[x] }
     when /p(.)\/(.)/
-      i = programs.index $1
-      j = programs.index $2
-      programs[i], programs[j] = programs[j], programs[i]
+      x,y = $1,$2
+      ->(a) {
+        i = a.index x
+        j = a.index y
+        a[i], a[j] = a[j], a[i]
+      }
     end
-  end
+  }
 end
 
 # Part 1
@@ -19,8 +23,11 @@ end
 input = File.read('../input16.txt').split(',')
 original_order = [*'a'..'p']
 
+dance = dance(input)
+
 programs = original_order.dup
-dance(programs, input)
+dance.each { |m| m[programs] }
+
 puts programs.join
 
 # Part 2
@@ -36,7 +43,7 @@ cycle = nil
   end
 
   visited[programs.dup] = i
-  dance(programs, input)
+  dance.each { |m| m[programs] }
 end
 
 puts visited.key(1_000_000_000 % cycle).join
