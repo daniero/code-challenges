@@ -13,31 +13,16 @@ end
 p array.rotate[pos]
 
 # Part 2
-# Linked list are faster?
 
-class List
-  attr_accessor :elm, :next
+len = 1
+pos = 0
+after_zero = nil
 
-  def initialize(elm)
-    @elm = elm
-  end
-
-  def insert(nxt)
-    nxt.next = @next
-    @next = nxt
-  end
+1.upto(50_000_000) do |i|
+  pos = (pos + INPUT) % len
+  after_zero = i if pos == 0
+  len+= 1
+  pos+= 1
 end
 
-root = List.new(0)
-root.next = root
-
-curr = root
-
-50_000_000.times do |i|
-  INPUT.times { curr = curr.next }
-  curr.insert(List.new(i+1))
-  curr = curr.next
-end
-
-curr = curr.next until curr.elm == 0
-p curr.next.elm
+p after_zero
