@@ -57,3 +57,6 @@ http://adventofcode.com/2017
 
 **Day 17:**
 [Ruby](ruby/17.rb)\*\*
+
+**Day 18:**
+[Ruby](ruby/18.rb)\*.
