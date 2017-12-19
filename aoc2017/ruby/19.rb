@@ -21,8 +21,11 @@ y = 0
 dir = DOWN
 
 letters = []
+steps = 0
 
 loop do
+  steps+= 1
+
   x,y = move(x,y, dir)
   cell = input[y][x]
 
@@ -38,3 +41,4 @@ loop do
 end
 
 puts letters.join
+puts steps
