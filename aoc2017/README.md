@@ -60,4 +60,4 @@ http://adventofcode.com/2017
 
 **Day 18:**
 [Ruby](ruby/18.rb)ᵃ
-[Java](java/01)ᵇ
+[Java](java/18)ᵇ
