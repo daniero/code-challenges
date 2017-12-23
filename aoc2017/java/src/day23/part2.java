@@ -2,27 +2,26 @@ package day23;
 
 class Part2 {
     static long part2() {
-        long b = 0;
-        long c = 0;
+        long b;
+        long c;
+
+        b = 79;
+        b *= 100;
+        b-= -100000;
+        c = b;
+        c-= -17000;
+
         long d = 0;
         long e = 0;
         long f = 0;
         long g = 0;
         long h = 0;
 
-        int GOTO = 0;
+        int GOTO = 8;
 
         while (true) {
             switch (GOTO) {
                 // @formatter:off
-                case 0: b = 79; GOTO++;
-                case 1: c = b; GOTO++;
-                case 2: GOTO = 4; break;
-                case 3: GOTO = 8; break;
-                case 4: b*= 100; GOTO++;
-                case 5: b-= -100000; GOTO++;
-                case 6: c = b; GOTO++;
-                case 7: c-= -17000; GOTO++;
                 case 8: f = 1; GOTO++;
                 case 9: d = 2; GOTO++;
                 case 10: e = 2; GOTO++;
