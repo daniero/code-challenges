@@ -26,29 +26,24 @@ class Part2 {
                     e = 2;
 
                 case 11:
-                    g = d;
-                    g*= e;
-                    g-= b;
-                    if (g != 0) { GOTO = 16; break; }
-                    f = 0;
+                    g = d*e - b;
+                    if (g == 0) { f = 0; }
 
-                case 16:
                     e++;
-                    g = e;
-                    g-= b;
+                    g = e - b;
                     if (g != 0) { GOTO = 11; break; }
+
                     d++;
-                    g = d;
-                    g-= b;
+                    g = d - b;
                     if (g != 0) { GOTO = 10; break; }
+
                     if (f == 0) { h++; }
 
-                    g = b;
-                    g-= C;
+                    g = b - C;
                     if (g == 0) { return h; }
+
                     b+= 17;
                     GOTO = 8;
-
                 // @formatter:on
             }
         }
