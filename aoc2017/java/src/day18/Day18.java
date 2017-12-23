@@ -1,6 +1,8 @@
+package day18;
+
 import java.util.*;
 
-public class Main {
+public class Day18 {
     public static void main(String[] args) throws InterruptedException {
         MessageQueue messageQueue = new MessageQueue();
         new Thread(new Program(0, messageQueue)).start();
