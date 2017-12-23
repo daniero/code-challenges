@@ -1,5 +1,13 @@
+# Vim
 *.swp
 
+# Haskell
 *.o
 *.hi
+
+# Java
+*.class
+classes/
+*.iml
+.idea/
 
