@@ -2,8 +2,9 @@ package day23;
 
 class Part2 {
     static long part2() {
+        final long C = 124900;
+
         long b = 107900;
-        long c = 124900;
 
         long d = 0;
         long e = 0;
@@ -42,14 +43,10 @@ class Part2 {
                     if (f == 0) { h++; }
 
                     g = b;
-                    g-= c;
-
-                    if (g != 0) { GOTO = 30; break; }
-                    return h;
-
-                case 30:
+                    g-= C;
+                    if (g == 0) { return h; }
                     b+= 17;
-                    GOTO = 8; break;
+                    GOTO = 8;
 
                 // @formatter:on
             }
