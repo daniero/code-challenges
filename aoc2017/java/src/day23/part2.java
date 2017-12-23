@@ -12,41 +12,36 @@ class Part2 {
         long g = 0;
         long h = 0;
 
-        int GOTO = 8;
+        do {
+            System.out.printf("b=%d, d=%d, e=%d, f=%d, g=%d, h=%d\n", b, d, e, f, g, h);
+            f = 1;
+            d = 2;
 
-        while (true) {
-            switch (GOTO) {
-                // @formatter:off
-                case 8:
-                System.out.printf("b=%d, d=%d, e=%d, f=%d, g=%d, h=%d\n", b, d, e, 1, g, h);
-                    f = 1;
-                    d = 2;
+            do {
+                e = 2;
 
-                case 10:
-                    e = 2;
-
-                case 11:
-                    g = d*e - b;
+                do {
+                    g = d * e - b;
                     if (g == 0) { f = 0; }
 
                     e++;
                     g = e - b;
-                    if (g != 0) { GOTO = 11; break; }
 
-                    d++;
-                    g = d - b;
-                    if (g != 0) { GOTO = 10; break; }
+                } while (g != 0);
 
-                    if (f == 0) { h++; }
+                d++;
+                g = d - b;
 
-                    g = b - C;
-                    if (g == 0) { return h; }
+            } while (g != 0);
 
-                    b+= 17;
-                    GOTO = 8;
-                // @formatter:on
-            }
-        }
+            if (f == 0) { h++; }
+
+            g = b - C;
+            if (g == 0) { return h; }
+
+            b += 17;
+
+        } while (true);
     }
 }
 
