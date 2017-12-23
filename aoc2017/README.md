@@ -73,4 +73,4 @@ http://adventofcode.com/2017
 **Day 22:**
 
 **Day 23:**
-[Java](java/23/Day23.java)ᵃ
+[Java](java/src/day23/)ᵃ
