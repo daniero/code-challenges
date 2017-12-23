@@ -20,8 +20,8 @@ puts input.each_with_index.map { |line, i|
     .gsub(/set (.) (-?\w+)/) { label(i, "#$1 = #$2") }
     .gsub(/sub (.) (-?\w+)/) { label(i, "#$1-= #$2") }
     .gsub(/mul (.) (-?\w+)/) { label(i, "mul++; #$1*= #$2") }
-    .gsub(/jnz 1 (-?\w+)/) {  label(i, "go+= #$1; break", false) }
-    .gsub(/jnz (.) (-?\w+)/) { label(i, "if (#$1 != 0) { go+= #$2; break; }") }
+    .gsub(/jnz 1 (-?\w+)/) {  label(i, "go = #{i + $1.to_i}; break", false) }
+    .gsub(/jnz (.) (-?\w+)/) { label(i, "if (#$1 != 0) { go = #{i + $2.to_i}; break; }") }
 }
 
 puts "}"
