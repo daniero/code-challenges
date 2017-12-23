@@ -18,6 +18,7 @@ class Part2 {
             switch (GOTO) {
                 // @formatter:off
                 case 8:
+                System.out.printf("b=%d, d=%d, e=%d, f=%d, g=%d, h=%d\n", b, d, e, 1, g, h);
                     f = 1;
                     d = 2;
 
