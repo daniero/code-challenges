@@ -52,15 +52,13 @@ class Part2 {
                     g = b;
                     g-= c;
                     if (g != 0) { GOTO = 30; break; }
-                    GOTO = 32; break;
+                    return h;
 
                 case 30:
                     b-= -17;
                     GOTO = 8; break;
 
                 // @formatter:on
-                default:
-                    return h;
             }
         }
     }
