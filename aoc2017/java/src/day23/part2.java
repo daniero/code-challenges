@@ -7,22 +7,19 @@ class Part2 {
         long h = 0;
 
         for (long b = 107900; b <= C; b += 17) {
-            long f = 1;
 
             d:
             for (long d = 2; d < b; d++) {
                 for (long e = 2; e < b; e++) {
                     if (d * e == b) {
-                        f = 0;
+                        h++;
                         break d;
                     }
                 }
             }
 
-            if (f == 0) {
-                h++;
-            }
         }
+
         return h;
     }
 }
