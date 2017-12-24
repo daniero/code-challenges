@@ -8,13 +8,10 @@ class Part2 {
 
         for (long b = 107900; b <= C; b += 17) {
 
-            d:
             for (long d = 2; d < b; d++) {
-                for (long e = 2; e < b; e++) {
-                    if (d * e == b) {
-                        h++;
-                        break d;
-                    }
+                if (b % d == 0) {
+                    h++;
+                    break;
                 }
             }
 
