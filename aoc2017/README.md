@@ -74,3 +74,6 @@ http://adventofcode.com/2017
 
 **Day 23:**
 [Java](java/src/day23/)ᵃᵇ
+
+**Day 24:**
+[Ruby](ruby/24.rb)ᵃᵇ
