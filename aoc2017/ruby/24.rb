@@ -1,10 +1,10 @@
-Bridge = Struct.new(:strength, :out, :components_left) do
+Bridge = Struct.new(:length, :strength, :out, :components_left) do
   def connect(component)
     new_out = if component.first == out then component.last else component.first end
     new_strength = strength + component.sum
     remains = components_left - [component]
 
-    Bridge.new(new_strength, new_out, remains)
+    Bridge.new(length + 1, new_strength, new_out, remains)
   end
 
   def continuations
@@ -19,8 +19,9 @@ components =
   .scan(/(\d+)\/(\d+)/)
   .map { |i,o| [i.to_i, o.to_i] }
 
-bridges = Bridge.new(0, 0, components).continuations
+bridges = Bridge.new(0, 0, 0, components).continuations
 max_strenght = 0
+longest = bridges.first
 
 until bridges.empty?
   next_bridges = []
@@ -30,6 +31,7 @@ until bridges.empty?
 
     if continuations.empty?
       max_strenght = [max_strenght, bridge.strength].max
+      longest = [longest, bridge].max_by { |b| [b.length, b.strength] }
     else
       next_bridges+= continuations
     end
@@ -39,3 +41,4 @@ until bridges.empty?
 end
 
 puts max_strenght
+puts longest
