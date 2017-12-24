@@ -7,8 +7,9 @@ class Part2 {
         long h = 0;
 
         for (long b = 107900; b <= C; b += 17) {
+            long sqrt = (long) Math.sqrt(b);
 
-            for (long d = 2; d < b; d++) {
+            for (long d = 2; d <= sqrt; d++) {
                 if (b % d == 0) {
                     h++;
                     break;
