@@ -45,3 +45,6 @@ instructions = File.read('../input25.txt')
 
 tm = TuringMachine.new
 tm.instance_eval instructions
+
+tm.checksum_steps.times { tm.step }
+p tm.tape.count(1)
