@@ -15,7 +15,7 @@ Bridge = Struct.new(:length, :strength, :out, :remaining_components) do
 end
 
 components =
-  File.read('../input24.txt')
+  File.read('../input/input24.txt')
   .scan(/(\d+)\/(\d+)/)
   .map { |i,o| [i.to_i, o.to_i] }
 

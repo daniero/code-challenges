@@ -9,7 +9,7 @@ class << registers
   end
 end
 
-File.read('../input08.txt')
+File.read('../input/input08.txt')
     .gsub(/^\w+|(?<=if )\w+/) { "registers['#$&']" }
     .gsub(/inc/, '+=')
     .gsub(/dec/, '-=')

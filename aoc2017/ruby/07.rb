@@ -1,4 +1,4 @@
-input = File.read('../input07.txt')
+input = File.read('../input/input07.txt')
             .scan(/^(\w+) \((\d+)\)\s*(?:->\s+([a-z, ]+))?$/)
             .map { |name, weight, children|
               [name, weight.to_i, (children||'').split(', ')]

@@ -41,14 +41,14 @@ end
 
 if __FILE__ == $0
   begin :part1
-    input = File.read('../input10.txt').split(',').map(&:to_i)
+    input = File.read('../input/input10.txt').split(',').map(&:to_i)
     knot = Knot.new(input)
     a,b,*_ = knot.hash!
     puts a * b
   end
 
   begin :part2
-    input = File.read('../input10.txt').chomp
+    input = File.read('../input/input10.txt').chomp
     puts knot_hash(input)
   end
 end

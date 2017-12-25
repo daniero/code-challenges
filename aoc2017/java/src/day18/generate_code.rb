@@ -1,4 +1,4 @@
-input = File.read('../../input18.txt')
+input = File.read('../../input/input18.txt')
 
 registers = input.scan(/(?<=^... )[a-z]/).uniq
 puts (registers - ['p']).map { |r| "long #{r} = 0;" }

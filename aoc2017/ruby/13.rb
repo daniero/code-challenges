@@ -1,4 +1,4 @@
-firewall = File.read('../input13.txt')
+firewall = File.read('../input/input13.txt')
                .scan(/\w+/)
                .map(&:to_i)
                .each_slice(2)

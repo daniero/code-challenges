@@ -14,7 +14,7 @@ foo (x, y) | x == y    = x
            | otherwise = 0
 
 main = do
-  input <- readFile "../input01.txt";
+  input <- readFile "../input/input01.txt";
   let ns = map digitToInt $ trim input
   -- Part 1:
   print $ sum $ map foo $ pairs 1 ns

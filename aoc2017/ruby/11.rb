@@ -2,7 +2,7 @@ def distance(n, ne, se)
   [n, ne, se].map(&:abs).sort.drop(1).sum
 end
 
-input = File.read('../input11.txt')
+input = File.read('../input/input11.txt')
 path = input.scan(/\w+/)
 
 n, ne, se = 0, 0, 0

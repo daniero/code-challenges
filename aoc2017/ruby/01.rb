@@ -1,4 +1,4 @@
-input = File.read('../input01.txt').scan(/\d/).map(&:to_i)
+input = File.read('../input/input01.txt').scan(/\d/).map(&:to_i)
 
 # Part 1
 p input.zip(input.rotate)

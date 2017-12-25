@@ -1,4 +1,4 @@
-input = File.readlines('../input18.txt')
+input = File.readlines('../input/input18.txt')
 #input = DATA.readlines # Test data
 
 # Part 1

@@ -12,6 +12,6 @@ jump n i cells
       jump (n+1) (i + cell) next
 
 main = do
-  input <- readFile "../input05.txt";
+  input <- readFile "../input/input05.txt";
   print $ jump 0 0 $ readNumbers input
 

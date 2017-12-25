@@ -14,7 +14,7 @@ def turn(x,y, dir, grid)
   DIRECTIONS.values_at((curr+1)%4, (curr-1)%4).find { |i,j| grid[y+j][x+i] =~ /\S/ }
 end
 
-input = File.readlines('../input19.txt')
+input = File.readlines('../input/input19.txt')
 
 x = input.first.index(/\S/)
 y = 0

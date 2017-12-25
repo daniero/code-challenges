@@ -1,4 +1,4 @@
-input = File.readlines('../input04.txt').map(&:split)
+input = File.readlines('../input/input04.txt').map(&:split)
 
 # Part 1
 p input.count { |phrase| phrase == phrase.uniq }

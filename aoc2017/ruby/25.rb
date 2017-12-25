@@ -31,7 +31,7 @@ class TuringMachine
   end
 end
 
-instructions = File.read('../input25.txt')
+instructions = File.read('../input/input25.txt')
   .downcase
   .gsub(/begin in state (\w)./) { "@state = :#$1" }
   .gsub(/perform a diagnostic checksum after (\d+) steps.\n/) { "@checksum_steps = #$1" }

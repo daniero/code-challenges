@@ -22,6 +22,6 @@ collectGarbage m ('!' : _ : s) = collectGarbage m s
 collectGarbage m (_ : s) = collectGarbage (m+1) s
 
 main = do
-  input <- readFile "../input09.txt";
+  input <- readFile "../input/input09.txt";
   print $ countGroups 0 0 input
   print $ findGarbage 0 input

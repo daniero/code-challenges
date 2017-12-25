@@ -6,7 +6,7 @@ d =. 0 ". each d
 d =. > d
 )
 
-file =. < '../input02.txt'
+file =. < '../input/input02.txt'
 input =: readtable file
 
 echo +/ (>./ - <./) |: input

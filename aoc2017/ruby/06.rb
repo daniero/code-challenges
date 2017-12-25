@@ -11,7 +11,7 @@ def redistribute_max(input)
   blocks
 end
 
-input = File.open('../input06.txt').read.split.map(&:to_i)
+input = File.open('../input/input06.txt').read.split.map(&:to_i)
 
 visited = {}
 next_block = input

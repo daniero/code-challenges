@@ -4,7 +4,7 @@ def label(i, statements, goto_next=true)
   "case #{i}: #{statements}; #{'go++;' if goto_next}"
 end
 
-input = File.readlines('../input23.txt')
+input = File.readlines('../input/input23.txt')
 
 if PART == 1
   puts (?a..?h).map { |c| "long #{c} = 0;" }

@@ -20,7 +20,7 @@ end
 
 # Part 1
 
-input = File.read('../input16.txt').split(',')
+input = File.read('../input/input16.txt').split(',')
 original_order = [*'a'..'p']
 
 dance = dance(input)

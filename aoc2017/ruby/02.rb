@@ -1,4 +1,4 @@
-input = File.open('../input02.txt')
+input = File.open('../input/input02.txt')
   .each_line
   .map { |line| line.scan(/\d+/).map(&:to_i) }
 
