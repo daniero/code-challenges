@@ -16,10 +16,8 @@ class Grid(width: Int, height: Int) {
     }
 }
 
-fun main(args: Array<String>) {
+private fun solve(instructions: List<String>, interpretation: (String, Int) -> Int): Int {
     val regex = Regex("""(turn on|turn off|toggle) (\d+),(\d+) through (\d+),(\d+)""")
-    val instructions = File("../input/06.txt").readLines()
-
     val grid = Grid(1000, 1000)
 
     instructions.forEach { instruction ->
@@ -28,14 +26,23 @@ fun main(args: Array<String>) {
         val (x1, y1, x2, y2) = match.drop(1).map(String::toInt)
 
         grid.alter(x1, y1, x2, y2) { i ->
-            when (action) {
-                "turn on" -> 1
-                "turn off" -> 0
-                "toggle" -> i xor 1
-                else -> throw IllegalArgumentException("Sorry what?")
-            }
+            interpretation.invoke(action, i)
         }
     }
 
-    println("Part 1: ${grid.grid.flatten().sum()}")
+    return grid.grid.sumBy { row -> row.sum() }
+}
+
+fun main(args: Array<String>) {
+    val instructions = File("../input/06.txt").readLines()
+
+    val part1 = solve(instructions) { action, i ->
+        when (action) {
+            "turn on" -> 1
+            "turn off" -> 0
+            else -> i xor 1
+        }
+    }
+
+    println("Part 1: $part1")
 }
