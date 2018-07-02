@@ -1,6 +1,7 @@
 package net.daniero.day06
 
 import java.io.File
+import kotlin.math.max
 
 class Grid(width: Int, height: Int) {
 
@@ -45,4 +46,14 @@ fun main(args: Array<String>) {
     }
 
     println("Part 1: $part1")
+
+    val part2 = solve(instructions) { action, i ->
+        when (action) {
+            "turn on" -> i + 1
+            "turn off" -> max(i - 1, 0)
+            else -> i + 2
+        }
+    }
+
+    println("Part 2: $part2")
 }
