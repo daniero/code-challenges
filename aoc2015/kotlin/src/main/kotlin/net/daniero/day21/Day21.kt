@@ -1,6 +1,7 @@
 package net.daniero.day21
 
 import kotlin.math.max
+import kotlin.math.min
 
 data class Item(val name: String, val cost: Int, val damage: Int, val armor: Int)
 
@@ -58,21 +59,36 @@ fun fight(player: Character, boss: Character): Result {
     }
 }
 
-fun <T> chooseAtMost(maxAmount: Int, itemsToChoose: Collection<T>): Set<List<T>> {
-    if (maxAmount == 0 || itemsToChoose.isEmpty()) {
-        return setOf(emptyList<T>())
+fun <T> choose(minAmount: Int, maxAmount: Int, itemsToChoose: Collection<T>): Set<List<T>> {
+    val max = min(maxAmount, itemsToChoose.size)
+
+    return (minAmount..max)
+        .flatMap { amount ->
+            subSequences(amount, itemsToChoose)
+        }
+        .toSet()
+
+}
+
+fun <T> subSequences(amount: Int, items: Collection<T>): Set<List<T>> {
+    if (amount == 0) {
+        return setOf(emptyList())
+    }
+    if (amount > items.size) {
+        return emptySet()
+    }
+    if (amount == items.size) {
+        return setOf(items.toList())
     }
 
-    return setOf(emptyList<T>())
-        .plus(
-            itemsToChoose.withIndex().flatMap { (i, value) ->
-                chooseAtMost(
-                    maxAmount - 1,
-                    itemsToChoose.drop(i + 1)
-                ).map { sublist ->
-                    listOf(value).plus(sublist)
-                }
-            })
+    return subSequences(amount - 1, items.drop(1))
+        .flatMap { s ->
+            listOf(
+                listOf(items.iterator().next()).plus(s)
+            )
+        }
+        .toSet()
+        .plus(subSequences(amount, items.drop(1)))
 }
 
 fun <T> product(vararg collections: Collection<T>): Iterable<Collection<T>> {
@@ -103,19 +119,30 @@ fun main(args: Array<String>) {
     val nakedPlayer = Character(100, 0, 0)
 
     val itemCombinations = product(
-        chooseAtMost(1, weapons),
-        chooseAtMost(1, armor),
-        chooseAtMost(2, rings)
+        choose(1, 1, weapons),
+        choose(0, 1, armor),
+        choose(0, 2, rings)
     ).map { it.flatten() }
 
-    itemCombinations
-        .filter { items ->
+    val results: Map<Result, List<List<Item>>> = itemCombinations
+        .groupBy { items ->
             val equippedPlayer = items.fold(nakedPlayer) { player, item -> player.with(item) }
-            fight(equippedPlayer, boss) == Result.VICTORY
+            fight(equippedPlayer, boss)
         }
-        .minBy { it.sumBy(Item::cost) }
-        .let { items ->
-            println("Minimum cost to win: ${items!!.sumBy(Item::cost)}")
+
+    results[Result.VICTORY]
+        .orEmpty()
+        .map { it.sumBy(Item::cost) }
+        .min()
+        .let { cost ->
+            println("Minimum cost to win: $cost")
+        }
+
+    results[Result.DEFEAT]
+        .orEmpty()
+        .map { it.sumBy(Item::cost) }
+        .max()
+        .let { cost ->
+            println("Maximum cost to lose: $cost")
         }
 }
-
