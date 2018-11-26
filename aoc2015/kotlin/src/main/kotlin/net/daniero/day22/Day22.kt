@@ -151,17 +151,31 @@ fun main(args: Array<String>) {
         boss = Character(hitpoints = 71, damage = 10)
     )
 
-    println(solve(initialState))
+    val part1 = solve(initialState)
+    println(part1)
+
+    val part2 = solve(initialState) { state ->
+        state.copy(
+            player = state.player.copy(
+                hitpoints = state.player.hitpoints - 1
+            )
+        )
+    }
+    println(part2)
 }
 
-private fun solve(initialState: GameState): Int {
+private fun solve(
+    initialState: GameState,
+    difficultyModifier: (GameState) -> GameState = { it }
+): Int {
     val gameStates = Stack<GameState>()
     gameStates.push(initialState)
 
     var minCostToWin = Integer.MAX_VALUE
 
     while (!gameStates.empty()) {
-        val playerTurn = gameStates.pop().turn()
+        val next = gameStates.pop()
+        val playerTurn = next.turn()
 
         if (playerTurn.boss.dead) {
             minCostToWin = min(minCostToWin, playerTurn.manaSpent)
@@ -172,6 +186,7 @@ private fun solve(initialState: GameState): Int {
             .filter { it.valid(playerTurn.player, playerTurn.boss) }
             .map { spell -> playerTurn.playerMove(spell) }
             .filter { playerMove -> playerMove.manaSpent < minCostToWin }
+            .map(difficultyModifier)
             .map { playerMove -> playerMove.turn() }
             .map { bossTurn -> bossTurn.bossMove() }
             .filterNot { bossMove -> bossMove.player.dead }
