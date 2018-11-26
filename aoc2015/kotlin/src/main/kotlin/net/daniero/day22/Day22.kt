@@ -1,5 +1,6 @@
 package net.daniero.day22
 
+import net.daniero.day22.EffectType.*
 import java.util.*
 import kotlin.math.max
 import kotlin.math.min
@@ -8,90 +9,103 @@ data class Character(
     val hitpoints: Int,
     val mana: Int = 0,
     val damage: Int = 0,
-    val armor: Int = 0,
-    val shieldCounter: Int = 0,
-    val shieldEffect: Int = 0,
-    val poisonCounter: Int = 0,
-    val poisonEffect: Int = 0,
-    val rechargeCounter: Int = 0,
-    val rechargeEffect: Int = 0
+    val shield: Int = 0,
+    val effects: Map<EffectType, Effect> = emptyMap()
 ) {
     val dead get() = hitpoints <= 0
 
-    fun turn(): Character {
-        return this.copy(
-            hitpoints = if (poisonCounter > 0) hitpoints - poisonEffect else hitpoints,
-            mana = if (rechargeCounter > 0) mana + rechargeEffect else mana,
-            armor = if (shieldCounter > 0) shieldEffect else 0,
-            shieldEffect = if (shieldCounter > 0) shieldEffect else 0,
-            shieldCounter = shieldCounter - 1,
-            poisonEffect = if (poisonCounter > 0) poisonEffect else 0,
-            poisonCounter = poisonCounter - 1,
-            rechargeEffect = if (rechargeCounter > 0) rechargeEffect else 0,
-            rechargeCounter = rechargeCounter - 1
-        )
-    }
+    fun addEffect(type: EffectType, effect: Effect) =
+        if (effect.duration == 0)
+            this
+        else
+            copy(effects = effects.plus(type to effect))
+
+    fun turn() = copy(shield = 0).applyEffects()
+
+    private fun applyEffects() =
+        effects.values
+            .fold(this) { character, effect -> effect.affect(character) }
+            .copy(effects = effects.entries
+                .filter { (_, effect) -> effect.duration > 1 }
+                .map { (type, effect) -> type to effect.copy(duration = effect.duration - 1) }
+                .toMap()
+            )
 }
 
 data class Spell(
     val manaCost: Int = 0,
-    private val condition: (player: Character, boss: Character) -> Boolean = { _, _ -> true },
-    val effect: (player: Character, boss: Character) -> Pair<Character, Character>
+    private val condition: (caster: Character, target: Character) -> Boolean = { _, _ -> true },
+    val effect: (caster: Character, target: Character) -> Pair<Character, Character>
 ) {
-    fun valid(player: Character, boss: Character): Boolean {
-        return manaCost <= player.mana && condition(player, boss)
-    }
+    fun valid(caster: Character, target: Character) =
+        caster.mana >= manaCost && condition(caster, target)
 }
+
+enum class EffectType { SHIELD, POISON, RECHARGE }
+
+data class Effect(
+    val duration: Int,
+    val affect: (affectee: Character) -> Character
+)
 
 val magicMissile = Spell(
     manaCost = 53,
-    effect = { player, boss ->
+    effect = { caster, target ->
         Pair(
-            player,
-            boss.copy(hitpoints = boss.hitpoints - 4)
+            caster,
+            target.copy(hitpoints = target.hitpoints - 4)
         )
     }
 )
 
 val drain = Spell(
     manaCost = 73,
-    effect = { player, boss ->
+    effect = { caster, target ->
         Pair(
-            player.copy(hitpoints = player.hitpoints + 2),
-            boss.copy(hitpoints = boss.hitpoints - 2)
+            caster.copy(hitpoints = caster.hitpoints + 2),
+            target.copy(hitpoints = target.hitpoints - 2)
         )
     }
 )
 
 val shield = Spell(
     manaCost = 113,
-    condition = { player, _ -> player.shieldCounter <= 0 },
-    effect = { player, boss ->
+    condition = { target, _ -> !target.effects.containsKey(SHIELD) },
+    effect = { caster, target ->
         Pair(
-            player.copy(shieldCounter = 6, shieldEffect = 7),
-            boss
+            caster.addEffect(
+                SHIELD,
+                Effect(duration = 6) { affectee -> affectee.copy(shield = affectee.shield + 7) }
+            ),
+            target
         )
     }
 )
 
 val poison = Spell(
     manaCost = 173,
-    condition = { _, boss -> boss.poisonCounter <= 0 },
-    effect = { player, boss ->
+    condition = { _, target -> !target.effects.containsKey(POISON) },
+    effect = { caster, target ->
         Pair(
-            player,
-            boss.copy(poisonCounter = 6, poisonEffect = 3)
+            caster,
+            target.addEffect(
+                POISON,
+                Effect(duration = 6) { affectee -> affectee.copy(hitpoints = affectee.hitpoints - 3) }
+            )
         )
     }
 )
 
 val recharge = Spell(
     manaCost = 229,
-    condition = { player, boss -> player.rechargeCounter <= 0 },
-    effect = { player, boss ->
+    condition = { caster, _ -> !caster.effects.containsKey(RECHARGE) },
+    effect = { caster, target ->
         Pair(
-            player.copy(rechargeCounter = 5, rechargeEffect = 101),
-            boss
+            caster.addEffect(
+                RECHARGE,
+                Effect(duration = 5) { affectee -> affectee.copy(mana = affectee.mana + 101) }
+            ),
+            target
         )
     }
 )
@@ -116,7 +130,7 @@ data class GameState(
     fun bossMove() = gameOverOr {
         copy(
             player = player.copy(
-                hitpoints = player.hitpoints - max(1, boss.damage - player.armor)
+                hitpoints = player.hitpoints - max(1, boss.damage - player.shield)
             )
         )
     }
