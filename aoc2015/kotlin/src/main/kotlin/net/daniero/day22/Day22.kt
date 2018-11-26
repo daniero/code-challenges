@@ -4,28 +4,17 @@ import java.util.*
 import kotlin.math.max
 import kotlin.math.min
 
-const val magicMissileCost = 53
-const val magicMissileDmg = 4
-const val drainCost = 73
-const val drainEffect = 2
-const val shieldCost = 113
-const val shieldDuration = 6
-const val shieldEffect = 7
-const val poisonCost = 173
-const val poisonDuration = 6
-const val poisonEffect = 3
-const val rechargeCost = 229
-const val rechargeDuration = 5
-const val rechargeEffect = 101
-
 data class Character(
     val hitpoints: Int,
     val mana: Int = 0,
     val damage: Int = 0,
     val armor: Int = 0,
     val shieldCounter: Int = 0,
+    val shieldEffect: Int = 0,
     val poisonCounter: Int = 0,
-    val rechargeCounter: Int = 0
+    val poisonEffect: Int = 0,
+    val rechargeCounter: Int = 0,
+    val rechargeEffect: Int = 0
 ) {
     val dead get() = hitpoints <= 0
 
@@ -34,8 +23,11 @@ data class Character(
             hitpoints = if (poisonCounter > 0) hitpoints - poisonEffect else hitpoints,
             mana = if (rechargeCounter > 0) mana + rechargeEffect else mana,
             armor = if (shieldCounter > 0) shieldEffect else 0,
+            shieldEffect = if (shieldCounter > 0) shieldEffect else 0,
             shieldCounter = shieldCounter - 1,
+            poisonEffect = if (poisonCounter > 0) poisonEffect else 0,
             poisonCounter = poisonCounter - 1,
+            rechargeEffect = if (rechargeCounter > 0) rechargeEffect else 0,
             rechargeCounter = rechargeCounter - 1
         )
     }
@@ -52,53 +44,53 @@ data class Spell(
 }
 
 val magicMissile = Spell(
-    manaCost = magicMissileCost,
+    manaCost = 53,
     effect = { player, boss ->
         Pair(
             player,
-            boss.copy(hitpoints = boss.hitpoints - magicMissileDmg)
+            boss.copy(hitpoints = boss.hitpoints - 4)
         )
     }
 )
 
 val drain = Spell(
-    manaCost = drainCost,
+    manaCost = 73,
     effect = { player, boss ->
         Pair(
-            player.copy(hitpoints = player.hitpoints + drainEffect),
-            boss.copy(hitpoints = boss.hitpoints - drainEffect)
+            player.copy(hitpoints = player.hitpoints + 2),
+            boss.copy(hitpoints = boss.hitpoints - 2)
         )
     }
 )
 
 val shield = Spell(
-    manaCost = shieldCost,
-    condition = { player, boss -> player.shieldCounter <= 0 },
+    manaCost = 113,
+    condition = { player, _ -> player.shieldCounter <= 0 },
     effect = { player, boss ->
         Pair(
-            player.copy(shieldCounter = shieldDuration),
+            player.copy(shieldCounter = 6, shieldEffect = 7),
             boss
         )
     }
 )
 
 val poison = Spell(
-    manaCost = poisonCost,
+    manaCost = 173,
     condition = { _, boss -> boss.poisonCounter <= 0 },
     effect = { player, boss ->
         Pair(
             player,
-            boss.copy(poisonCounter = poisonDuration)
+            boss.copy(poisonCounter = 6, poisonEffect = 3)
         )
     }
 )
 
 val recharge = Spell(
-    manaCost = rechargeCost,
+    manaCost = 229,
     condition = { player, boss -> player.rechargeCounter <= 0 },
     effect = { player, boss ->
         Pair(
-            player.copy(rechargeCounter = rechargeDuration),
+            player.copy(rechargeCounter = 5, rechargeEffect = 101),
             boss
         )
     }
