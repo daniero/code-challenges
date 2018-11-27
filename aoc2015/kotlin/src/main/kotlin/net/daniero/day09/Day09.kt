@@ -25,5 +25,6 @@ fun main(args: Array<String>) {
         }
 
     println(search.minBy { it.second })
+    println(search.maxBy { it.second })
 
 }
