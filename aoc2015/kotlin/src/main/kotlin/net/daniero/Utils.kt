@@ -54,3 +54,21 @@ private fun <T> product(lists: List<Collection<T>>): List<List<T>> {
             }
         }
 }
+
+fun <T> permutations(elements: List<T>): Sequence<List<T>> {
+    if (elements.size == 2) {
+        return sequenceOf(elements, elements.reversed())
+    }
+    if (elements.size <= 1) {
+        return sequenceOf(elements)
+    }
+
+    val firstElement = elements.first()
+
+    return permutations(elements.drop(1))
+        .flatMap { subPerm ->
+            (0..subPerm.size).asSequence().map { i ->
+                subPerm.take(i).plus(firstElement).plus(subPerm.drop(i))
+            }
+        }
+}

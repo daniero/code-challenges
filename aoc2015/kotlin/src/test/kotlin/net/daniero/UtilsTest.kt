@@ -150,4 +150,19 @@ class UtilsTest {
             )
         )
     }
+
+    @Test
+    fun testPermutations() {
+        assertThat(
+            permutations(listOf(1, 2, 3)).toList()
+        ).containsExactly(
+            listOf(1, 2, 3),
+            listOf(2, 1, 3),
+            listOf(2, 3, 1),
+            listOf(1, 3, 2),
+            listOf(3, 1, 2),
+            listOf(3, 2, 1)
+        )
+    }
+
 }
