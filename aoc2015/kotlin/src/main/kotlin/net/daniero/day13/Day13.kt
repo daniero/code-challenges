@@ -5,7 +5,7 @@ import net.daniero.utils.permutations
 import java.io.File
 
 fun main(args: Array<String>) {
-    val input = File("../input/13.txt")
+    val howMuchPeopleLikeEachother = File("../input/13.txt")
         .readLines()
         .map { line ->
             extract(
@@ -18,17 +18,31 @@ fun main(args: Array<String>) {
         }
         .toMap()
 
-    val people = input.keys.map { pair -> pair.first }.toSet()
+    val people = howMuchPeopleLikeEachother.keys.map { pair -> pair.first }.toSet()
 
-    people.toList()
+    // Part 1:
+    maximizeHappiness(people, howMuchPeopleLikeEachother)
+        .let(::println)
+
+    // Part 2:
+    maximizeHappiness(
+        people.plus("me"),
+        howMuchPeopleLikeEachother
+            .plus(people.associate { person -> (person to "me") to 0 })
+            .plus(people.associate { person -> ("me" to person) to 0 })
+    )
+        .let(::println)
+}
+
+private fun maximizeHappiness(people: Set<String>, happiness: Map<Pair<String, String>, Int>): Int {
+    return people.toList()
         .let(::permutations)
         .map { order -> order.plus(order.first()) }
         .map { order ->
             order.windowed(2, 1)
                 .sumBy { (a, b) ->
-                    input[a to b]!! + input[b to a]!!
+                    happiness[a to b]!! + happiness[b to a]!!
                 }
         }
-        .max()
-        .let { println(it) }
+        .max()!!
 }
