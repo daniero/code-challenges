@@ -1,10 +1,10 @@
-package net.daniero
+package net.daniero.utils
 
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
-class UtilsTest {
+class CollectionUtilsTest {
 
     @Test
     fun testCombinations() {

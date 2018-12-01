@@ -1,4 +1,4 @@
-package net.daniero
+package net.daniero.utils
 
 import kotlin.math.min
 

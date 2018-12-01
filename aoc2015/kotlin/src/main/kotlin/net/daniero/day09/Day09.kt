@@ -1,6 +1,6 @@
 package net.daniero.day09
 
-import net.daniero.permutations
+import net.daniero.utils.permutations
 import java.io.File
 
 fun main(args: Array<String>) {

@@ -1,7 +1,7 @@
 package net.daniero.day21
 
-import net.daniero.combinations
-import net.daniero.product
+import net.daniero.utils.combinations
+import net.daniero.utils.product
 import kotlin.math.max
 
 data class Item(
