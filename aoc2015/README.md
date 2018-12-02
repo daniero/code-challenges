@@ -56,6 +56,7 @@ http://adventofcode.com/2015
 [Haskell](haskell/15.hs)ᵃᵇ
 
 **Day 16:**
+[Ruby](ruby/16.rb)ᵃ
 
 **Day 17:**
 [Haskell](haskell/17.hs)ᵃᵇ
