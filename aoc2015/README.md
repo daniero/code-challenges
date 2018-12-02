@@ -68,6 +68,7 @@ http://adventofcode.com/2015
 [Ruby](ruby/19.rb)ᵃᵇ
 
 **Day 20:**
+[Ruby](ruby/20.rb)ᵃᵇ
 
 **Day 21:**
 [Kotlin](kotlin/src/main/kotlin/net/daniero/day21/Day21.kt)ᵃᵇ
