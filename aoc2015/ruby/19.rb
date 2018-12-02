@@ -23,4 +23,31 @@ def new_molecules(molecule, replacements)
 end
 
 # Part 1:
+
 p new_molecules(medicine, replacements).size
+
+
+# Part 2:
+
+def find(target, initial, replacements)
+  queue = [ [initial, 0] ]
+
+  until queue.empty? do
+    molecule, steps = queue.pop
+
+    new_molecules(molecule, replacements).reverse_each do |new_molecule|
+      if new_molecule == target
+        return steps + 1
+      end
+
+      queue.push [new_molecule, steps+1]
+    end
+  end
+end
+
+inverted_replacements = Hash.new { |h, k| h[k] = [] }
+replacements.each do |from, to|
+  to.each { |replacement| inverted_replacements[replacement] << from }
+end
+
+p find("e", medicine, inverted_replacements)

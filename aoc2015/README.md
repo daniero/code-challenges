@@ -47,7 +47,7 @@ http://adventofcode.com/2015
 [Haskell](haskell/11.hs)ᵃ
 
 **Day 13:**
-[Kotlin](kotlin/src/main/kotlin/net/daniero/day13/Day13.k)ᵃᵇ
+[Kotlin](kotlin/src/main/kotlin/net/daniero/day13/Day13.kt)ᵃᵇ
 
 **Day 14:**
 [Haskell](haskell/14.hs)ᵃᵇ
@@ -56,7 +56,7 @@ http://adventofcode.com/2015
 [Haskell](haskell/15.hs)ᵃᵇ
 
 **Day 16:**
-[Ruby](ruby/16.rb)ᵃ
+[Ruby](ruby/16.rb)ᵃᵇ
 
 **Day 17:**
 [Haskell](haskell/17.hs)ᵃᵇ
@@ -65,15 +65,15 @@ http://adventofcode.com/2015
 [Haskell](haskell/18.hs)ᵃᵇ
 
 **Day 19:**
-[Ruby](ruby/19.rb)ᵃ
+[Ruby](ruby/19.rb)ᵃᵇ
 
 **Day 20:**
 
 **Day 21:**
-[Kotlin](kotlin/src/main/kotlin/net/daniero/day21/Day21.k)ᵃᵇ
+[Kotlin](kotlin/src/main/kotlin/net/daniero/day21/Day21.kt)ᵃᵇ
 
 **Day 22:**
-[Kotlin](kotlin/src/main/kotlin/net/daniero/day22/Day21.k)ᵃᵇ
+[Kotlin](kotlin/src/main/kotlin/net/daniero/day22/Day22.kt)ᵃᵇ
 
 **Day 23:**
 
