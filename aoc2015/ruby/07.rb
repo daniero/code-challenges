@@ -1,4 +1,9 @@
-input = File.open('../input/07.txt').each_line.map(&:chomp)
+files = {
+  part1: '../input/07.txt',
+  part2: '../input/07b.txt'
+}
+
+input = File.open(files[:part1]).each_line.map(&:chomp)
 wires = {}
 
 get = ->(k) { Integer(k) rescue wires[k] }
