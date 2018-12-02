@@ -65,6 +65,7 @@ http://adventofcode.com/2015
 [Haskell](haskell/18.hs)ᵃᵇ
 
 **Day 19:**
+[Ruby](ruby/19.rb)ᵃ
 
 **Day 20:**
 
