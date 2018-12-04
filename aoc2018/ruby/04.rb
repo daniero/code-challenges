@@ -38,7 +38,19 @@ input = File.readlines('../input/input04.txt')
 
 sleep_pr_guard = sum_sleep_pr_minute_pr_guard(input)
 
-id, sleep = sleep_pr_guard.max_by { |id, sleep| sleep.sum }
-minute = sleep.index(sleep.max)
 
-p id * minute
+# Part 1
+
+id, sleep = sleep_pr_guard.max_by { |id, sleep| sleep.sum }
+puts id * sleep.index(sleep.max)
+
+
+# Part 2
+
+max_value_index = sleep_pr_guard.values.flatten.each_with_index.max.last
+
+max_minute = max_value_index % 60
+id = sleep_pr_guard.keys[max_value_index / 60]
+
+puts id * max_minute
+
