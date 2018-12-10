@@ -17,3 +17,13 @@ http://adventofcode.com/2018
 **Day 05:**
 [Ruby](ruby/05.rb)ᵃᵇ
 
+**Day 06:**
+
+**Day 07:**
+
+**Day 08:**
+
+**Day 09:**
+
+**Day 10:**
+[Ruby](ruby/10.rb)ᵃ
