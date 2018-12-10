@@ -24,6 +24,7 @@ http://adventofcode.com/2018
 **Day 08:**
 
 **Day 09:**
+[Ruby](ruby/09.rb)ᵃᵇ
 
 **Day 10:**
 [Ruby](ruby/10.rb)ᵃᵇ
