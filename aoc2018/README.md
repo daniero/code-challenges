@@ -26,4 +26,4 @@ http://adventofcode.com/2018
 **Day 09:**
 
 **Day 10:**
-[Ruby](ruby/10.rb)ᵃ
+[Ruby](ruby/10.rb)ᵃᵇ

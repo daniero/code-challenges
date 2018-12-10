@@ -26,26 +26,19 @@ def move(points)
   }
 end
 
-# Part 1
-
 points = input.dup
+i = 0
 
-# Don't print while the grid is too large
 loop do
-  min_x, max_x, min_y, max_y = boundries(input)
-  height = max_y - min_y
+  print "#{i}\r"
+  min_x, max_x, min_y, max_y = boundries(points)
+  height = max_y - min_y + 1
 
-  break if height < 20
+  break if height <= 10
 
-  input = move(input)
+  points = move(points)
+  i += 1
 end
 
-loop do |i|
-  puts
-  puts '---'
-  puts
-  print_grid(input)
-  input = move(input)
-  sleep 0.7
-end
-
+puts
+print_grid(points)
