@@ -5,30 +5,56 @@ input = File
 
 # input = %w[2 3 0 3 10 11 12 1 1 0 1 99 2 1 1 2].map(&:to_i)
 
-def sum_metadata(tree)
+Node = Struct.new(:remaining_children, :meta_length, :children, :metadata) do
+  def initialize(remaining_children, meta_length, children=[], metadata=[])
+    super
+  end
+
+  def value
+    if children.empty?
+      @value ||= metadata.sum
+    else
+      @value ||= metadata
+        .map { |i| i - 1 }
+        .select { |i| i < children.length }
+        .sum { |i| children[i].value }
+    end
+  end
+end
+
+def read_tree(input)
   sum_metadata = 0
 
-  n_children, metadata_length, *rest = tree
-  root = [n_children, metadata_length]
+  remaining_children, meta_length, *rest = input
+  root = Node.new(remaining_children, meta_length)
   stack = [root]
 
   loop do
-    skip, read = stack.pop
+    node = stack.last
 
-    if skip == 0
-      metadata = rest.slice!(0, read)
+    if node.remaining_children == 0
+      metadata = rest.slice!(0, node.meta_length)
+      node.metadata += metadata
       sum_metadata += metadata.sum
+      stack.pop
     else
-      stack.push([skip-1, read])
-
-      c,n = rest.slice!(0, 2)
-      stack.push([c, n])
+      node.remaining_children -= 1
+      remaining_grandchildren, child_meta_length = rest.slice!(0, 2)
+      child = Node.new(remaining_grandchildren, child_meta_length)
+      node.children << child
+      stack << child
     end
 
     break if stack.empty?
   end
 
-  return sum_metadata
+  return [sum_metadata, root]
 end
 
-p sum_metadata(input)
+sum_metadata, root = read_tree(input)
+
+# Part 1
+p sum_metadata
+
+# Part 2
+p root.value 
