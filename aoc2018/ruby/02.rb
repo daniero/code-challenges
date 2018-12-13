@@ -1,4 +1,4 @@
-box_ids = File.readlines('../input/input02.txt').map(&:chomp)
+box_ids = File.readlines('../input/input02.txt')
 
 # Part 1
 

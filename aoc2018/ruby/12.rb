@@ -47,7 +47,7 @@ first_loop = 21.step.find do
   old_values == new_values
 end
 
-N = 50_000_000_000 
+N = 50_000_000_000
 
 generations_left = N - first_loop
 
