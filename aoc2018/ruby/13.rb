@@ -1,4 +1,4 @@
-input = File.read('../input/input13.txt')
+tracks = File.readlines('../input/input13.txt')
 
 DIRECTIONS = {
   east: [1, 0],
@@ -34,23 +34,17 @@ end
 
 carts = []
 
-tracks = input.lines.map.with_index { |line, y|
-  line.chars.map.with_index { |char, x|
+tracks.each_with_index { |row, y|
+  row.chars.each_with_index { |char, x|
     case char
     when '>'
       carts << Cart.new(x, y, :east)
-      '-'
     when '<'
       carts << Cart.new(x, y, :west)
-      '-'
     when '^'
       carts << Cart.new(x, y, :north)
-      '|'
     when 'v'
       carts << Cart.new(x, y, :south)
-      '|'
-    else
-      char
     end
   }
 }
