@@ -31,6 +31,10 @@ http://adventofcode.com/2018
 [Ruby](ruby/10.rb)ᵃᵇ
 
 **Day 11:**
+[Ruby](ruby/11.rb)ᵃᵇ
 
 **Day 12:**
 [Ruby](ruby/12.rb)ᵃᵇ
+
+**Day 13:**
+[Ruby](ruby/13.rb)ᵃᵇ
