@@ -13,7 +13,7 @@ TURNS = {
   right: 1,
 }
 
-Cart = Struct.new(:x, :y, :dir, :turns) do
+Cart = Struct.new(:x, :y, :dir, :turns, :collided) do
   def initialize(*args)
     super
     self.turns ||= [:left, :straight, :right]
@@ -52,20 +52,32 @@ tracks = input.lines.map.with_index { |line, y|
     else
       char
     end
-  }.join
+  }
 }
 
-loop do
-  carts.sort_by! { |cart| [cart.y, cart.x] }
+1.step do |i|
+  active_carts = carts
+    .reject { |cart| cart.collided }
+    .sort_by { |cart| [cart.y, cart.x] }
 
-  carts.each do |cart|
+  print "Tick: #{i}, remaing carts: #{active_carts.size}\r"
+  sleep 0.4 / i
+
+  break if active_carts.size == 1
+
+  active_carts.each do |cart|
+    next if cart.collided
+
     direction = DIRECTIONS[cart.dir]
     new_x = cart.x + direction[0]
     new_y = cart.y + direction[1]
 
-    if carts.any? { |other| other.x == new_x && other.y == new_y }
-      puts "Collision at (#{new_x},#{new_y})!"
-      exit
+    colliding_cart = active_carts.find { |other| !other.collided && other.x == new_x && other.y == new_y }
+
+    if colliding_cart
+      puts "\n> Collision at (#{new_x},#{new_y})!"
+      cart.collided = true
+      colliding_cart.collided = true
     end
 
     cart.x = new_x
@@ -81,3 +93,7 @@ loop do
     end
   end
 end
+
+last_cart = carts.reject(&:collided).first
+puts "\n> Remaining cart is at (#{last_cart.x},#{last_cart.y})"
+
