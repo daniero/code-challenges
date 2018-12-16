@@ -18,8 +18,10 @@ http://adventofcode.com/2018
 [Ruby](ruby/05.rb)ᵃᵇ
 
 **Day 06:**
+[Ruby](ruby/06.rb)ᵃᵇ
 
 **Day 07:**
+[Ruby](ruby/07.rb)ᵃᵇ
 
 **Day 08:**
 [Ruby](ruby/08.rb)ᵃᵇ
@@ -38,3 +40,11 @@ http://adventofcode.com/2018
 
 **Day 13:**
 [Ruby](ruby/13.rb)ᵃᵇ
+
+**Day 14:**
+[Ruby](ruby/14.rb)ᵃᵇ
+
+**Day 15:**
+[Ruby](ruby/15)ᵃᵇ
+
+
