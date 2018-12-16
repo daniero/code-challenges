@@ -1,33 +1,5 @@
 require 'set'
 
-ATTACK = 3
-HEALTH = 200
-
-Unit = Struct.new(:x, :y, :team, :hp)
-
-def read_input(filename)
-  units = Set[]
-  walls = Set[]
-  height = 0
-  width = 0
-
-  File.open(filename).each_line.with_index do |row, y|
-    row.chomp.each_char.with_index do |cell, x|
-      if cell == 'E'
-        units << Unit.new(x,y, :elf, HEALTH)
-      elsif cell == 'G'
-        units << Unit.new(x,y, :goblin, HEALTH)
-      elsif cell == '#'
-        walls << [x,y]
-      end
-      width = x + 1
-    end
-    height = y + 1
-  end
-
-  return units, walls.freeze, width, height
-end
-
 def adjecent_squares(x, y)
   Set[
     [x, y-1], # top
@@ -37,7 +9,7 @@ def adjecent_squares(x, y)
   ]
 end
 
-def tick(units, walls)
+def move_all_units(units, walls)
   in_order = units.sort_by { |unit| [unit.y, unit.x] }
 
   in_order.each do |current_unit|
@@ -65,7 +37,7 @@ def move(unit, enemies, friends, walls)
 
   unless enemies_in_range.empty?
     target = enemies_in_range.min_by { |enemy| [enemy.hp, enemy.y, enemy.x] }
-    target.hp -= ATTACK
+    target.hp -= unit.attack
   end
 end
 
@@ -115,38 +87,5 @@ def find_shortest_path(start, goals, obstacles)
       end
     end
   end
-end
-
-def print_state(width, height, units, walls)
-  puts height.times.map { |y|
-    width.times.map { |x|
-      next '#' if walls.include? [x,y]
-      unit = units.find { |unit| unit.x == x && unit.y == y }
-      next '·' unless unit && unit.hp > 0
-      if unit.team == :elf
-        "\e[31mE\e[0m"
-      else
-        "\e[32mG\e[0m"
-      end
-    }.join
-  }.join("\n")
-end
-
-units, walls, width, height = read_input('../input/input15.txt')
-
-rounds = 0
-game_over = false
-
-loop do
-  print "\e[2J" # clear screen
-  print "\rRound #{rounds} * "
-  print "HP #{hp = units.sum { |unit| [0, unit.hp].max }} "
-  print "= #{rounds * hp}\n"
-
-  print_state(width, height, units, walls)
-  break if game_over
-
-  game_over = tick(units, walls) == :game_over
-  rounds += 1 unless game_over
 end
 
