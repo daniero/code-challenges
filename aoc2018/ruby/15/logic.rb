@@ -31,12 +31,12 @@ def move(unit, enemies, friends, walls)
 
   unit.x, unit.y = *next_position
 
-  enemies_in_range = enemies.select { |enemy|
-    adjecent_squares(enemy.x, enemy.y).include?(next_position)
-  }
+  range = adjecent_squares(unit.x, unit.y)
+  target = enemies
+    .select { |enemy| range.include?([enemy.x, enemy.y]) }
+    .min_by { |enemy| [enemy.hp, enemy.y, enemy.x] }
 
-  unless enemies_in_range.empty?
-    target = enemies_in_range.min_by { |enemy| [enemy.hp, enemy.y, enemy.x] }
+  if target
     target.hp -= unit.attack
   end
 end
@@ -50,12 +50,12 @@ def move_towards_enemy(unit, enemies, walls, friends)
     .merge(enemies.map { |e| [e.x, e.y] })
 
   enemies.each do |enemy|
-    adjecent = adjecent_squares(enemy.x, enemy.y)
-    in_range = adjecent.include?(current_position)
+    range = adjecent_squares(enemy.x, enemy.y)
+    in_range = range.include?(current_position)
 
     return current_position if in_range
       
-    adjecent.each { |square|
+    range.each { |square|
       target_squares << square unless obstacles.include?(square)
     }
   end
@@ -72,7 +72,6 @@ def find_shortest_path(start, goals, obstacles)
       .reject { |pos| obstacles.include?(pos) }
       .map { |pos| [pos, pos] }
 
-  i = 0
   until queue.empty?
     position, first_step  = queue.shift
 
