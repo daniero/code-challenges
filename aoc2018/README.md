@@ -47,4 +47,21 @@ http://adventofcode.com/2018
 **Day 15:**
 [Ruby](ruby/15)ᵃᵇ
 
+**Day 16:**
 
+**Day 17:**
+
+**Day 18:**
+[Ruby](ruby/18.rb)ᵃᵇ
+
+**Day 19:**
+
+**Day 20:**
+
+**Day 21:**
+
+**Day 22:**
+[Ruby](ruby/22.rb)ᵃ
+
+**Day 23:**
+[Ruby](ruby/23.rb)ᵃ
