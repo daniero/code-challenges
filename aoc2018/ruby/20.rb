@@ -71,8 +71,8 @@ def map_rooms(input, start_rooms, cursor=1)
       next_rooms.merge(current_rooms)
       current_rooms = start_rooms.dup
     when '('
-      current_rooms, skip = map_rooms(input, current_rooms, cursor+1)
-      cursor = skip
+      current_rooms, jump = map_rooms(input, current_rooms, cursor+1)
+      cursor = jump
     when ')', '$', nil
       next_rooms.merge(current_rooms)
       return next_rooms, cursor
@@ -97,10 +97,13 @@ map_rooms(input, [start_room], 1)
 
 queue = [ [start_room, 0] ]
 visited = Set[]
+more_than_1000 = 0
 
 until queue.empty? do
   room, distance = queue.shift
   next unless visited.add?(room.coords)
+
+  more_than_1000 += 1 if distance >= 1000
 
   %w[N S E W]
     .select { |dir| room.connected?(dir) }
@@ -108,3 +111,4 @@ until queue.empty? do
 end
 
 p distance - 1
+p more_than_1000
