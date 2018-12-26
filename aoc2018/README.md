@@ -57,7 +57,7 @@ http://adventofcode.com/2018
 **Day 19:**
 
 **Day 20:**
-[Ruby](ruby/20.rb)ᵃᵇ
+[Ruby](ruby/20)ᵃᵇ
 
 **Day 21:**
 
