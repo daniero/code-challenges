@@ -69,8 +69,10 @@ http://adventofcode.com/2017
 [Ruby](ruby/20.rb)ᵃᵇ
 
 **Day 21:**
+[Ruby](ruby/21.rb)ᵃᵇ
 
 **Day 22:**
+[Ruby](ruby/22.rb)ᵃᵇ
 
 **Day 23:**
 [Java](java/src/day23/)ᵃᵇ
@@ -79,4 +81,4 @@ http://adventofcode.com/2017
 [Ruby](ruby/24.rb)ᵃᵇ
 
 **Day 25:**
-[Ruby](ruby/25.rb)ᵃ
+[Ruby](ruby/25.rb)
