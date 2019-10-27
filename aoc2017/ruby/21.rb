@@ -1,12 +1,17 @@
+def apply(initial, times)
+  result = initial
+  times.times { result = yield(result) }
+  result
+end
+
 def turn(square)
   square.transpose.map { |line| line.reverse }
 end
 
 def find_flips_and_rotations(square)
   4.times
-    .flat_map { |i|
-      rotated = square
-      i.times { rotated = turn(rotated) }
+    .flat_map { |rotations|
+      rotated = apply(square, rotations) { |x| turn(x) }
 
       flipped_h = rotated.map(&:reverse)
       flipped_v = rotated.reverse
@@ -30,26 +35,7 @@ def set_subsquare(canvas, square, x, y, size)
   new_canvas
 end
 
-
-init = <<END.lines.map(&:chomp).map(&:chars)
-.#.
-..#
-###
-END
-
-rules = File
-  .open('../input/input21.txt')
-  .each_line
-  .flat_map { |line|
-    from, to = line.scan(/[.#\/]+/).map { |r| r.split('/').map(&:chars) }
-    flips_and_rotations = find_flips_and_rotations(from)
-    flips_and_rotations.map { |from_flipped| [from_flipped, to] }
-  }
-  .to_h
-
-art = init
-
-5.times do
+def iterate(art, rules)
   if art.size % 2 == 0
     squares = art.size / 2
     new_size = art.size / 2 * 3 
@@ -71,7 +57,29 @@ art = init
     end
   end
 
-  art = new_art
+  return new_art
 end
 
-puts art.flatten.count('#')
+init = <<END.lines.map(&:chomp).map(&:chars)
+.#.
+..#
+###
+END
+
+rules = File
+  .open('../input/input21.txt')
+  .each_line
+  .flat_map { |line|
+    from, to = line.scan(/[.#\/]+/).map { |r| r.split('/').map(&:chars) }
+    flips_and_rotations = find_flips_and_rotations(from)
+    flips_and_rotations.map { |from_flipped| [from_flipped, to] }
+  }
+  .to_h
+
+
+part1 = apply(init, 5) { |art| iterate(art, rules) }
+puts part1.flatten.count('#')
+
+part2 = apply(part1, 18-5) { |art| iterate(art, rules) }
+puts part2.flatten.count('#')
+
