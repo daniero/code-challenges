@@ -20,6 +20,7 @@ http://adventofcode.com/2015
 
 **Day 05:**
 [Kotlin](kotlin/src/main/kotlin/net/daniero/day05/Day05.kt)ᵃ
+[Ruby](ruby/05.rb)ᵇ
 
 **Day 06:**
 [Kotlin](kotlin/src/main/kotlin/net/daniero/day06/Day06.kt)ᵃᵇ
