@@ -65,4 +65,4 @@ http://adventofcode.com/2018
 [Ruby](ruby/22.rb)ᵃ
 
 **Day 23:**
-[Ruby](ruby/23.rb)ᵃ
+[Ruby](ruby/23.rb)ᵃᵇ
