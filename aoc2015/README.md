@@ -78,6 +78,7 @@ http://adventofcode.com/2015
 [Kotlin](kotlin/src/main/kotlin/net/daniero/day22/Day22.kt)ᵃᵇ
 
 **Day 23:**
+[Ruby](ruby/23.rb)ᵃᵇ
 
 **Day 24:**
 
