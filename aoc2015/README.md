@@ -84,3 +84,4 @@ http://adventofcode.com/2015
 [Ruby](ruby/24.rb)ᵃᵇ
 
 **Day 25:**
+[Ruby](ruby/25.rb)
