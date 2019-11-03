@@ -1,26 +1,37 @@
 require_relative '16/instructions.rb'
 
-regs = [0] * 6
+def read_instructions(filename)
+  input = File.readlines(filename)
 
-input = File.readlines('../input/input19.txt')
-ip_reg = input[0][/\d/].to_i
+  ip_reg = input[0][/\d/].to_i
 
-program = input
-  .drop(1)
-  .map { |line|
+  program = input
+    .drop(1)
+    .map { |line|
     opcode, *rest = line.split
-    args = rest.map(&:to_i)
     instruction = INSTRUCTIONS[opcode.to_sym]
-    ->() { instruction[*args, regs] }
+    args = rest.map(&:to_i)
+    ->(regs) { instruction[*args, regs] }
   }
 
-while regs[ip_reg].between?(0, program.size-1)
-  ip = regs[ip_reg]
-  #p [ip, regs]
-  program[ip].call()
-
-  regs[ip_reg] += 1
-
+  return ip_reg, program
 end
 
-p regs[0]
+def step(program, regs, ip_reg)
+  ip = regs[ip_reg]
+  program[ip].call(regs)
+  regs[ip_reg] += 1
+end
+
+def solve(program, regs, ip_reg)
+  while regs[ip_reg].between?(0, program.size-1)
+    step(program, regs, ip_reg)
+  end
+
+  regs[0]
+end
+
+if __FILE__ == $PROGRAM_NAME
+  ip_reg, program = read_instructions('../input/input19.txt')
+  p solve(program, [0,0,0,0,0,0], ip_reg)
+end
