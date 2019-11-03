@@ -48,7 +48,7 @@ http://adventofcode.com/2018
 [Ruby](ruby/15)ᵃᵇ
 
 **Day 16:**
-[Ruby](ruby/16.rb)ᵃᵇ
+[Ruby](ruby/16)ᵃᵇ
 
 **Day 17:**
 
@@ -56,6 +56,7 @@ http://adventofcode.com/2018
 [Ruby](ruby/18.rb)ᵃᵇ
 
 **Day 19:**
+[Ruby](ruby/19.rb)ᵃ
 
 **Day 20:**
 [Ruby](ruby/20)ᵃᵇ
