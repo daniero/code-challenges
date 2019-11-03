@@ -34,4 +34,5 @@ end
 if __FILE__ == $PROGRAM_NAME
   ip_reg, program = read_instructions('../input/input19.txt')
   p solve(program, [0,0,0,0,0,0], ip_reg)
+  p solve(program, [1,0,0,0,0,0], ip_reg)
 end
