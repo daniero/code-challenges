@@ -48,6 +48,7 @@ http://adventofcode.com/2018
 [Ruby](ruby/15)ᵃᵇ
 
 **Day 16:**
+[Ruby](ruby/16.rb)ᵃᵇ
 
 **Day 17:**
 
