@@ -68,3 +68,8 @@ http://adventofcode.com/2018
 
 **Day 23:**
 [Ruby](ruby/23.rb)ᵃᵇ
+
+**Day 24:**
+
+**Day 25:**
+[Ruby](ruby/25.rb)
