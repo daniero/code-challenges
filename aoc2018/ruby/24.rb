@@ -20,7 +20,66 @@ Group = Struct.new(:army, :number, :units, :hitpoints, :immunities, :weaknesses,
   end
 end
 
-groups =
+def status(groups)
+  groups.map { |g| [g.army, g.number, g.units] }
+end
+
+def battle(input)
+  groups = input.map(&:dup)
+
+  loop do
+    status_before = status(groups)
+
+    # Target selection phase
+
+    targeted = Set[]
+    groups.each { |g| g.target = nil }
+
+    groups
+      .sort_by { |group| [group.effective_power, group.initiative] }.reverse
+      .each { |attacker|
+      attacker.target = groups
+        .select { |target|
+        target.army != attacker.army &&
+          attacker.effective_damage(target) > 0 &&
+          !targeted.include?(target.id)
+      }
+        .max_by { |target|
+        [
+          attacker.effective_damage(target),
+          target.effective_power,
+          target.initiative
+        ]
+      }
+      targeted << attacker.target.id if attacker.target
+    }
+
+    # Attack phase
+
+    groups
+      .reject { |group| !group.target }
+      .sort_by(&:initiative).reverse
+      .each { |attacker|
+      next if attacker.units == 0
+
+      target = attacker.target
+      damage = attacker.effective_damage(target)
+      kills = [damage / target.hitpoints, target.units].min
+      target.units -= kills
+      attacker.target = nil
+
+      #p [attacker.army, attacker.number, target.army, target.number, damage, kills]
+    }
+
+    groups.reject! { |group| group.units == 0 }
+
+    return nil if status(groups) == status_before
+    return groups if groups.uniq(&:army).count == 1
+  end
+end
+
+
+input =
   File.read(ARGV[0] || '../input/input24.txt')
     .split(/\n{2}/m)
     .map { |x| x.lines.drop(1) }
@@ -40,51 +99,22 @@ groups =
       }
     }
 
-loop do
 
-  # Target selection phase
+puts "Part 1"
+p battle(input).sum(&:units)
 
-  targeted = Set[]
-  groups.each { |g| g.target = nil }
 
-  groups
-    .sort_by { |group| [group.effective_power, group.initiative] }.reverse
-    .each { |attacker|
-      attacker.target = groups
-        .select { |target|
-          target.army != attacker.army &&
-          attacker.effective_damage(target) > 0 &&
-          !targeted.include?(target.id)
-        }
-        .max_by { |target|
-          [
-            attacker.effective_damage(target),
-            target.effective_power,
-            target.initiative
-          ]
-        }
-        targeted << attacker.target.id if attacker.target
-      }
+puts
+puts "Part 2"
 
-  # Attack phase
+result = nil;
+1.step.find { |boost|
+  print "\rBoost:#{boost}"
 
-  groups
-    .reject { |group| !group.target }
-    .sort_by(&:initiative).reverse
-    .each { |attacker|
-      next if attacker.units == 0
+  input.each { |group| group.damage += 1 if group.army == :immune_system }
 
-      target = attacker.target
-      damage = attacker.effective_damage(target)
-      kills = [damage / target.hitpoints, target.units].min
-      target.units -= kills
-      attacker.target = nil
-
-      #p [attacker.army, attacker.number, target.army, target.number, damage, kills]
-    }
-
-  groups.reject! { |group| group.units == 0 }
-  break if groups.map(&:army).uniq.count == 1
-end
-
-pp groups.sum(&:units)
+  result = battle(input)
+  result&.first&.army == :immune_system
+}
+puts
+puts result.sum(&:units)

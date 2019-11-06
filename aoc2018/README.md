@@ -70,7 +70,7 @@ http://adventofcode.com/2018
 [Ruby](ruby/23.rb)ᵃᵇ
 
 **Day 24:**
-[Ruby](ruby/24.rb)
+[Ruby](ruby/24.rb)ᵃᵇ
 
 **Day 25:**
 [Ruby](ruby/25.rb)
