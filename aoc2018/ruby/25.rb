@@ -8,16 +8,16 @@ constilations  = File
   .map { |point| [ point ] }
 
 loop do
-  overlap = constilations.combination(2).find { |c1, c2|
-    c1.product(c2).any? { |p1,p2| distance(p1, p2) <= 3 }
+  overlaps = constilations.combination(2).select { |c1, c2|
+    if c1.product(c2).any? { |p1,p2| distance(p1, p2) <= 3 }
+      c1.concat(c2)
+      c2.clear
+    end
   }
 
-  break unless overlap
+  break if overlaps.empty?
 
-  new_constilation = overlap.inject :+
-  overlap.each &:clear
   constilations.reject! &:empty?
-  constilations << new_constilation
 end
 
 p constilations.size
