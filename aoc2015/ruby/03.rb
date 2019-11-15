@@ -25,5 +25,5 @@ directions = File.open('../input/03.txt').each_char.map { |char|
 puts visited(directions).size
 
 # Part 2
-santa, robot = directions.partition.with_index { |_,i| i.even? }
+santa, robot = directions.each_slice(2).to_a.transpose
 puts (visited(santa) + visited(robot)).size
