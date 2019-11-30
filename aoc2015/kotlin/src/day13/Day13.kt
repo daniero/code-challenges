@@ -1,10 +1,10 @@
-package net.daniero.day13
+package day13
 
 import net.daniero.utils.extract
 import net.daniero.utils.permutations
 import java.io.File
 
-fun main(args: Array<String>) {
+fun main() {
     val howMuchPeopleLikeEachother = File("../input/13.txt")
         .readLines()
         .map { line ->

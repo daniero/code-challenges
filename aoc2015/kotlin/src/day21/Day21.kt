@@ -1,4 +1,4 @@
-package net.daniero.day21
+package day21
 
 import net.daniero.utils.combinations
 import net.daniero.utils.product
@@ -41,7 +41,7 @@ fun fight(player: Character, boss: Character): Result {
     }
 }
 
-fun main(args: Array<String>) {
+fun main() {
     val weapons = listOf(
         Item("Dagger", 8, 4, 0),
         Item("Shortsword", 10, 5, 0),

@@ -1,6 +1,6 @@
-package net.daniero.day22
+package day22
 
-import net.daniero.day22.EffectType.*
+import day22.EffectType.*
 import java.util.*
 import kotlin.math.max
 import kotlin.math.min
@@ -151,7 +151,7 @@ val spells = sequenceOf(
     recharge
 )
 
-fun main(args: Array<String>) {
+fun main() {
     val initialState = GameState(
         player = Character(hitpoints = 50, mana = 500),
         boss = Character(hitpoints = 71, damage = 10)

@@ -1,4 +1,4 @@
-package net.daniero.day06
+package day06
 
 import java.io.File
 import kotlin.math.max
@@ -34,7 +34,7 @@ private fun solve(instructions: List<String>, interpretation: (String, Int) -> I
     return grid.grid.sumBy { row -> row.sum() }
 }
 
-fun main(args: Array<String>) {
+fun main() {
     val instructions = File("../input/06.txt").readLines()
 
     val part1 = solve(instructions) { action, i ->

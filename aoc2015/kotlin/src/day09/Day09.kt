@@ -1,9 +1,9 @@
-package net.daniero.day09
+package day09
 
 import net.daniero.utils.permutations
 import java.io.File
 
-fun main(args: Array<String>) {
+fun main() {
     val strings = File("../input/09.txt").readLines()
     val regex = Regex("""(\w+) to (\w+) = (\d+)""")
 

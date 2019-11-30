@@ -1,4 +1,4 @@
-package net.daniero.day05
+package day05
 
 import java.io.File
 import kotlin.math.max
@@ -61,7 +61,7 @@ class IllegalSequenceValidator(val chars: Collection<Char>) : SequenceValidator 
     override fun validate(): Boolean = !illegalSequenceEncountered
 }
 
-fun main(args: Array<String>) {
+fun main() {
     val strings = File("../input/05.txt").readLines()
 
     val part1 = strings.count { string ->

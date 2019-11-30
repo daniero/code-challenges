@@ -1,5 +1,7 @@
-package net.daniero.utils
+package utils
 
+/*
+import net.daniero.utils.extract
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
@@ -40,4 +42,4 @@ class TextUtilsTest {
         assertThat(result).isEqualTo("2x41")
     }
 
-}
+}*/
