@@ -2,14 +2,18 @@ PositionMode = 0
 ImmediateMode = 1
 
 class IntcodeComputer
-  attr_accessor :memory, :ip
+  attr_accessor :memory, :ip, :input, :output
 
   def initialize(program,
+                 input: nil,
+                 output: nil,
                  noun: nil,
                  verb: nil)
     @memory = program.dup
     memory[1] = noun || memory[1]
     memory[2] = verb || memory[2]
+    @input = input
+    @output = output
     @ip = 0
   end
 
@@ -57,6 +61,12 @@ class IntcodeComputer
         a = read_value(m1)
         b = read_value(m2)
         write_value(a * b)
+      when 3
+        a = input.gets.to_i
+        write_value(a)
+      when 4
+        a = read_value(m1)
+        output.puts(a)
       when 99
         break
       end
