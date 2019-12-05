@@ -1,24 +1,12 @@
-input = File.read('input/input02.txt').scan(/\d+/).map(&:to_i)
+require_relative 'intcode'
 
 def run(program, noun, verb)
-  memory = program.dup
-
-  memory[1] = noun
-  memory[2] = verb
-
-  memory.each_slice(4) { |opcode, n1, n2, target|
-    case opcode
-    when 1
-      memory[target] = memory[n1] + memory[n2]
-    when 2
-      memory[target] = memory[n1] * memory[n2]
-    when 99
-      break
-    end
-  }
-
-  return memory[0]
+  IntcodeComputer
+    .new(program, noun: noun, verb: verb)
+    .run
 end
+
+input = File.read('../input/input02.txt').scan(/\d+/).map(&:to_i)
 
 
 # Part 1
