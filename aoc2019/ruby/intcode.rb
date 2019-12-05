@@ -67,6 +67,22 @@ class IntcodeComputer
       when 4
         a = read_value(m1)
         output.puts(a)
+      when 5
+        a = read_value(m1)
+        b = read_value(m2)
+        @ip = b if a.nonzero?
+      when 6
+        a = read_value(m1)
+        b = read_value(m2)
+        @ip = b if a.zero?
+      when 7
+        a = read_value(m1)
+        b = read_value(m2)
+        write_value(a < b ? 1 : 0)
+      when 8
+        a = read_value(m1)
+        b = read_value(m2)
+        write_value(a == b ? 1 : 0)
       when 99
         break
       end
@@ -75,3 +91,8 @@ class IntcodeComputer
     return memory[0]
   end
 end
+
+def read_intcode(filename)
+  File.read(filename).scan(/-?\d+/).map(&:to_i)
+end
+
