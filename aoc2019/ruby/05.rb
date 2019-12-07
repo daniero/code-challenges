@@ -1,16 +1,12 @@
 require_relative 'intcode'
 
 def run(program, diagnostic_code)
-  input = StringIO.new(diagnostic_code.to_s)
-  output = StringIO.new()
+  input = [diagnostic_code]
 
-  IntcodeComputer.new(
-    program,
-    input: input,
-    output: output,
-  ).run
-
-  return output.string.to_i
+  IntcodeComputer
+    .new(program, input: input)
+    .run
+    .output.first
 end
 
 if __FILE__ == $0

@@ -5,16 +5,18 @@ class IntcodeComputer
   attr_accessor :memory, :ip, :input, :output
 
   def initialize(program,
-                 input: nil,
-                 output: nil,
-                 noun: nil,
-                 verb: nil)
+                 input: [],
+                 output: []
+                )
     @memory = program.dup
-    memory[1] = noun || memory[1]
-    memory[2] = verb || memory[2]
     @input = input
     @output = output
     @ip = 0
+  end
+
+  def apply(&block)
+    instance_eval(&block)
+    self
   end
 
   def read_int
@@ -24,12 +26,11 @@ class IntcodeComputer
 
   def read_instruction
     opcode = read_int
-    e,d,c,b,a = opcode.digits
 
-    instruction = 10 * (d||0) + e
-    m1 = c || PositionMode
-    m2 = b || PositionMode
-    m3 = a || PositionMode
+    instruction = opcode % 100
+    m1 = opcode / 100 % 10
+    m2 = opcode / 1000 % 10
+    m3 = opcode / 10000 % 10
 
     [instruction, m1, m2, m3]
   end
@@ -62,11 +63,11 @@ class IntcodeComputer
         b = read_value(m2)
         write_value(a * b)
       when 3
-        a = input.gets.to_i
+        a = input.shift
         write_value(a)
       when 4
         a = read_value(m1)
-        output.puts(a)
+        output.push(a)
       when 5
         a = read_value(m1)
         b = read_value(m2)
@@ -88,7 +89,7 @@ class IntcodeComputer
       end
     end
 
-    return memory[0]
+    return self
   end
 end
 

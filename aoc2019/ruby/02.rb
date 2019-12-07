@@ -2,8 +2,10 @@ require_relative 'intcode'
 
 def run(program, noun, verb)
   IntcodeComputer
-    .new(program, noun: noun, verb: verb)
+    .new(program)
+    .apply { memory[1] = noun; memory[2] = verb }
     .run
+    .memory[0]
 end
 
 input = File.read('../input/input02.txt').scan(/\d+/).map(&:to_i)
