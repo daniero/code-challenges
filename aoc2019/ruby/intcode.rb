@@ -1,8 +1,9 @@
 PositionMode = 0
 ImmediateMode = 1
+RelativeMode = 2
 
 class IntcodeComputer
-  attr_accessor :memory, :ip, :input, :output
+  attr_accessor :memory, :ip, :relative_base, :input, :output
 
   def initialize(program,
                  input: [],
@@ -12,6 +13,7 @@ class IntcodeComputer
     @input = input
     @output = output
     @ip = 0
+    @relative_base = 0
   end
 
   def apply(&block)
@@ -38,15 +40,24 @@ class IntcodeComputer
   def read_value(mode)
     value = read_int
     if mode == PositionMode
-      return memory[value]
+      return memory[value] || 0
+    elsif mode == RelativeMode
+      return memory[value + relative_base] || 0
     else
       return value
     end
   end
 
-  def write_value(value)
-    target = read_value(ImmediateMode)
-    memory[target] = value
+  def write_value(value, mode)
+    target = read_int
+
+    if (mode == PositionMode)
+      memory[target] = value
+    elsif (mode == RelativeMode)
+      memory[target + relative_base] = value
+    else
+      raise "Illegal write mode"
+    end
   end
 
   def run()
@@ -57,14 +68,14 @@ class IntcodeComputer
       when 1
         a = read_value(m1)
         b = read_value(m2)
-        write_value(a + b)
+        write_value(a + b, m3)
       when 2
         a = read_value(m1)
         b = read_value(m2)
-        write_value(a * b)
+        write_value(a * b, m3)
       when 3
         a = input.shift
-        write_value(a)
+        write_value(a, m1)
       when 4
         a = read_value(m1)
         output.push(a)
@@ -79,13 +90,18 @@ class IntcodeComputer
       when 7
         a = read_value(m1)
         b = read_value(m2)
-        write_value(a < b ? 1 : 0)
+        write_value(a < b ? 1 : 0, m3)
       when 8
         a = read_value(m1)
         b = read_value(m2)
-        write_value(a == b ? 1 : 0)
+        write_value(a == b ? 1 : 0, m3)
+      when 9
+        a = read_value(m1)
+        @relative_base += a
       when 99
         break
+      else
+        $stderr.puts "Unknown instruction: #{instruction}"
       end
     end
 
@@ -94,6 +110,5 @@ class IntcodeComputer
 end
 
 def read_intcode(filename)
-  File.read(filename).scan(/-?\d+/).map(&:to_i)
+  File.read(ARGV[0] || filename).scan(/-?\d+/).map(&:to_i)
 end
-
