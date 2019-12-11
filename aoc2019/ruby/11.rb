@@ -36,31 +36,48 @@ class Robot
 end
 
 
-camera_channel = Queue.new
-command_channel = Queue.new
+def run(start_color = 0)
+  camera_channel = Queue.new
+  command_channel = Queue.new
 
+  robot_thread = Thread.new do
+    robot = Robot.new
+    robot.panel_colors[robot.position] = start_color
 
-robot_thread = Thread.new do
-  robot = Robot.new
-  loop do
-    camera_channel.push(robot.check_color)
+    loop do
+      camera_channel.push(robot.check_color)
 
-    robot.paint(command_channel.pop)
-    robot.turn(command_channel.pop)
+      robot.paint(command_channel.pop)
+      robot.turn(command_channel.pop)
+    end
+
+    robot
   end
-  robot
+
+  Thread.new do
+    intcode = read_intcode('../input/input11.txt')
+
+    computer = IntcodeComputer
+      .new(intcode, input: camera_channel, output: command_channel)
+      .run
+
+    camera_channel.close
+  end
+
+  robot_thread.value.panel_colors
 end
 
 
-Thread.new do
-  intcode = read_intcode('../input/input11.txt')
-
-  computer = IntcodeComputer
-    .new(intcode, input: camera_channel, output: command_channel)
-    .run
-
-  camera_channel.close
-end
+# Part 1
+p run(0).size
+puts
 
 
-p robot_thread.value.panel_colors.size
+# Part 2
+panels = run(1)
+
+min_x, max_x, min_y, max_y = panels.keys.transpose.flat_map(&:minmax)
+
+(min_y..max_y).each { |y|
+  puts (min_x..max_x).map { |x| panels[[x,y]] == 1 ? '#' : ' ' }.join
+}
