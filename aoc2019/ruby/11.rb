@@ -8,20 +8,20 @@ Directions = [
 ]
 
 class Robot
-  attr_accessor :panel_colors, :facing, :position
+  attr_accessor :panels, :facing, :position
 
   def initialize
     @facing = 0
     @position = [0, 0]
-    @panel_colors = Hash.new { 0 }
+    @panels = Hash.new { 0 }
   end
 
   def check_color
-    panel_colors[position]
+    panels[position]
   end
 
   def paint(color)
-    panel_colors[position] = color
+    panels[position] = color
   end
 
   def turn(direction)
@@ -31,8 +31,6 @@ class Robot
     @position = [x+move_x, y+move_y]
   end
 
-  alias shift check_color
-  alias push paint
 end
 
 
@@ -42,7 +40,7 @@ def run(start_color = 0)
 
   robot_thread = Thread.new do
     robot = Robot.new
-    robot.panel_colors[robot.position] = start_color
+    robot.panels[robot.position] = start_color
 
     loop do
       camera_channel.push(robot.check_color)
@@ -64,7 +62,7 @@ def run(start_color = 0)
     camera_channel.close
   end
 
-  robot_thread.value.panel_colors
+  robot_thread.value.panels
 end
 
 
