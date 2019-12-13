@@ -17,6 +17,10 @@ puts IntcodeComputer
 
 # Part 2
 
+AI_MODE = true # Set to false to play yourself
+SLEEP = 0.15   # Shorter sleep --> faster game
+
+
 Empty = 0
 Wall = 1
 Block = 2
@@ -24,7 +28,10 @@ Paddle = 3
 Ball = 4
 
 def print_screen(screen)
-  max_x, max_y = p screen.keys.transpose.map(&:max)
+  print "\e[2J"   # clear terminal
+  print "\e[1;0H" # Move terminal cursor to top left corner
+
+  max_x, max_y = screen.keys.transpose.map(&:max)
 
   (0..max_y).each { |y|
     puts (0..max_x).map { |x|
@@ -59,12 +66,20 @@ io.define_singleton_method(:push) do |value|
 end
 
 io.define_singleton_method(:shift) do
-  print_screen(screen)
+  print_screen screen
   puts "Score: #{screen[[-1,0]]}"
 
-  c = read_char
-  raise StopIteration unless c
-  c == 'a' ? -1 : c == 'd' ? 1 : 0
+  if AI_MODE
+    sleep SLEEP
+    (ball_x,_),_ = screen.find { |_,tile| tile == Ball }
+    (paddle_x,_),_ = screen.find { |_,tile| tile == Paddle }
+
+    ball_x <=> paddle_x
+  else
+    c = read_char
+    raise StopIteration unless c
+    c == 'a' ? -1 : c == 'd' ? 1 : 0
+  end
 end
 
 
@@ -72,3 +87,5 @@ IntcodeComputer
   .new(program, input: io, output: io)
   .apply { memory[0] = 2 }
   .run
+
+puts "Final score: #{screen[[-1,0]]}"
