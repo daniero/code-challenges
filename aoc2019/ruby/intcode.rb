@@ -14,6 +14,7 @@ class IntcodeComputer
     @output = output
     @ip = 0
     @relative_base = 0
+    @status = 'ok'
   end
 
   def apply(&block)
@@ -105,6 +106,9 @@ class IntcodeComputer
       end
     end
 
+    return self
+  rescue StopIteration
+    @status = 'break'
     return self
   end
 end
