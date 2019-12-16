@@ -110,3 +110,29 @@ program = read_intcode('../input/input15.txt')
 map = explore_map(program)
 target = map.key(FoundTarget)
 p find_distance(map, [0,0], target)
+
+
+# Part 2
+
+def find_max_distance(map, start_position)
+  inital_state = [start_position, 0]
+  queue = [inital_state]
+  searched = Set.new
+  max_distance = 0
+
+  until queue.empty?
+    position, steps = queue.shift
+    next unless searched.add?(position)
+
+    max_distance = steps if steps > max_distance
+
+    adjecent_squares(position).each do |next_position,step|
+      next if map[next_position] == HitWall
+      queue << [next_position, steps+1]
+    end
+  end
+
+  max_distance
+end
+
+p find_max_distance(map, target)
