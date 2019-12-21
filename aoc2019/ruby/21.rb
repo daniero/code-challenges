@@ -6,19 +6,18 @@ def run_springcode(intcode, springcode)
     input: springcode.chars.map(&:ord)
   ).run.output
 
-  puts output.map { |int| int > 127 ? int.to_s : int.chr }.join
+  output.map { |int| int > 127 ? int.to_s : int.chr }.join
 end
 
 
 intcode = read_intcode('../input/input21.txt')
 
 puts "== PART 1 =="
-run_springcode(intcode, <<END)
-NOT A J
-NOT B T
-OR T J
-NOT C T
-OR T J
+puts run_springcode(intcode, <<END)
+OR A J
+AND B J
+AND C J
+NOT J J
 AND D J
 WALK
 END
