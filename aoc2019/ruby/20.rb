@@ -5,36 +5,48 @@ def search_portal_name(map, x, y)
   row = map[y]
   return if x < 2 || x >= row.size - 2
   [
-    [map[y-2][x],map[y-1][x]],
-    [map[y+1][x],map[y+2][x]],
-    [map[y][x-2],map[y][x-1]],
-    [map[y][x+1],map[y][x+2]],
+    [map[y-2][x],map[y-1][x], y == 2 ? :outer : :inner],
+    [map[y+1][x],map[y+2][x], y == map.size - 3 ? :outer : :inner],
+    [map[y][x-2],map[y][x-1], x == 2 ? :outer : :inner],
+    [map[y][x+1],map[y][x+2], x == row.size - 3 ? :outer : :inner],
   ]
-    .map { |a,b| a+b }
-    .grep(/[A-Z]{2}/)
+    .select { |a,b, _| a+b =~ /[A-Z]{2}/ }
+    .map { |a,b, edge| [a+b, edge] }
     .first
 end
 
 
 map = File.readlines('../input/input20.txt').map { |line| line.chomp.chars }
 
-portals = Hash.new { [] }
+start = nil
+goal = nil
+
+jumps = Hash.new
+first_portals = Hash.new
 map.each.with_index { |line, linenum|
   line.each.with_index { |char, charnum|
     next unless char == '.'
     position = [charnum,linenum]
-    portal = search_portal_name(map, charnum, linenum)
-    portals[portal] = portals[portal] << position if portal
+
+    portal, edge = search_portal_name(map, charnum, linenum)
+    next unless portal
+
+    if portal == 'AA'
+      start = position
+    elsif portal == 'ZZ'
+      goal = position
+    elsif first_portals[portal]
+      other_position = first_portals[portal]
+      jumps[position] = [other_position, edge == :outer ? -1 : +1]
+      jumps[other_position] = [position, edge == :outer ? +1 : -1]
+    else
+      first_portals[portal] = position
+    end
   }
 }
 
-jumps = portals
-  .values
-  .select { |locations| locations.size > 1 }
-  .flat_map { |locations| [locations, locations.reverse] }
-  .to_h
 
-start, goal = portals.values_at('AA', 'ZZ').flatten(1)
+# Part 1
 
 initial = [start, 0]
 queue = [initial]
@@ -58,6 +70,42 @@ until queue.empty? do
     [x+1,y]
   ]
     .filter { |new_x, new_y| map[new_y][new_x] == '.' }
-    .then { |positions| jumps[position] ? (positions << jumps[position]) : positions }
-    .map { |position| [position, steps + 1] }
+    .map { |new_position| [new_position, steps + 1] }
+
+  jump, _ = jumps[position]
+  if jump
+    queue << [jump, steps + 1]
+  end
+end
+
+
+# Part 2
+
+initial = [start, 0, 0]
+queue = [initial]
+visited = Set.new
+
+until queue.empty? do
+  position, level, steps = queue.shift
+  next unless visited.add?([*position, level])
+
+  if position == goal && level == 0
+    p steps
+    break
+  end
+
+  x,y = position
+  queue += [
+    [x,y-1],
+    [x,y+1],
+    [x-1,y],
+    [x+1,y]
+  ]
+    .filter { |new_x, new_y| map[new_y][new_x] == '.' }
+    .map { |new_position| [new_position, level, steps + 1] }
+
+  jump, level_change = jumps[position]
+  if jump && (level_change == +1 || level > 0)
+    queue << [jump, level + level_change, steps + 1]
+  end
 end
