@@ -13,7 +13,7 @@ def find_reachable_nodes(map, points, starting_point)
 
     x,y = position
     case map[y][x]
-    when starting_point, '.', '@'
+    when starting_point, /[.@1234]/
       queue << [[x+1,y], steps+1]
       queue << [[x-1,y], steps+1]
       queue << [[x,y+1], steps+1]
@@ -26,43 +26,56 @@ def find_reachable_nodes(map, points, starting_point)
   found_nodes
 end
 
-State = Struct.new(:node, :keys, :steps, :path)
+State = Struct.new(:nodes, :keys, :steps)
 
-def solve(graph)
+def solve(graph, starting_points)
   total_keys = graph.keys.grep(/[a-z]/).length
 
-  start = State.new('@', Set[], 0, [])
+  start = State.new(starting_points, Set[], 0)
+
   queue = PQueue.new([start]) { |a,b| a.steps < b.steps }
   visited = Set[]
 
   loop do
     current = queue.pop
-    next unless visited.add?([current.node, current.keys])
+    next unless visited.add?([current.nodes, current.keys])
 
     if current.keys.count == total_keys
       return current
     end
 
-    graph[current.node].each { |node, distance|
-      is_door =  node >= 'A' && node <= 'Z'
-      is_key = node >= 'a'
+    current.nodes.each { |node|
+      graph[node].each { |next_node, distance|
+        is_door =  next_node.between?('A', 'Z')
+        is_key = next_node.between?('a', 'z')
 
-      queue << State.new(node, current.keys, current.steps + distance, current.path + [node]) if is_door && current.keys.include?(node.downcase)
-      queue << State.new(node, current.keys + [node], current.steps + distance, current.path + [node]) if is_key
+        next_nodes = current.nodes - [node] + [next_node]
+
+        if is_door && current.keys.include?(next_node.downcase)
+          queue << State.new(
+            next_nodes,
+            current.keys,
+            current.steps + distance,
+            #current.path + [next_node]
+          )
+        elsif is_key
+          queue << State.new(
+            next_nodes,
+            current.keys + [next_node],
+            current.steps + distance,
+            #current.path + [next_node]
+          )
+        end
+      }
     }
   end
 end
 
-def read_graph(filename)
-  map = File
-    .readlines(filename)
-    .map(&:chomp)
-    .map(&:chars)
-
+def translate_map(map)
   points = {}
   map.each.with_index { |row,y|
     row.each.with_index { |c, x|
-      points[c] = [x,y] if c =~ /[@A-z]/
+      points[c] = [x,y] if c =~ /[@1234A-z]/
     }
   }
 
@@ -70,10 +83,48 @@ def read_graph(filename)
   points.each { |name, position|
     graph[name] = find_reachable_nodes(map, points, name)
   }
-  graph
+
+  return graph, points
 end
 
 
-graph = read_graph(ARGV[0] || '../input/input18.txt')
-solution = solve(graph)
+map = File
+  .readlines(ARGV[0] || '../input/input18.txt')
+  .map(&:chomp)
+  .map(&:chars)
+
+
+graph, points = translate_map(map)
+
+# Part 1
+#solution = solve(graph, ['@'])
+#p solution.steps
+
+# Part 2
+center_x, center_y = points['@']
+map[center_y-1][center_x-1] = '1'
+map[center_y-1][center_x+1] = '2'
+map[center_y+1][center_x-1] = '3'
+map[center_y+1][center_x+1] = '4'
+map[center_y-1][center_x] = '#'
+map[center_y][center_x-1] = '#'
+map[center_y][center_x] = '#'
+map[center_y][center_x+1] = '#'
+map[center_y+1][center_x] = '#'
+puts map.map(&:join)
+
+#map = File
+#  .read(ARGV[0] || '../input/input18.txt')
+#  .gsub(/@/).with_index { |_,i| i + 1 }
+#  .tap { |x| puts x }
+#  .lines
+#  .map(&:chomp)
+#  .map(&:chars)
+
+graph, points = translate_map(map)
+pp points, graph
+
+solution = solve(graph, %w[1 2 3 4])
+p solution
+puts
 p solution.steps
