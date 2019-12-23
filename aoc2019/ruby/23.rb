@@ -5,71 +5,51 @@ N_COMPUTERS = 50
 program = read_intcode('../input/input23.txt')
 
 class NetworkInterfaceController
-  attr_reader :part1
+  attr_reader :nat
 
   def initialize
     @mutex = Mutex.new
-    @channels = Hash.new { |h,k| h[k] = Channel[k] }
-    @part1 = Queue.new
+    @channels = Hash.new { |h,k| h[k] = [k] }
+    @nat = @channels[255] = Queue.new
   end
 
   def connect(id)
-    @mutex.synchronize { @channels[id] }
+    @mutex.synchronize { Connection.new(self, id) }
   end
 
-  def push(address)
+  def send(address, x, y)
     @mutex.synchronize {
-      if address < N_COMPUTERS
-        Connection.new(self, @channels[address])
-      elsif address == 255
-        @part1
-      end
+      channel = @channels[address]
+      channel.push(x)
+      channel.push(y)
+    }
+  end
+
+  def receive(id)
+    @mutex.synchronize {
+      channel = @channels[id]
+      channel.empty? ? -1 : channel.shift
     }
   end
 end
 
-class Channel
-  def initialize(id)
-    @mutex = Mutex.new
-    @channel = Queue.new << id
-  end
-
-  def lock
-    @mutex.lock
-    true
-  end
-
-  def unlock
-    @mutex.unlock
-    true
-  end
-
-  def push(value)
-    @channel.push(value)
+class Connection
+  def initialize(nic, id)
+    @nic = nic
+    @id = id
+    @write_buffer = []
   end
 
   def shift
-    @channel.empty? ? -1 : @channel.shift
-  end
-end
-
-class Connection
-  def initialize(nic, channel)
-    channel.lock
-    @channel = channel
-    @nic = nic
-    @send_count = 0
+    @nic.receive(@id)
   end
 
   def push(value)
-    @channel.push(value)
-    @send_count += 1
+    @write_buffer.push(value)
 
-    if @send_count == 2
-      @channel.unlock
-      return @nic
-    else
-      return self
+    if @write_buffer.length == 3
+      @nic.send(*@write_buffer)
+      @write_buffer.clear
     end
   end
 end
@@ -78,14 +58,14 @@ nic = NetworkInterfaceController.new
 
 N_COMPUTERS.times do |i|
   Thread.new {
+    connection = nic.connect(i)
     IntcodeComputer.new(
       program,
-      input: nic.connect(i),
-      output: nic
+      input: connection,
+      output: connection
     ).run
   }
 end
 
-q = nic.part1
-q.shift
-p q.shift
+nic.nat.shift
+p nic.nat.shift
