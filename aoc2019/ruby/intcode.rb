@@ -79,7 +79,7 @@ class IntcodeComputer
         write_value(a, m1)
       when 4
         a = read_value(m1)
-        output.push(a)
+        @output = output.push(a)
       when 5
         a = read_value(m1)
         b = read_value(m2)
