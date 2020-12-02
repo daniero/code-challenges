@@ -4,10 +4,10 @@ input = File
 
 puts input
   .combination(2)
-  .find { |a,b| a + b === 2020 }
+  .find { |a,b| a + b == 2020 }
   .then { |a,b| a * b }
 
 puts input
   .combination(3)
-  .find { |a,b,c| a + b + c === 2020 }
+  .find { |a,b,c| a + b + c == 2020 }
   .then { |a,b,c| a * b * c }
