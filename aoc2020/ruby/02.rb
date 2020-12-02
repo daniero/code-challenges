@@ -9,3 +9,12 @@ p input.count { |min,max,char,password|
   n = password.count(char)
   min <= n && n <= max
 }
+
+p input.count { |min,max,char,password|
+  a,b = password
+    .chars.values_at(min-1,max-1)
+    .map { |c| c == char }
+
+  a ^ b
+}
+
