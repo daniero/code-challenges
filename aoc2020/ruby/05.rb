@@ -1,11 +1,7 @@
 seat_ids = File
   .read('../input/05.txt')
-  .scan(/([FB]+)([LR]+)/)
-  .map { |row,col|
-    r = row.tr('FB','01').to_i(2)
-    c = col.tr('LR','01').to_i(2)
-    r * 8 + c
-  }
+  .scan(/[FB]+[LR]+/)
+  .map { _1.tr('FBLR','0101').to_i(2) }
 
 
 # Part 1
