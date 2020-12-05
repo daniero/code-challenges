@@ -1,4 +1,4 @@
-const { part1 } = require("./solver");
+const { part1, part2 } = require("./solver");
 
 describe('Day 1', function () {
   const testdata = [
@@ -15,6 +15,14 @@ describe('Day 1', function () {
       const result = part1(testdata);
 
       expect(result).toBe(514579);
+    });
+  });
+
+  describe('part 2', function () {
+    it('finds the correct combination', function () {
+      const result = part2(testdata);
+
+      expect(result).toBe(241861950);
     });
   });
 });
