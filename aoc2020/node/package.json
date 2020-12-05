@@ -1,0 +1,13 @@
+{
+  "name": "aoc2020",
+  "version": "0.1.0",
+  "description": "Advent of Code 2020 solutions",
+  "scripts": {
+    "day": "node run_aoc",
+    "test": "jest"
+  },
+  "license": "ISC",
+  "devDependencies": {
+    "jest": "^26.6.3"
+  }
+}
