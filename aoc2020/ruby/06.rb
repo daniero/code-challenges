@@ -5,5 +5,8 @@ groups = File
 
 
 # Part 1
-
 p groups.sum { |group| group.join.chars.uniq.size }
+
+
+# Part 2
+p groups.sum { |group| group.map(&:chars).reduce(&:&).size }
