@@ -1,33 +1,38 @@
 bags = File
   .readlines('../input/07.txt')
   .map { |line|
-    container = line[/^(\w+ \w+)/]
-    containees = line.scan(/(\d+) (\w+ \w+)/)
-    [container, containees]
+    bag = line[/^(\w+ \w+)/]
+    content = line
+      .scan(/(\d+) (\w+ \w+)/)
+      .map { |num, name| [num.to_i, name] }
+
+    [bag, content]
   }.to_h
+
+  
+TARGET = 'shiny gold'
 
 
 # Part 1
 
-def can_hold?(container, target, all_bags)
-  bag = all_bags[container].map(&:last)
-  return false unless bag
+def bags.can_hold?(outter_bag)
+  inner_bags = self[outter_bag].map(&:last)
 
-  bag.any? { |containee| containee == target } ||
-  bag.any? { |other| can_hold?(other, target, all_bags) }
+  inner_bags.any? { |inner_bag| inner_bag == TARGET } ||
+  inner_bags.any? { |inner_bag| can_hold?(inner_bag) }
 end
 
-p bags.keys.count { |bag| can_hold?(bag, 'shiny gold', bags) }
+p bags.keys.count { |bag| bags.can_hold?(bag) }
 
 
 # Part 2
 
-def must_hold(bag, all_bags)
-  content = all_bags[bag]
+def bags.count_inner_bags(outter_bag)
+  content = self[outter_bag]
 
-  content.sum { |number, name|
-    number.to_i + number.to_i * must_hold(name, all_bags)
+  content.sum { |number, inner_bag|
+    number + number * count_inner_bags(inner_bag)
   }
 end
 
-p must_hold('shiny gold', bags)
+p bags.count_inner_bags(TARGET)

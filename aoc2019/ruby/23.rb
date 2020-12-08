@@ -99,5 +99,3 @@ loop do
   prev_y = y
   nic.send(0, x, y)
 end
-
-# 14349 too high
