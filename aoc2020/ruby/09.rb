@@ -13,3 +13,11 @@ input.each_cons(25+1) do |*prev, current|
   end
 end
 
+# Part 2
+[*0...input.length]
+  .combination(2)
+  .lazy
+  .map { |a,b| input.values_at(a..b) }
+  .find { |range| range.sum == 1492208709 }
+  .then(&:minmax)
+  .then { |min,max| puts min + max }
