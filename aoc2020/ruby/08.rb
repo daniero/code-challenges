@@ -45,8 +45,9 @@ puts result
 instructions.each_with_index do |(inst, arg), index|
   next unless inst == 'jmp' || inst == 'nop'
 
+  swapped = 'jmpnop'.sub(inst,'')
   new_instructions = instructions.dup
-  new_instructions[index] = ['jmpnop'.sub(inst,''), arg]
+  new_instructions[index] = [swapped, arg]
 
   terminated, result = run_until_loop_or_terminate(new_instructions)
 
