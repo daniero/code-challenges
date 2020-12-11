@@ -34,12 +34,10 @@ DIRECTIONS = [
  [-1, +1], [0, +1], [+1, +1]
 ]
 
-
 initial_seats = File
   .read('../input/11.txt')
   .split("\n")
   .map(&:chars)
-
 
 p find_stable_state(initial_seats, 4) { |state, x, y|
   DIRECTIONS
@@ -51,5 +49,21 @@ p find_stable_state(initial_seats, 4) { |state, x, y|
 
 
 # Part 2
+
+def first_seat_in_direction(seats, pos, dir)
+  loop do
+    pos = pos.zip(dir).map(&:sum)
+    x,y = pos
+    return nil unless y >= 0 && y < seats.length && x >= 0 && x < seats[y].length
+    seat = seats[y][x]
+    return seat unless seat == FLOOR
+  end
+end
+
+p find_stable_state(initial_seats, 5) { |state, x, y|
+  DIRECTIONS
+    .map { |dir| first_seat_in_direction(state, [x,y], dir) }
+    .count(OCCUPIED)
+}
 
 
