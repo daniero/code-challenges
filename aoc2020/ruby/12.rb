@@ -1,5 +1,5 @@
 instructions = File
-  .readlines('../input/12.txt')
+  .readlines(ARGV[0] || '../input/12.txt')
   .map { |line|
     raise "'#{line}'" unless line =~ /^([A-Z])(\d+)$/
     [$1, $2.to_i]
@@ -12,7 +12,10 @@ DIRECTIONS = [
   [ 0,-1], # north
 ]
 
-x,y = [0,0]
+
+# Part 1
+
+x,y = [0, 0]
 dir = 0
 
 instructions.each do |inst, arg|
@@ -35,5 +38,32 @@ instructions.each do |inst, arg|
   end
 end
 
-p x.abs + y.abs
+puts x.abs + y.abs
 
+
+# Part 2
+
+ship_x, ship_y = [0, 0]
+waypoint_x, waypoint_y = [10, -1]
+
+instructions.each do |inst, arg|
+  case inst
+  when 'R'
+    (arg / 90).times { waypoint_x, waypoint_y = -waypoint_y, waypoint_x }
+  when 'L'
+    (arg / 90).times { waypoint_x, waypoint_y = waypoint_y, -waypoint_x }
+  when 'F'
+    ship_x += waypoint_x * arg
+    ship_y += waypoint_y * arg
+  when 'E'
+    waypoint_x += arg
+  when 'S'
+    waypoint_y += arg
+  when 'W'
+    waypoint_x -= arg
+  when 'N'
+    waypoint_y -= arg
+  end
+end
+
+puts ship_x.abs + ship_y.abs
