@@ -1,11 +1,13 @@
 a, b = File.readlines(ARGV[0] || '../input/13.txt')
 start = a.to_i
-buses = b.scan(/\d+/).map(&:to_i)
+bus_table = b.split(',').map(&:to_i)
 
-p start, buses
+buses = bus_table - [0]
 
-p wait =
-  buses
+
+# Part 1
+
+p buses
   .map { |bus| [bus, bus-start%bus] }
   .min_by { |bus, wait| wait }
   .then { |bus, wait| bus*wait }
