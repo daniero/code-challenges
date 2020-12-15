@@ -35,3 +35,43 @@ instructions.each do |inst, a, b|
 end
 
 p mem.values.sum { |v| v.join.to_i(2) }
+
+# Part 2
+
+def expand(value)
+  initial = [0]
+
+  value.chars.reduce(initial) { |acc, char|
+    if char == '1' || char == '0'
+      acc.map { |a| (a << 1) + char.to_i }
+    else
+      acc.flat_map { |a| [(a << 1), (a << 1) + 1] }
+    end
+  }
+end
+
+def mask_value2(value, mask)
+  value
+    .to_s(2)
+    .rjust(mask.size, '0')
+    .chars
+    .zip(mask)
+    .map { |v,m| m == '0' ? v : m }
+    .join
+end
+
+mask = ['0'] * BITS
+mem = Hash.new { |h,k| h[k] = ['0'] * BITS }
+
+instructions.each do |inst, a, b|
+  case inst
+  when :mask
+    mask = a
+  when :mem
+    address = mask_value2(a, mask)
+    expand(address).each { |e| mem[e] = b}
+  end
+end
+
+p mem.values.sum { |v| v.join.to_i(2) }
+
