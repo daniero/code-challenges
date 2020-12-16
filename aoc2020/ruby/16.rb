@@ -1,8 +1,21 @@
-fields, my_ticket, nearby_tickets = File.read('../input/16.txt').split("\n\n")
+a, b, c = File.read('../input/16.txt').split("\n\n")
 
-valid_fields = fields.scan(/(\d+)-(\d+)/).map { |a,b| (a.to_i)..(b.to_i) }
-all_nearby_ticket_values = nearby_tickets.scan(/\d+/).map(&:to_i)
+fields = a
+  .scan(/(\w+): (\d+)-(\d+) or (\d+)-(\d+)/)
+  .map { |name, i,j,k,l| [name, [i.to_i..j.to_i, k.to_i..l.to_i]] }
+  .to_h
 
-p all_nearby_ticket_values
-  .select { |value| valid_fields.none? { |field| field.include? value } }
+my_ticket = b.scan(/\d+/).map(&:to_i)
+
+nearby_tickets = c
+  .lines
+  .drop(1)
+  .map { |line| line.scan(/\d+/).map(&:to_i) }
+
+
+# Part 1
+
+p nearby_tickets
+  .flatten
+  .select { |value| fields.values.flatten.none? { |field| field.include? value } }
   .sum
