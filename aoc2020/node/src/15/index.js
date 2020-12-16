@@ -1,25 +1,25 @@
-let startingNumbers = [14, 3, 1, 0, 9, 5]
+const startingNumbers = [14, 3, 1, 0, 9, 5]
+const N = 30_000_000;
 
-const ns = [...startingNumbers];
+const spoken = startingNumbers.reduce((acc, n, i) => ({
+  ...acc,
+  [n]: i + 1
+}), {});
 
-const speak = () => {
-  const prev = ns[ns.length - 1];
+let prev = startingNumbers[startingNumbers.length - 1];
+let next = null;
 
-  const previouslySpoken = ns.lastIndexOf(prev, ns.length - 2);
-  if (previouslySpoken !== -1) {
-    const next = ns.length - 1 - previouslySpoken;
-    ns.push(next);
-    return next;
+for (let turn = startingNumbers.length + 1; turn <= N; turn++) {
+  const previouslySpokenTurn = spoken[prev];
+
+  if (previouslySpokenTurn !== undefined) {
+    next = turn - 1 - previouslySpokenTurn;
   } else {
-    const next = 0;
-    ns.push(next);
-    return next;
+    next = 0;
   }
+
+  spoken[prev] = turn - 1;
+  prev = next
 }
 
-const times = 2020 - ns.length;
-for (let i = 0; i < times; i++) {
-  speak();
-}
-
-console.log(ns[ns.length - 1]);
+console.log(next);
