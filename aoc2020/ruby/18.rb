@@ -1,13 +1,8 @@
 # Part 2
 
 class Integer
-  def - m
-    self * m
-  end
-
-  def / m
-    self + m
-  end
+  alias :- :*
+  alias :/ :+
 end
 
 p File
