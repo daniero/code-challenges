@@ -1,12 +1,11 @@
 const fs = require('fs');
 const { Tile } = require('./Tile');
 const { reassemble } = require('./dataReassembler');
+const { scanForSeaMonsters } = require('./imageProcessor');
 
-let input;
-input = fs.readFileSync('../input/20.txt', 'utf8');
-// input = fs.readFileSync('../input/20-test.txt', 'utf8');
+const input = fs.readFileSync('../input/20.txt', 'utf8');
 
-const data = input
+const rawData = input
   .split('\n\n')
   .filter(x => x)
   .map(chunk => {
@@ -17,6 +16,9 @@ const data = input
     );
   });
 
-const reassembledDataChecksum = reassemble(data);
+// Part 1
+const { checksum, data } = reassemble(rawData);
+console.log(checksum);
 
-console.log(reassembledDataChecksum);
+// Part 2
+console.log(scanForSeaMonsters(data));

@@ -1,8 +1,8 @@
 class Tile {
-  constructor(id, data) {
+  constructor(id, data, rotation = 0) {
     this.id = id;
     this.data = data;
-    this.rot = [];
+    this._rotations = [];
   }
 
   upperEdge() {
@@ -14,29 +14,29 @@ class Tile {
   }
 
   leftEdge() {
-    return this.lE || (this.lE = this.data.map(row => row[0]).join(''));
+    return this._leftEdge || (this._leftEdge = this.data.map(row => row[0]).join(''));
   }
 
   rightEdge() {
-    return this.rE || (this.rE = this.data.map(row => row[row.length - 1]).join(''));
+    return this._rightEdge || (this._rightEdge = this.data.map(row => row[row.length - 1]).join(''));
   }
 
   * rotations() {
     yield this;
     let data = this.data;
 
-    for (let i = 1; i < 8; i++) {
-      if (this.rot[i]) {
-        yield this.rot[i];
+    for (let rotation = 1; rotation < 8; rotation++) {
+      if (this._rotations[rotation]) {
+        yield this._rotations[rotation];
         continue;
       }
-      if (i === 4) {
+      if (rotation === 4) {
         data = flip(data);
       } else {
         data = rotate(data);
       }
 
-      yield this.rot[i] = new Tile(this.id, data);
+      yield this._rotations[rotation] = new Tile(this.id, data, rotation);
     }
   }
 }
@@ -59,4 +59,4 @@ function flip(data) {
 }
 
 
-module.exports = { Tile };
+module.exports = { Tile, rotate, flip };

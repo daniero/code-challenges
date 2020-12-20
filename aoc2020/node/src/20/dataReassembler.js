@@ -6,7 +6,10 @@ function reassemble(tiles) {
 
   go(new Set(tiles), image, 0);
 
-  return checksum(image, size);
+  return {
+    checksum: checksum(image, size),
+    data: image
+  };
 }
 
 function go(tilesLeft, image, i) {
@@ -25,8 +28,8 @@ function go(tilesLeft, image, i) {
           return true;
         }
 
-        const correct = go(tilesLeftNext, image, i + 1);
-        if (correct) {
+        const ok = go(tilesLeftNext, image, i + 1);
+        if (ok) {
           return true;
         }
 
