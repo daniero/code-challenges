@@ -9,6 +9,9 @@ foods = File
     [ingredients, allergens]
   }
 
+
+# Part 1
+
 foods_by_allergen = foods
   .flat_map { |ingredients, allergens|
     allergens.map { |allergen| [allergen, Set[*ingredients]] }
@@ -24,6 +27,28 @@ safe_ingredients = all_ingredients.select { |ingredient|
   allergen_candidates.none? { |_, ingredients| ingredients.include? ingredient }
 }
 
-pp safe_ingredients.sum { |ingredient|
+puts safe_ingredients.sum { |ingredient|
   foods.count { |ingredients, _| ingredients.include?(ingredient) }
 }
+
+
+# Part 2
+
+known_allergens = {}
+
+until allergen_candidates.empty?
+  certain = allergen_candidates.select { |allergen, ingredients| ingredients.length == 1 }
+
+  certain.each do |allergen, ingredients|
+    ingredient = ingredients.first
+
+    known_allergens[allergen] = ingredient
+    allergen_candidates.delete(allergen)
+    allergen_candidates.each { |_, canditates| canditates.delete(ingredient) }
+  end
+end
+
+puts known_allergens
+  .sort
+  .map(&:last)
+  .join(',')
