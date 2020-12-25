@@ -1,41 +1,38 @@
-function solve(start, moves) {
+const INPUT = 496138527;
+
+function solve(start, max, nextNumbers, moves) {
   let current = start
-  let pickedUp;
+  let pickedUp1;
+  let pickedUp2;
+  let pickedUp3;
   let destination;
 
   function pickUp() {
-    const first = current.next;
-    const last = first.next.next;
-    current.next = last.next;
-    last.next = null;
-    pickedUp = first;
+    pickedUp1 = nextNumbers[current];
+    pickedUp2 = nextNumbers[pickedUp1];
+    pickedUp3 = nextNumbers[pickedUp2];
+    nextNumbers[current] = nextNumbers[pickedUp3];
   }
 
   function findDestination() {
-    const pickedUpLabels = [pickedUp.label, pickedUp.next.label, pickedUp.next.next.label];
-    destination = current.label;
+    destination = current;
     do {
       destination--;
-      if (destination === 0) destination = 9;
-    } while (pickedUpLabels.includes(destination));
+      if (destination === 0) destination = max;
+    } while (destination === pickedUp1 || destination === pickedUp2 || destination === pickedUp3);
   }
 
   function placeBackDown() {
-    let next = current.next;
-    while (next.label !== destination) {
-      next = next.next;
-    }
-    const oldNext = next.next;
-    next.next = pickedUp;
-    pickedUp.next.next.next = oldNext;
+    const oldNext = nextNumbers[destination];
+    nextNumbers[destination] = pickedUp1;
+    nextNumbers[pickedUp3] = oldNext;
   }
 
   function rotate() {
-    current = current.next;
+    current = nextNumbers[current];
   }
 
   for (let i = 1; i <= moves; i++) {
-    if (i % 100000 === 0) process.stdout.write(".");
     pickUp();
     findDestination();
     placeBackDown()
@@ -44,65 +41,46 @@ function solve(start, moves) {
   return current;
 }
 
-function rotateToCup1(cup) {
-  let current = cup;
-  while (current.label !== 1) current = current.next;
-  return current;
-}
-
-const print = (first) => {
-  let next = first;
-  const labels = [];
-  do {
-    labels.push(next.label);
-    next = next.next;
-  } while (next && next !== first);
-  return labels.slice(1).join('');
-}
-
-// const input = 389125467; //test
-const input = 496138527;
-
 // Part 1
 
-const cups1 = [...input.toString()]
-  .map(c => parseInt(c))
-  .map(n => ({ label: n }));
+function findAnswerPart1(nextNumbers) {
+  const answer = [];
+  let next = 1;
+  for (let i = 0; i < 8; i++) {
+    next = nextNumbers[next];
+    answer.push(next);
+  }
+  return answer;
+}
 
-cups1.forEach((cup, i) => {
-  cup.next = cups1[(i + 1) % cups1.length];
+const numbers = [...INPUT.toString()].map(c => parseInt(c));
+const firstNumber = numbers[0];
+
+const nextNumbers = new Array(numbers.length + 1);
+numbers.forEach((number, i) => {
+  nextNumbers[number] = numbers[(i + 1) % numbers.length];
 });
 
-const part1 = solve(cups1[0], 100);
-
-console.log("Part 1:")
-console.log()
-console.log(`Cups: ${print(rotateToCup1(part1))}`)
+solve(firstNumber, Math.max(...numbers), nextNumbers, 100);
+console.log(`Part 1: ${findAnswerPart1(nextNumbers).join('')}`)
 
 // Part 2
 
-const cups2 = [...input.toString()]
-  .map(c => parseInt(c))
-  .map(n => ({ label: n }));
-
-cups2.forEach((cup, i) => {
-  cup.next = cups2[(i + 1) % cups2.length];
-});
-
-const first = cups2[0];
-let next = cups2[cups2.length - 1];
-
 const oneMillion = 1000000;
-const hundredMillion = 100000000;
+const tenMillion = 10000000;
 
-for (let i = 10; i <= oneMillion; i++) {
-  next.next = { label: i };
-  next = next.next
+const nextNumbers2 = new Array(oneMillion + 1);
+nextNumbers2[0] = null;
+numbers.forEach((number, i) => {
+  nextNumbers2[number] = numbers[(i + 1) % numbers.length];
+});
+const firstFillerNumber = Math.max(...numbers) + 1;
+for (let i = firstFillerNumber; i < oneMillion; i++) {
+  nextNumbers2[i] = i + 1
 }
+nextNumbers2[numbers[numbers.length - 1]] = firstFillerNumber;
+nextNumbers2[oneMillion] = firstNumber;
 
-next.next = first
-
-console.log("Part 2:")
-const part2 = rotateToCup1(solve(first, hundredMillion));
-
-console.log(part2.next * part2.next.next);
+solve(firstNumber, oneMillion, nextNumbers2, tenMillion);
+const part2 = nextNumbers2[1] * nextNumbers2[nextNumbers2[1]];
+console.log(`Part 2: ${part2}`)
