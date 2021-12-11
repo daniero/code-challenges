@@ -9,11 +9,13 @@ unchunked = input.map do |line|
     a.gsub! '[]', ''
     a.gsub! '{}', ''
     a.gsub! '<>', ''
-    break if a.empty? || a == b
+    break if a == b
   }
 
   a
 end
+
+# Part 1
 
 puts unchunked.sum { |line|
   case line[/[)\]}>]/]
@@ -25,3 +27,20 @@ puts unchunked.sum { |line|
   end
 }
 
+# Part 2
+
+scores = unchunked
+  .reject { |line| line[/[\)\]\}\>]/] }
+  .map { |line|
+    line.chars.reverse
+      .reduce(0) { |score, c|
+        score * 5 + case c
+        when '('; 1
+        when '['; 2
+        when '{'; 3
+        when '<'; 4
+        end
+      }
+  }
+
+puts scores.sort[scores.length/2]
