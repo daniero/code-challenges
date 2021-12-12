@@ -2,43 +2,54 @@
 require 'pqueue'
 require 'set'
 
-def neighbours(grid, x, y)
-  [
-    [x,y-1],
-    [x+1,y],
-    [x,y+1],
-    [x-1,y]
-  ].select { |m,n|
-    n >= 0 &&
-    n < grid.size &&
-    m >= 0 &&
-    m < grid[0].size
-  }
+def each_neighbour(grid, (x, y))
+  yield [x, y-1] if y > 0
+  yield [x+1, y] if x+1 < grid[y].size
+  yield [x, y+1] if y+1 < grid.size
+  yield [x-1, y] if x > 0
 end
 
 input = File
   .readlines(ARGV[0] || '../input/15.txt')
   .map { _1.scan(/\d/).map(&:to_i) }
 
-START = [0,0]
-TARGET = [input[0].size-1, input.size-1]
+def find_path(grid)
+  start = [0,0]
+  target = [grid[0].size-1, grid.size-1]
 
-initial = [START, 0]
-visited = Set[]
-queue = PQueue.new([initial]) { |a,b| a.last < b.last }
+  visited = Set[]
+  initial = [start, 0]
+  queue = PQueue.new([initial]) { |a,b| a.last < b.last }
 
-until queue.empty?
-  position, risk = queue.pop
+  until queue.empty?
+    position, risk = queue.pop
 
-  next unless visited.add?(position)
+    next unless visited.add?(position)
+    return risk if position == target
 
-  if position == TARGET
-    p risk
-    break
+    each_neighbour(grid, position) { |x,y|
+      queue.push([[x,y], risk + grid[y][x]])
+    }
   end
-
-  neighbours(input, *position).each { |x,y|
-    queue.push([[x,y], risk + input[y][x]])
-  }
 end
+
+# Part 1
+
+puts find_path(input)
+
+# Part 2
+
+large_grid = 5.times.flat_map { |ny|
+  input.map { |row|
+    5.times.flat_map { |nx|
+      row.map { |risk|
+        new_risk = risk + ny+nx
+        new_risk -= 9 while new_risk > 9
+        new_risk
+      }
+    }
+  }
+}
+
+p find_path(large_grid)
 
