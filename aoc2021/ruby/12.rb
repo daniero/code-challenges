@@ -10,6 +10,9 @@ input.each { |a,b|
 
 pp connections
 
+
+# Part 1
+
 require 'set'
 
 initial = [['start'], Set['start']]
@@ -38,4 +41,41 @@ until queue.empty?
   }
 end
 
-puts "\nPaths found: #{paths_found}"
+puts "\nPart 1: #{paths_found}"
+
+
+# Part 2
+
+initial = [['start'], Set['start'], nil]
+queue = [initial]
+paths_found = 0
+
+until queue.empty?
+  current_path, visited, twice = queue.pop
+  
+  connections[current_path.last].each { |next_cave|
+    next if next_cave == 'start'
+
+    if next_cave == 'end'
+      paths_found += 1
+      next
+    end
+
+    no_return = next_cave == next_cave.downcase
+    visited_current = no_return && visited.include?(next_cave)
+
+    if visited_current
+      next if twice
+      new_twice = next_cave
+    else
+      new_twice = twice
+    end
+
+    new_visited = no_return ? visited.dup.add(next_cave) : visited
+    new_path = [*current_path, next_cave]
+
+    queue << [new_path, new_visited, new_twice]
+  }
+end
+
+puts "Part 2: #{paths_found}"
