@@ -38,3 +38,9 @@ grid = Grid.new(input[1].lines.map { |line| line.chomp.chars.map { |c| ".#".inde
 end
 
 p grid.rows.sum { |row| row.sum }
+
+48.times do
+  grid = step(grid, rules)
+end
+
+p grid.rows.sum { |row| row.sum }
