@@ -5,4 +5,10 @@ input = File
 
 # Part 1
 
-pp input.transpose.map(&:sort).transpose.sum { |a,b| (a - b).abs }
+p input.transpose.map(&:sort).transpose.sum { |a,b| (a - b).abs }
+
+
+# Part 2
+
+a,b = input.transpose
+p a.sum { |i| i * b.count(i) }
