@@ -1,4 +1,4 @@
-input = File.readlines('../input/07-sample.txt')
+input = File.readlines('../input/07.txt')
 
 fs = {}
 wd = fs
@@ -21,8 +21,6 @@ input.each do |line|
   end
 end
 
-pp fs
-
 
 def part1(fs, path=[], sizes={})
   total = fs.sum do |k, v|
@@ -41,5 +39,20 @@ end
 sizes = {}
 part1(fs, [], sizes)
 
-pp sizes
-pp sizes.values.filter { |v| v < 100_000 }.sum
+
+# Part 1
+p sizes.values.filter { |v| v < 100_000 }.sum
+
+# Part 2
+total_space = 70_000_000
+required_space = 30_000_000
+used_space = sizes["/"]
+free_space = total_space - used_space
+need_to_free = required_space - free_space
+
+p sizes
+  .values
+  .filter { _1 >= need_to_free }
+  .min
+
+
