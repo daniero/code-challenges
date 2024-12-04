@@ -10,8 +10,9 @@ dirs = [
   [ 1,-1], [ 1,0], [ 1,1],
 ]
 
+# Part 1
 p input.map.with_index.sum { |row,y|
-  row.map.with_index.sum { |char,x|
+  row.each_index.sum { |x|
     dirs.count { |v,u|
       input[y+u*0][x+v*0] == 'X' &&
       input[y+u*1][x+v*1] == 'M' &&
@@ -21,3 +22,11 @@ p input.map.with_index.sum { |row,y|
   }
 }
 
+# Part 2
+p input.map.with_index.sum { |row,y|
+  row.map.with_index.count { |char,x|
+    char == 'A' &&
+    [input[y-1][x-1],input[y+1][x+1]].sort.join == 'MS' &&
+    [input[y+1][x-1],input[y-1][x+1]].sort.join == 'MS'
+  }
+}
