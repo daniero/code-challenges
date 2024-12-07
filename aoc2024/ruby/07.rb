@@ -8,18 +8,16 @@ input = File
 def dp(numbers)
   return numbers
     .drop(1)
-    .reduce(Set[numbers.first]) { |prev_result,next_number|
-      next_result = Set[]
-      prev_result.each { |prev|
-        next_result << prev + next_number
-        next_result << prev * next_number
-      }
-      next_result
+    .reduce(Set[numbers.first]) { |prev_nums,next_num|
+      prev_nums.reduce(Set[]) { |acc,prev_num| acc.merge(yield prev_num, next_num) }
     }
 end
 
 
-pp input
-  .filter { |result, *numbers|
-    dp(numbers).include? result
+p input.filter { |result, *numbers|
+    dp(numbers) { |a,b| [a+b, a*b] }.include? result
+  }.sum(&:first)
+
+p input.filter { |result, *numbers|
+    dp(numbers) { |a,b| [a+b, a*b, "#{a}#{b}".to_i] }.include? result
   }.sum(&:first)
