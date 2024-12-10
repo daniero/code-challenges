@@ -19,5 +19,5 @@ input = File
 p input
   .each_with_index
   .sum { |row,y|
-    row.each_index.sum { |x| find_trails(input, 0, x, y).uniq.size }
+    row.each_index.sum { |x| find_trails(input, 0, x, y).size }
   }
