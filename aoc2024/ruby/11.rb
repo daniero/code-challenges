@@ -1,16 +1,25 @@
-input = File.read('../input/11-sample.txt').scan(/\d+/).map(&:to_i)
+tally = File
+  .read('../input/11-sample.txt')
+  .scan(/\d+/).map(&:to_i)
+  .tally
 
-25.times do
-  input = input.flat_map { |i|
-    next [1] if i == 0 
+75.times do
+  next_tally = Hash.new { 0 }
 
-    d = i.to_s
-    if d.size.even?
-      next [d[0,d.size/2].to_i, d[d.size/2..].to_i]
+  tally.each do |i,n|
+    case
+    when i == 0 
+      next_tally[1] += n
+    when i.digits.length.even?
+      d = i.to_s
+      next_tally[d[0,d.size/2].to_i] += n
+      next_tally[d[d.size/2..].to_i] += n
+    else
+      next_tally[i*2024] += n
     end
+  end
 
-    [i*2024]
-  }
+  tally = next_tally
 end
 
-p input.size
+p tally.values.sum
