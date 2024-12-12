@@ -9,11 +9,11 @@ def in_bounds(grid, y, x) =
   x < grid[y].length
 
 
-input = File.readlines('../input/12-sample.txt', chomp: true)
+input = File.readlines('../input/12-sample.txt', chomp: true).map(&:chars)
 
 areas = Hash.new { 0 }
 perimeters = Hash.new { 0 }
-fences = input.map { _1.chars.map { DIRS.map { true } } }
+fences = input.map { _1.map { DIRS.map { true } } }
 
 ids = -1
 visited = Set[]
@@ -24,6 +24,7 @@ until queue.empty? do
   next unless visited.add? [y,x]
 
   areas[id] += 1
+  areas[[y,x]] = id
 
   DIRS.each_with_index do |(dy,dx),dir|
     ny, nx = y+dy, x+dx
@@ -43,5 +44,35 @@ until queue.empty? do
   perimeters[id] += fences[y][x].count(true)
 end
 
+
 # Part 1:
 p (0..ids).sum { |i| areas[i] * perimeters[i] }
+
+
+# Part 2:
+coords = input.map.with_index { |row,y| row.map.with_index { |c,x| [y,x] } }
+
+p coords.sum {
+  _1
+    .filter { |y,x| fences[y][x][3] }
+    .slice_when { |(y1,x1),(y2,x2)| x2 != x1+1 || input[y1][x1] != input[y2][x2] }
+    .sum { |coords| areas[areas[coords.first]] }
+} +
+coords.sum {
+  _1
+    .filter { |y,x| fences[y][x][1] }
+    .slice_when { |(y1,x1),(y2,x2)| x2 != x1+1 || input[y1][x1] != input[y2][x2] }
+    .sum { |coords| areas[areas[coords.first]] }
+} +
+coords.transpose.sum {
+  _1
+    .filter { |y,x| fences[y][x][2] }
+    .slice_when { |(y1,x1),(y2,x2)| y2 != y1+1 || input[y1][x1] != input[y2][x2] }
+    .sum { |coords| areas[areas[coords.first]] }
+} +
+coords.transpose.sum {
+  _1
+    .filter { |y,x| fences[y][x][0] }
+    .slice_when { |(y1,x1),(y2,x2)| y2 != y1+1 || input[y1][x1] != input[y2][x2] }
+    .sum { |coords| areas[areas[coords.first]] }
+}
