@@ -4,26 +4,35 @@ require 'set'
 
 DIRS = [[0,1], [1,0], [0,-1], [-1,0]]
 
-def go(grid, pos, dir)
+def go(pos, dir)
   pos.zip(dir).map(&:sum)
 end
 
-def find_path(grid, start, target)
-  initial = [start, 0, 0, [start]] #post, dir, cost, path
+def find_paths(grid, start, target)
+  initial = [start, 0, 0, [start]] #pos, dir, cost, path
   queue = PQueue.new([initial]) { |a,b| a[2] < b[2] }
+  visited = {}
 
-  visited = Set[]
+  min_cost = nil
+  paths = []
 
   until queue.empty?
     pos,dir,cost,path = queue.pop
 
-    next unless visited.add? [pos,dir]
-    return cost if pos == target
+    break if min_cost && cost > min_cost
+    next if visited[[pos,dir]]&.then { _1 < cost }
+    visited[[pos,dir]] = cost
+
+    if pos == target
+      min_cost = cost
+      paths << path
+      next
+    end
 
     y,x = pos
     next if grid[y][x] == '#'
 
-    new_pos = go(grid, pos, DIRS[dir])
+    new_pos = go(pos, DIRS[dir])
     queue.push([new_pos, dir, cost+1, path+[new_pos]])
 
     [1,-1].each do |turn|
@@ -31,8 +40,7 @@ def find_path(grid, start, target)
       queue.push([pos, new_dir, cost+1000, path])
     end
   end
-
-  raise "nope"
+  return [min_cost, paths]
 end
 
 
@@ -41,4 +49,9 @@ input = File.readlines('../input/16-sample2.txt', chomp: true)
 start = [input.length-2, 1]
 target = [1, input[1].length-2]
 
-p find_path(input, start, target)
+cost, paths = find_paths(input, start, target)
+
+
+p cost
+p paths.flatten(1).uniq.size
+
