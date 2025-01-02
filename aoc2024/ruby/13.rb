@@ -1,29 +1,19 @@
-require 'set'
+def find_intersection(ax, ay, bx, by, tx, ty)
+  # Find a and b where:
+  #   ax*a + bx*b = tx
+  #   ay*a + by*b = ty
 
-class Array
-  def zmr(other)
-    self.zip(other).map { _1.reduce { |x,y| yield x,y } }
-  end
+  a = (tx*by - ty*bx).to_f / (ax*by - ay*bx)
+  b = (ty - ay * a).to_f / by
+
+  return [a, b] if a%1 == 0 && b%1 == 0
 end
 
-def calculate_prize(a, b, target)
-  visited = Set[]
-  queue = []
-  queue << [0, [0,0]]
-
-  until queue.empty? do
-    cost, pos = queue.pop
-    return cost if pos == target
-    next unless visited.add? pos
-
-    na = pos.zmr(a, &:+)
-    nb = pos.zmr(b, &:+)
-
-    queue.push [cost+1, nb] unless nb.zmr(target, &:>).any?
-    queue.push [cost+3, na] unless na.zmr(target, &:>).any?
-  end
-
-  return 0
+def solve(input)
+  input
+    .filter_map { |a, b, target| find_intersection(*a, *b, *target) }
+    .sum { |a,b| a * 3 + b }
+    .to_i
 end
 
 
@@ -33,4 +23,5 @@ input = File
   .map { _1.scan(/\d+/).map(&:to_i).each_slice(2).to_a }
 
 
-p input.sum { |a, b, target| calculate_prize(a, b, target) }
+p solve(input)
+p solve(input.map { |a, b, target| [a, b, target.map { _1 + 10000000000000}]})
