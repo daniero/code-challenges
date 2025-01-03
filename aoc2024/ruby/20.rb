@@ -1,4 +1,11 @@
-SAVE = 100
+if :test
+  INPUT = '../input/20-sample.txt'
+  SAVE = 1
+else
+  INPUT = '../input/20.txt'
+  SAVE = 100
+end
+
 
 DIRS = [[0,-1], [1,0], [0,1], [-1,0]]
 
@@ -20,22 +27,27 @@ def find_path(maze)
   end
 end
 
-def find_shortcuts(maze, path)
-  path.sum { |(y,x),dist|
-    DIRS.count { |dy,dx|
-      ay,ax = y+dy, x+dx
-      by,bx = y+dy*2, x+dx*2
-      next unless in_bounds(maze, by, bx) && maze[ay][ax] == '#' && maze[by][bx] != '#'
+def find_shortcuts(maze, path, n_cheats)
+  # All positions within manhattan distance `n_cheats`:
+  cheats = [*0..n_cheats].flat_map { |y| [*0..n_cheats-y].flat_map { |x| [[y,x],[y,-x],[-y,x],[-y,-x]].uniq } } - [[0,0]]
 
-      new_dist = path[[by,bx]]
-      saved = new_dist - dist - 2
+  path.sum { |(y,x),dist|
+    cheats.count { |cy,cx|
+      ny,nx = y+cy, x+cx
+      next unless in_bounds(maze, ny, nx)
+
+      new_dist = path[[ny,nx]]
+      next unless new_dist
+
+      saved = new_dist - dist - cy.abs - cx.abs
       saved >= SAVE
     }
   }
 end
 
 
-input = File.readlines('../input/20.txt', chomp: true)
+input = File.readlines(INPUT, chomp: true)
 
 path = find_path(input)
-p find_shortcuts(input, path)
+p find_shortcuts(input, path, 2)
+p find_shortcuts(input, path, 20)
