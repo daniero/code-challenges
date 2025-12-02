@@ -9,3 +9,10 @@ print "Part 1: "
 p ids.sum { |a,b|
   (a..b).filter { |n| n.to_s =~ /^(.+)\1$/ }.sum
 }
+
+
+print "Part 2: "
+
+p ids.sum { |a,b|
+  (a..b).filter { |n| n.to_s =~ /^(.+)\1+$/ }.sum
+}
