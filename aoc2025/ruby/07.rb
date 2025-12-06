@@ -1,24 +1,27 @@
 require "set"
 
 start, *rows = File.readlines('../input-sample07.txt')
-#start, *rows = File.readlines('../input-real07.txt')
+start, *rows = File.readlines('../input-real07.txt')
 
-initial = [start.index("S")]
+beams = Hash.new { |h,k| h[k] = 0 }
+beams[start.index("S")] = 1
 splits = 0
 
 puts start
-rows.reduce(initial) { |beams, row|
-  x = beams.flat_map { |beam|
+rows.each { |row|
+  current = [*beams]
+  p current
+  puts row
+
+  current.each { |beam, count|
     if row[beam] == "^"
       splits+=1
-      [beam-1, beam+1]
-    else
-      [beam]
+      beams[beam] = 0
+      beams[beam-1]+=count
+      beams[beam+1]+=count
     end
   }
-  x.each { |i| row[i] = "|" }
-  puts row
-  x.to_set
 }
 
 p splits
+p beams.values.sum
