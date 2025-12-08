@@ -13,35 +13,33 @@ input = File
   .readlines(input_file)
   .map { it.scan(/\d+/).map(&:to_i) }
 
-
 circuits = input.to_h { [it,Set[it]] }
 by_distance = input.combination(2).sort_by { |a,b|
   Math.sqrt(a.zip(b).sum { |ai,bi| (ai-bi)**2 })
 }
 
 print "Part 1: "
-
 by_distance.take(N).each do |a,b|
-  cb = circuits[b]
-  merged = circuits[a].merge(cb)
+  ca,cb = circuits.values_at a, b
+  next if ca == cb
 
-  cb.each { |x| circuits[x] = merged }
+  ca.merge cb
+  cb.each { circuits[it] = ca }
 end
 
 puts circuits.values.uniq.map(&:size).max(3).reduce(:*)
 
-
 print "Part 2: "
+by_distance.drop(N).each do |a,b|
+  ca,cb = circuits.values_at a, b
+  next if ca == cb
 
-N.step do |i|
-  a,b = by_distance[i]
-  cb = circuits[b]
-  merged = circuits[a].merge(cb)
-
-  cb.each { |x| circuits[x] = merged }
+  ca.merge cb
+  cb.each { circuits[it] = ca }
 
   if circuits.values.uniq.size == 1
     puts a[0]*b[0]
     break
   end
 end
+
