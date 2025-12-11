@@ -1,23 +1,22 @@
-to_from = Hash.new { |h,k| h[k] = Set[] }
-
-from_to = File
-  .readlines('../input-sample11.txt')
-  .each {
+$nodes = File
+  #.readlines('../input-sample11.txt')
+  .readlines('../input-real11.txt')
+  .to_h {
     from, *to = it.scan(/\w+/)
-    to.each { to_from[it] << from }
     [from, to]
   }
 
-paths = Hash.new { 'you' => 1 }
-queue = ['you']
-visited = Set[]
+$paths = {}
 
-until queue.empty?
-  node = queue.pop
-  visited << node
+def solve(from)
+  return 1 if from == "out"
 
-  n = paths[node]
-  from_to[node].each { |to|
-    paths[to] += n
+  nodes = $nodes[from]
+  return 0 unless nodes
+
+  $paths[from] = nodes.sum { |to|
+    $paths[to] || solve(to)
   }
 end
+
+puts solve("you")
